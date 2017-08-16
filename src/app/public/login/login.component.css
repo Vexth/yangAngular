@@ -1,0 +1,11 @@
+.login-boxCom {
+	position: fixed;
+    z-index: 9999;
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.login-box {background-color:#ADADAD;}
+.login-box-body {border:9px solid #ADADAD;}
