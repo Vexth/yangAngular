@@ -1,6 +1,4 @@
-<div class="wrapper">
-  <app-top></app-top>
-  <app-treeview treemodule="M2" treeitem="V1" ></app-treeview>
+
   <div class="content-wrapper" style="height:auto;">
     <app-navigation Showtitle="获取远程数据列表" Subtitle="每页都使用远程数据" Web="站点"
     Module="M2模块" Page="获取远程数据列表" ></app-navigation>
@@ -20,5 +18,4 @@
         <app-paging [pageNews]="this.pageNews" (change)="bindpage($event)"></app-paging>
       </div>
     </section>
-  </div>
 
