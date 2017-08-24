@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,Input,Inject,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,ViewChild, Input,Inject, Output, EventEmitter } from '@angular/core';
 import { ModalformComponent } from '../../../../common/component/modalform/modalform.component';
 import * as Modal from 'ngx-bootstrap/modal';
 import { ModalDirective,ModalModule,ModalOptions } from 'ngx-bootstrap/modal';
@@ -56,8 +56,7 @@ export class M2v2openComponent implements OnInit {
       this.P.isdelandedit = null;
       this.P.indexremark = null;
       this.GetList.GetSequenceCode(1,1).then(backobj =>{ this.P.indexcode = backobj.toString(); });
-    }
-    else {
+    } else {
       this.ShowType = '编辑';
       this.P.id = dataItem.id;
       this.P.indexcode = dataItem.indexcode;

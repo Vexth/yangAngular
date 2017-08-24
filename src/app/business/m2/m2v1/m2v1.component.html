@@ -10,7 +10,8 @@
         </select>
         <div style="height:12px"></div>
         <wj-flex-grid #flexgrid1 [itemsSource]="cvPaging" auto-generate-columns="false" [itemFormatter]="itemFormatter">
-          <wj-flex-grid-column [header]="'主键'" [binding]="'ID'" [width]="100"></wj-flex-grid-column>
+          
+          <wj-flex-grid-column rowspan="3" [header]="'主键'" [binding]="'ID'" [width]="100"></wj-flex-grid-column>
           <wj-flex-grid-column [header]="'省份'" [binding]="'P'" [width]="'*'"></wj-flex-grid-column>
           <wj-flex-grid-column [header]="'城市'" [binding]="'C'" [width]="'*'"></wj-flex-grid-column>
           <wj-flex-grid-column [header]="'地区'" [binding]="'A'" [width]="'*'"></wj-flex-grid-column>

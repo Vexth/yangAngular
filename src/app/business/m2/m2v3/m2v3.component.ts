@@ -73,7 +73,6 @@ export class M2v3Component implements OnInit {
         if (panel.columns[c].binding === 'check') {
             let flex = panel.grid;
             let col = flex.columns[c];
-
             if (col.dataType == wjCore.DataType.Boolean) {
                 col.allowSorting = false;// 是否可排序
                 let cnt = 0;

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response ,RequestOptions} from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'promise';
-import { PageBackList,Wijmo_PageBackList,PageBackContentSSM, PageBackContent_M2V2,PageBackContent_M2V3,BackNews} from '../../module/business/getlist';
+import { findCourse, findTab, PageBackList, Wijmo_PageBackList, findType_M1V1, PageBackContent_M1V1, PageBackContentSSM, PageBackContent_M2V2,PageBackContent_M2V3,BackNews} from '../../module/business/getlist';
 import ConstantsList from '../../common/constants/config';
 import * as wjcCore from 'wijmo/wijmo';
 import { BackCode } from '../../module/business/formdata';
@@ -15,6 +15,132 @@ export class GetList extends BaseService {
   constructor(private http: Http) {
     super();
     this.servicename = 'GetList-列表服务';
+  }
+
+  // get获取后台数据的公共方法
+  publicGetServe (url: string, fn: string){
+    return this.http.get(url, {withCredentials: true}).toPromise().then(res => {
+      let status:number = res.status;
+      if(status === 200){
+        let PB = res.json().data;
+        return PB;
+      } else{
+        console.error('服务端返回的 http status 错误 : ', status);
+        return null;
+      }
+    }).catch((error: any) => {this.handleError(fn, error);});
+  }
+
+  // 菜单按键权限方法
+  public GetAuthlist() {
+    const url = `${ConstantsList.HOSTUser1}api/userauth/findauthlist`;
+    return this.publicGetServe(url, 'GetAuthlist');
+  }
+
+  // 产品类别方法
+  public GetListFindType(): Promise<any | findType_M1V1>{
+    const url = `${ConstantsList.HOSTUser1}api/nodetemplate/findType/`;
+    return this.http.get(url).toPromise().then(res => {
+      let status:number = res.status;
+      if(status === 200){
+        let PB:findType_M1V1 = res.json().data.list as findType_M1V1;
+        return PB;
+      } else{
+        console.error('服务端返回的 http status 错误 : ', status);
+        return null;
+      }
+    }).catch((error: any) => {this.handleError('GetListFindType', error);});
+  }
+
+  // 通过产品类别获取列表数据
+  public GetListPageBy_M1V1(type:number): Promise<any | PageBackContent_M1V1>{
+    const url = `${ConstantsList.HOSTUser1}api/nodetemplate/list?type=${type}`;
+    return this.http.get(url,{withCredentials: true}).toPromise().then(res => {
+      let status:number = res.status;
+      if(status === 200){
+        let PB:PageBackContent_M1V1 = res.json().data.nodeList as PageBackContent_M1V1;
+        return PB;
+      } else{
+        console.error('服务端返回的 http status 错误 : ', status);
+        return null;
+      }
+    }).catch((error: any) => {this.handleError('GetListPageBy_M1V1', error);});
+  }
+
+  // 流程节点方法
+  public findNodeOfZzb() {
+    const url = `${ConstantsList.HOSTUser1}api/nodetemplate/findNodeOfZzb`;
+    return this.http.get(url,{withCredentials: true}).toPromise().then(res => {
+      let status:number = res.status;
+      if(status === 200){
+        let PB = res.json().data.list;
+        return PB;
+      } else{
+        console.error('服务端返回的 http status 错误 : ', status);
+        return null;
+      }
+    }).catch((error: any) => {this.handleError('findNodeOfZzb', error);});
+
+  }
+
+  // 方法类别：/api/ratio/findTab
+  public findTab(): Promise<any | findTab>{
+    const url = `${ConstantsList.HOSTUser1}api/ratio/findTab`;
+    return this.http.get(url).toPromise().then(res => {
+      let status:number = res.status;
+      if(status === 200){
+        let PB:findTab = res.json().data.list as findTab;
+        return PB;
+      } else{
+        console.error('服务端返回的 http status 错误 : ', status);
+        return null;
+      }
+    }).catch((error: any) => {this.handleError('findTab',error);})
+  }
+
+  // 学科方法路径：/api/ratio/findCourse
+  public findCourse(): Promise<any | findCourse>{
+    const url = `${ConstantsList.HOSTUser1}api/ratio/findCourse`;
+    return this.http.get(url).toPromise().then(res => {
+      let status:number = res.status;
+      if(status === 200){
+        let PB:findCourse = res.json().data.list as findCourse;
+        return PB;
+      } else{
+        console.error('服务端返回的 http status 错误 : ', status);
+        return null;
+      }
+    }).catch((error: any) => {this.handleError('findCourse',error);})
+  }
+
+  // 系数列表方法路径：/api/ratio/list 参数（必传参数：tabid(tab类别方法的id) 可传参数: typeid(产品类别方法id)）
+  public ratioList (tabid:number, typeid: number) {
+    const url = `${ConstantsList.HOSTUser1}api/ratio/list?tabid=${tabid}&typeid=${typeid}`;
+    return this.http.get(url, {withCredentials: true}).toPromise().then(res => {
+      let status:number = res.status;
+      if(status === 200){
+        let PB = res.json().data.ratioList;
+        return PB;
+      } else{
+        console.error('服务端返回的 http status 错误 : ', status);
+        return null;
+      }
+    }).catch((error: any) => {this.handleError('ratioList',error);})
+  }
+
+  // 下拉年级方法路径：/api/ratio/findClass
+  public findClass() {
+    const url = `${ConstantsList.HOSTUser1}api/ratio/findClass`;
+    return this.http.get(url, {withCredentials: true}).toPromise().then(res => {
+      let status:number = res.status;
+      if(status === 200){
+        let PB = res.json().data.list;
+        return PB;
+      } else{
+        console.error('服务端返回的 http status 错误 : ', status);
+        return null;
+      }
+    }).catch((error: any) => {this.handleError('findClass',error);})
   }
 
   public GetListPageBySSM(PageIndex:number,PageSize:number): Promise<any | Wijmo_PageBackList>{

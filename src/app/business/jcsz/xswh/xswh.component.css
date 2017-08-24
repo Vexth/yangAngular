@@ -1,0 +1,45 @@
+.form-control {
+	width: 140px;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.pageing {margin-top: 10px;}
+
+.button-content {margin-bottom: 10px;}
+
+.tab {display: flex;margin-bottom: 20px;border-bottom: 1px solid #cccccc;}
+
+.tab span {
+    padding: 10px 20px;
+    margin-bottom: -1px;
+    border: 1px solid #cccccc;
+    border-bottom: 0;
+    border-left: 0;
+    background-color: #a7a7a7;
+    cursor: pointer;
+}
+.tab span:nth-child(1) {border-left: 1px solid #cccccc;}
+
+.tab span.article{background-color: #ecf0f5;}
+
+.colSelect label{
+    vertical-align: top;
+    margin-top: 5px;
+}
+
+ul, li{list-style-type: none;margin: 0;padding: 0;}
+
+.tabClass ul li{line-height: 30px;border-bottom: 1px solid #eee;width: 500px;}
+
+.tabClass ul li:nth-child(1){background: #eee;line-height: 40px;border-bottom: 0;}
+
+.tabClass ul li span{font-size: 14px;padding: 5px 20px;width: 105px;display: inline-block;text-align: center;}
+
+.wj-flexgrid {max-height: 450px; max-width: 200%; overflow-y: hidden;}
+
+.ui-datatable .ui-datatable-data tr td{text-align: center}
+
+.ui-growl{top: 70px;}
+
+.ui-dropdown .ui-dropdown-trigger .fa{margin-top: .5em;}

@@ -1,0 +1,75 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:1200px;">
+      <div class="modal-content">
+        <form #formRef="ngForm" (ngSubmit)="onSubmit(formRef.value)" class="show-form">
+          <div class="modal-header">
+            <h4 class="modal-title pull-left">{{ShowType}}{{Title}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body"> 
+<div class="form-group">
+  <label>流程节点:</label>
+  <input style="width:100px; margin-top:0px;" [(ngModel)]="selected" [typeahead]="states" class="form-control" [ngModelOptions]="{standalone: true}">
+</div>
+
+<div class="form-group">
+  <label>是否包括录排工作量:</label>
+  <!-- <div class="radio"> -->
+      <input type="radio" name="isdel" >
+    <!-- <label *ngFor="let t of typeList" class="radio-inline">
+        <input type="radio" name="isdel" (change)="isdel=t.id" [checked]="isdel===t.id">
+      </label> -->
+  <!-- </div> -->
+</div>
+
+<div class="form-group">
+  <label>是否包括画图工作量:</label>
+  <!-- <div class="radio"> -->
+      <input type="radio" name="isdel" >
+    <!-- <label *ngFor="let t of typeList" class="radio-inline">
+          <input type="radio" name="isdel" (change)="isdel=t.id" [checked]="isdel===t.id">
+        </label> -->
+  <!-- </div> -->
+</div>
+
+<div class="form-group">
+  <label>是否包括调图工作量:</label>
+  <!-- <div class="radio"> -->
+      <input type="radio" name="isdel" >
+    <!-- <label *ngFor="let t of typeList" class="radio-inline">
+      <input type="radio" name="isdel" (change)="isdel=t.id" [checked]="isdel===t.id">
+    </label> -->
+  <!-- </div> -->
+</div>
+
+<div class="form-group">
+  <label>是否包括答题卡工作量:</label>
+  <!-- <div class="radio"> -->
+      <input type="radio" name="isdel" >
+    <!-- <label *ngFor="let t of typeList" class="radio-inline">
+      <input type="radio" name="isdel" (change)="isdel=t.id" [checked]="isdel===t.id">
+    </label> -->
+  <!-- </div> -->
+</div>
+
+<div class="form-group">
+  <label>是否包括后期制作工作量:</label>
+  <!-- <div class="radio"> -->
+      <input type="radio" name="isdel" >
+    <!-- <label *ngFor="let t of typeList" class="radio-inline">
+      <input type="radio" name="isdel" (change)="isdel=t.id" [checked]="isdel===t.id">
+    </label> -->
+  <!-- </div> -->
+</div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="hideChildModal()">关闭</button>
+            <button type="submit" class="btn btn-primary">提交</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>

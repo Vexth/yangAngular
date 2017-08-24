@@ -5,115 +5,153 @@
 
     <section class="content" id="content">
         <div class="button-content">
-            <button type="button" class="btn btn-success" (click)="addClick()">新增行</button>
-            <button type="button" class="btn btn-danger" (click)="removeClick()">删除行</button>
+            <button type="button" class="btn btn-success" (click)="addnew()">新增</button>
+            <button type="button" class="btn btn-primary" (click)="edit()">修改</button>
+            <button type="button" class="btn btn-danger" (click)="dellList()">删除</button>
         </div>
+
         <div style="_height:100%;min-height:100%;">
             <div class="tab">
-                <span [ngClass]="{'article': username == 'tc'}" (click)="onRenovate('tc')">图书</span>
-                <span [ngClass]="{'article': username == 'sj'}" (click)="onRenovate('sj')">试卷</span>
-                <span [ngClass]="{'article': username == 'bz'}" (click)="onRenovate('bz')">报纸</span>
-                <span [ngClass]="{'article': username == 'zz'}" (click)="onRenovate('zz')">杂志</span>
+                <span *ngFor="let list of ListFindType" [ngClass]="{ 'article': username == list.id }" (click)="onRenovate(list.id)">{{ list.text }}</span>
             </div>
 
-            <wj-flex-grid #flexgrid1 [itemsSource]="cvPaging" [itemFormatter]="itemFormatter" auto-generate-columns="false">
-                <wj-flex-grid-column [header]="' '" [binding]="'check'" [width]="30"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'主键'" [binding]="'ID'" [width]="'*'">
-                    <!-- <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
-                        <div>
-                            <wj-combo-box [itemsSource]="countries"
-                            [(selectedValue)]="cell.value"
-                            [isEditable]="false"></wj-combo-box>
-                        </div>
-                    </ng-template> -->
+            <wj-flex-grid #flexgrid1 [itemsSource]="cvPaging" auto-generate-columns="true" [itemFormatter]="itemFormatter">
+                    <wj-flex-grid-column [header]="''" [binding]="'check'" [width]="30"></wj-flex-grid-column>
+                <!-- <wj-flex-grid-column [header]="''" [binding]="'check'" [width]="30"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'主键'" [binding]="'id'" [width]="60" [isReadOnly]="'true'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'系统编码'" [binding]="'indexcode'" [width]="80" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">{{cell.item.indexcode}}</div>
+                    </ng-template>
                 </wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'省份'" [binding]="'P'" [width]="'*'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'大类名称'" [binding]="'indexname'" [width]="200">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">{{cell.item.indexname}}</div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'备注信息'" [binding]="'indexremark'" [width]="'*'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'应用状态'" [binding]="'isdel'" [width]="70" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <span [ngStyle]="{color:cell.item.isdel == 0 ?'green':'red'}">
+                            {{cell.item.isdel==0?'启用':'禁用'}}
+                        </span>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'编辑状态'" [binding]="'isdelandedit'" [width]="70" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <span [ngStyle]="{color:cell.item.isdelandedit == 0 ?'green':'red'}">
+                            {{cell.item.isdelandedit==0 ? '可编辑':'已锁定'}}
+                        </span>
+                    </ng-template>
+                </wj-flex-grid-column> -->
+<!-- 序号
 
-                <wj-flex-grid-column [header]="'是否包括录排工作量'" [binding]="'check1'" [width]="'*'"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'是否包括画图工作量'" [binding]="'check2'" [width]="'*'"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'是否包括调图工作量'" [binding]="'check3'" [width]="'*'"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'是否包括答题卡工作量'" [binding]="'check4'" [width]="'*'"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'是否包括后期制作工作量'" [binding]="'check5'" [width]="'*'"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'工作量'" [binding]="'id'" [width]="'*'"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'节点说明'" [binding]="'C'" [width]="'*'" [isRequired]="true"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'操作'" [binding]="'C'" [width]="'*'" [isRequired]="true"></wj-flex-grid-column>
+流程节点
 
-                <wj-flex-grid-column [header]="'城市'" [binding]="'C'" [width]="'*'" [isRequired]="true"></wj-flex-grid-column>
-                <wj-flex-grid-column [header]="'地区'" [binding]="'A'" [width]="'*'"></wj-flex-grid-column>
+是否包括录排工作量
+
+是否包括画图工作量
+
+是否包括调图工作量
+
+是否包括答题卡工作量
+
+是否包括后期制作工作量
+
+单位
+倍数
+工作量
+
+节点说明 -->
+                <wj-flex-grid-column [header]="'序号'" [binding]="'id'" [width]="50" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">{{cell.item.id}}</div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'流程节点'" [binding]="'nodeId'" [width]="80" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">{{cell.item.nodeId}}</div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'是否包括录排工作量'" [binding]="'isLp'" [width]="'*'" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">
+                            <span *ngIf="cell.item.isLp === true">
+                               <i class="fa fa-check-square-o"></i>
+                            </span>
+                            <span *ngIf="cell.item.isLp !== true">
+                                <i class="fa fa-square-o"></i>
+                            </span>
+                        </div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'是否包括画图工作量'" [binding]="'isHuat'" [width]="'*'" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">
+                            <span *ngIf="cell.item.isHuat === true">
+                                <i class="fa fa-check-square-o"></i>
+                            </span>
+                            <span *ngIf="cell.item.isHuat !== true">
+                                <i class="fa fa-square-o"></i>
+                            </span>
+                        </div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'是否包括调图工作量'" [binding]="'isTiaot'" [width]="'*'" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">
+                            <span *ngIf="cell.item.isTiaot === true">
+                                <i class="fa fa-check-square-o"></i>
+                            </span>
+                            <span *ngIf="cell.item.isTiaot !== true">
+                                <i class="fa fa-square-o"></i>
+                            </span>
+                        </div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'是否包括答题卡工作量'" [binding]="'isDatika'" [width]="'*'" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">
+                            <span *ngIf="cell.item.isDatika === true">
+                                <i class="fa fa-check-square-o"></i>
+                            </span>
+                            <span *ngIf="cell.item.isDatika !== true">
+                                <i class="fa fa-square-o"></i>
+                            </span>
+                        </div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'是否包括后期制作工作量'" [binding]="'isHouqi'" [width]="'*'" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'" let-cell="cell">
+                        <div style="text-align:center;">
+                            <span *ngIf="cell.item.isHouqi === true">
+                                <i class="fa fa-check-square-o"></i>
+                            </span>
+                            <span *ngIf="cell.item.isHouqi !== true">
+                                <i class="fa fa-square-o"></i>
+                            </span>
+                        </div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'单位'" [binding]="'unit'" [width]="50" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">{{cell.item.unit}}</div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'倍数'" [binding]="'multiple'" [width]="50" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'" let-cell="cell">
+                        <div style="text-align:center;">{{cell.item.multiple}}</div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'节点说明'" [binding]="'remarks'" [width]="'*'" [isReadOnly]="'true'">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+                        <div style="text-align:center;">{{cell.item.remarks}}</div>
+                    </ng-template>
+                </wj-flex-grid-column>
             </wj-flex-grid>
-
-            <!-- <div class="pageing">
-                <app-paging [pageNews]="this.pageNews" (change)="bindpage($event)"></app-paging>
-                <select class="form-control" [(ngModel)]="comId" (ngModelChange)="onChange($event);" name="select1">
-                    <option [value]="c" *ngFor="let c of comIdList">{{c}}条数据分页</option>
-                </select>
-            </div> -->
+            <!-- <app-paging [pageNews]="this.pageNews" (change)="bindpage($event)"></app-paging> -->
         </div>
+        <app-m1v1open #m1v1open Title (change)="bindpage(0)"></app-m1v1open>
     </section>
-
-<!-- <wj-flex-grid #flex1
-  [itemsSource]="data"
-  [allowSorting]="false"
-  [autoSizeMode]="'Both'"
-  [allowResizing]="'Both'"
-  [deferResizing]="true">
-
-<ng-template wjFlexGridCellTemplate [cellType]="'TopLeft'" *ngIf="customTopLeft">
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'BottomLeft'" *ngIf="customBottomLeft">
-&#931;
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'RowHeader'" *ngIf="customRowHeader" let-cell="cell">
-{{cell.row.index}}
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'RowHeaderEdit'" *ngIf="customRowHeaderEdit">
-...
-</ng-template>
-
-<wj-flex-grid-column header="Country"
-             binding="country"
-             width="*">
-<ng-template wjFlexGridCellTemplate [cellType]="'Cell'" *ngIf="customCell" let-item="item">   
-    <img src="resources/{{item.country}}.png" />                        
-    {{item.country}}
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'CellEdit'" *ngIf="customCellEdit" let-cell="cell">
-    <wj-combo-box [itemsSource]="countries"
-                  [(selectedValue)]="cell.value"
-                  [isEditable]="false"></wj-combo-box>
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'GroupHeader'" *ngIf="customGroupHeader" let-cell="cell">
-    <input type="checkbox" [(ngModel)]="cell.row.isCollapsed" />
-    {{cell.item.name}} ({{cell.item.items.length}} items)
-</ng-template>
-</wj-flex-grid-column>
-
-<wj-flex-grid-column header="Downloads"
-             binding="downloads"
-             [width]="170"
-             [aggregate]="'Sum'">
-<ng-template wjFlexGridCellTemplate [cellType]="'ColumnHeader'" *ngIf="customColumnHeader">
-    <input type="checkbox" [(ngModel)]="uiCtx.highlightDownloads" />
-    Downloads
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'Cell'" *ngIf="customCell" let-item="item">
-    <span [ngStyle]="{color: uiCtx.highlightDownloads? (item.downloads>10000 ?'green':'red'):''}"
-          style="font-weight:700">
-        {{item.downloads}}
-    </span>
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'CellEdit'" *ngIf="customCellEdit" let-cell="cell">
-    <wj-input-number [(value)]="cell.value"
-                     [step]="1"></wj-input-number>
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'Group'" *ngIf="customGroup" let-cell="cell">
-     Sum = {{cell.value | number:'1.0-0'}}
-</ng-template>
-<ng-template wjFlexGridCellTemplate [cellType]="'ColumnFooter'" *ngIf="customColumnFooter" let-cell="cell">
-Sum:  {{cell.value | number:'1.0-0'}}
-</ng-template>
-</wj-flex-grid-column>
-
-</wj-flex-grid> -->
 
 </div>

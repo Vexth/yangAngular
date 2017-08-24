@@ -1,0 +1,58 @@
+<div class="content-wrapper">
+    <app-navigation Showtitle="基础设置" Subtitle="系数维护" Web="工作量管理" Module="基础设置" Page="系数维护"></app-navigation>
+
+    <section class="content" id="content">
+        <p-growl [(value)]="msgs"></p-growl>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+            <p-footer>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+            </p-footer>
+        </p-confirmDialog>
+        <div class="button-content">
+            <button type="button" class="btn btn-success" (click)="add(username)">新增</button>
+            <!-- <button type="button" class="btn btn-primary" (click)="edit()">修改</button>
+            <button type="button" class="btn btn-danger" (click)="dellList()">删除</button> -->
+        </div>
+
+        <div style="_height:100%;min-height:100%;">
+            <div class="tab">
+                <span *ngFor="let list of ListFindType" [ngClass]="{ 'article': username == list.id }" (click)="onRenovate(list.id)">{{ list.text }}</span>
+            </div>
+            <div class="colSelect" [ngStyle]="{'display':username == '1' ? 'block' : 'none' }">
+                <label>分类：</label>
+                <p-dropdown [style]="{'width': '80px','text-align': 'center','margin-bottom': '20px'}" [options]="unitList" (onChange)="onChange($event)"
+                    [(ngModel)]="unit" [ngModelOptions]="{standalone: true}">
+                </p-dropdown>
+            </div>
+
+            <div class="tabClass">
+                <ul>
+                    <li>
+                        <span><b>序号</b></span>
+                        <span>
+                            <b *ngIf="username != 5">科目</b>
+                            <b *ngIf="username === 5">年级</b>
+                        </span>
+                        <span><b>系数</b></span>
+                        <span><b>操作</b></span>
+                    </li>
+                    <li *ngFor="let list of dataList; let i = index;">
+                        <span>{{i+1}}</span>
+                        <span>
+                            <span style="width:100%;" *ngIf="list.a == undefined">{{list.courseClassId}}</span>
+                            <p-dropdown *ngIf="list.a == ''" [style]="{'width': '80px','text-align': 'center', 'margin-left': '-10px'}" [options]="findCourseList"
+                            (onChange)="findex($event)" placeholder="请选择" [(ngModel)]="findCourse" [ngModelOptions]="{standalone: true}">
+                            </p-dropdown>
+                        </span>
+                        <span (dblclick)="ShowElement($event)">{{ list.ratio != null ? list.ratio : '双击填写' }}</span>
+                        <span>
+                            <button type="button" class="btn btn-primary" (click)="conserve(list)">保存</button>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- <app-jsszopen #jsszopen Title (change)="bindpage(0)"></app-jsszopen> -->
+    </section>
+</div>

@@ -13,13 +13,54 @@ export class PostService extends BaseService {
     this.servicename = 'PostService-表单提交服务';
   }
 
+  // 添加/修改 /api/nodetemplate/addUpdateNode
+  addUpdateNode (postvalue: any) : Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/nodetemplate/addUpdateNode`;
+    let body = postvalue; //let body = JSON.stringify(postvalue);
+    //let headers = ConstantsList.headers;
+    // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
+    // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8'});
+    let options = new RequestOptions({ headers: headers, withCredentials: true  });
+    return this.http.post(url, body, options).toPromise().
+    then((res) => { return res.json() as BackCode; })
+    .catch((error: any) => {this.handleError('addUpdateNode',error);});
+  }
+  // 删除或批量删除 /api/nodetemplate/ batch_delete
+  batchDelete (postvalue: any) : Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/nodetemplate/batch_delete`;
+    let body = postvalue; //let body = JSON.stringify(postvalue);
+    //let headers = ConstantsList.headers;
+    // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
+    // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8'});
+    let options = new RequestOptions({ headers: headers, withCredentials: true  });
+    return this.http.post(url, body, options).toPromise().
+    then((res) => { return res.json() as BackCode; })
+    .catch((error: any) => {this.handleError('batchDelete',error);});
+  }
+
+  // 新增或修改系统方法路径：/api/ratio/addUpdateRatio
+  addUpdateRatio (postvalue: any) : Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/ratio/addUpdateRatio`;
+    let body = postvalue; //let body = JSON.stringify(postvalue);
+    //let headers = ConstantsList.headers;
+    // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
+    // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8'});
+    let options = new RequestOptions({ headers: headers, withCredentials: true  });
+    return this.http.post(url, body, options).toPromise().
+    then((res) => { return res.json() as BackCode; })
+    .catch((error: any) => {this.handleError('batchDelete',error);});
+  }
+
   AddForm(postvalue: string): Promise<any | BackCode> {
     let url = `${ConstantsList.HOSTUser}AddForm.ashx`;
     let body = postvalue; //let body = JSON.stringify(postvalue);
     //let headers = ConstantsList.headers;
     //let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
-    let options = new RequestOptions({ headers: headers });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(url, body, options).toPromise().
     then((res) => { return res.json() as BackCode;})
     .catch((error: any) => {this.handleError('AddForm',error);});

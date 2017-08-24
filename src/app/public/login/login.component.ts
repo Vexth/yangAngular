@@ -1,4 +1,4 @@
-import { Component, OnInit ,Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Auth } from '../../module/login/entity';
 
@@ -23,10 +23,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() { }
 
   onSubmit(formValue:any):void {
+    this.router.navigate(['/']);
     this.service
         .loginWithCredentials(formValue.username, formValue.password)
         .then(auth => {
-          let redirectUrl = (auth.redirectUrl === null)? '/': auth.redirectUrl;
+          console.log(auth.redirectUrl);
+          let redirectUrl = (auth.redirectUrl === null) ? '/': auth.redirectUrl;
           if(!auth.hasError){
             this.router.navigate([redirectUrl]);
             sessionStorage.removeItem('redirectUrl');

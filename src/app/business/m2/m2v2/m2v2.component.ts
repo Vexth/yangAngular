@@ -23,7 +23,7 @@ import { Auxiliary } from '../../../common/constants/auxiliary';
   templateUrl: './m2v2.component.html',
   styleUrls: ['./m2v2.component.css']
 })
-export class M2v2Component  implements OnInit{
+export class M2v2Component implements OnInit{
 
   private GetList: GetList;
   cvPaging: wjCore.CollectionView = new wjCore.CollectionView();

@@ -21,20 +21,48 @@ import { M3v5Component } from './m3/m3v5/m3v5.component';
 import { M3v6Component } from './m3/m3v6/m3v6.component';
 import { M3v7Component } from './m3/m3v7/m3v7.component';
 import { M4v1Component } from './m4/m4v1/m4v1.component';
+import { M4v2Component } from './m4/m4v2/m4v2.component';
+
+// 基础设置 （JsszComponent为计算设置，XswhComponent系数维护）
+// JsszComponent为计算设置
+import { JsszComponent } from './jcsz/jssz/jssz.component';
+import { JsszopenComponent } from './jcsz/jssz/jsszopen/jsszopen.component';
+// XswhComponent系数维护
+import { XswhComponent } from './jcsz/xswh/xswh.component';
+
 
 import { WjGridModule } from 'wijmo/wijmo.angular2.grid';
 import { WjInputModule } from 'wijmo/wijmo.angular2.input';
 import { WjCoreModule } from 'wijmo/wijmo.angular2.core';
+import { WjGridMultirowModule } from 'wijmo/wijmo.angular2.grid.multirow';
 
 import { DataSvc } from './services/DataSvc';
 import { PostService } from './services/post.service';
 import { GetList } from './services/getlist';
 
-import { AlertModule } from 'ngx-bootstrap';
+import { AlertModule, TypeaheadModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
+import { M1v1openComponent } from './m1/m1v1/m1v1open/m1v1open.component';
 import { M2v2openComponent } from './m2/m2v2/m2v2open/m2v2open.component';
 import { M2v3openComponent } from './m2/m2v3/m2v3open/m2v3open.component';
+
+import { 
+  AutoCompleteModule, 
+  DataGridModule, 
+  DataTableModule, 
+  DataListModule, 
+  TreeTableModule, 
+  SharedModule, 
+  DialogModule,
+  GrowlModule,
+  ConfirmDialogModule,
+  CheckboxModule,
+  DropdownModule,
+  ChipsModule
+} from 'primeng/primeng';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   imports: [
@@ -46,8 +74,23 @@ import { M2v3openComponent } from './m2/m2v3/m2v3open/m2v3open.component';
     WjInputModule,
     WjGridModule,
     WjCoreModule,
+    WjGridMultirowModule,
     AlertModule,
+    TypeaheadModule,
     ModalModule,
+    AutoCompleteModule,
+    DataGridModule, 
+    DataTableModule, 
+    DataListModule, 
+    TreeTableModule, 
+    SharedModule, 
+    DialogModule, 
+    GrowlModule,
+    ConfirmDialogModule,
+    CheckboxModule,
+    DropdownModule,
+    ChipsModule,
+    BrowserAnimationsModule
   ],
   declarations: [
     A1Component,
@@ -65,9 +108,15 @@ import { M2v3openComponent } from './m2/m2v3/m2v3open/m2v3open.component';
     M3v6Component,
     M3v7Component,
     M4v1Component,
+    M4v2Component,
+    M1v1openComponent,
     M2v2openComponent,
-    M2v3openComponent
+    M2v3openComponent,
+
+    JsszComponent,
+    JsszopenComponent,
+    XswhComponent
   ],
-  providers: [DataSvc,PostService,GetList]
+  providers: [DataSvc, PostService, GetList]
 })
 export class BusinessModule { }

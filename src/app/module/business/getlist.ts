@@ -10,6 +10,22 @@ export class Wijmo_PageBackList{
     List:wjcCore.ObservableArray;
 }
 
+export class findType_M1V1{
+    id: number;
+    text: string;
+}
+
+export class findTab{
+    id: number;
+    text: string;
+}
+
+export class findCourse{
+    course_name: string;
+    id: number;
+    course_sort: number;
+}
+
 //=================================================
 
 export class PageBackContentSSM{
@@ -17,6 +33,21 @@ export class PageBackContentSSM{
     province:string;
     city:string;
     area:string;
+}
+
+export class PageBackContent_M1V1{
+    id: number;
+    type: number;
+    nodeId: number;
+    isLp: boolean;
+    isHuat: boolean;
+    isTiaot: boolean;
+    isDatika: boolean;
+    isHouqi: boolean;
+    multiple: number;
+    unit: string;
+    remarks: string;
+    delFlag: number
 }
 
 export class PageBackContent_M2V2{

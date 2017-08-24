@@ -1,0 +1,62 @@
+<div class="content-wrapper">
+    <app-navigation Showtitle="基础设置" Subtitle="计算设置" Web="工作量管理" Module="基础设置" Page="计算设置"></app-navigation>
+
+    <section class="content" id="content">
+        <p-growl [(value)]="msgs"></p-growl>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+            <p-footer>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+            </p-footer>
+        </p-confirmDialog>
+        <div class="button-content">
+            <button type="button" class="btn btn-success" (click)="add(username)">新增</button>
+            <button type="button" class="btn btn-primary" (click)="edit()">修改</button>
+            <button type="button" class="btn btn-danger" (click)="dellList()">删除</button>
+        </div>
+
+        <div style="_height:100%;min-height:100%;">
+            <div class="tab">
+                <span *ngFor="let list of ListFindType" [ngClass]="{ 'article': username == list.id }" (click)="onRenovate(list.id)">{{ list.text }}</span>
+            </div>
+            <p-dataTable [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
+                <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+                <p-column field="nodeId" header="流程节点" [style]="{'width':'80px'}"></p-column>
+                <p-column field="isLp" header="是否包括录排工作量">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <i class="fa fa-check-square-o" *ngIf="car[col.field] === true"></i>
+                        <i class="fa fa-square-o" *ngIf="car[col.field] !== true"></i>
+                    </ng-template>
+                </p-column>
+                <p-column field="isHuat" header="是否包括画图工作量">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <i class="fa fa-check-square-o" *ngIf="car[col.field] === true"></i>
+                        <i class="fa fa-square-o" *ngIf="car[col.field] !== true"></i>
+                    </ng-template>
+                </p-column>
+                <p-column field="isTiaot" header="是否包括调图工作量">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <i class="fa fa-check-square-o" *ngIf="car[col.field] === true"></i>
+                        <i class="fa fa-square-o" *ngIf="car[col.field] !== true"></i>
+                    </ng-template>
+                </p-column>
+                <p-column field="isDatika" header="是否包括答题卡工作量">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <i class="fa fa-check-square-o" *ngIf="car[col.field] === true"></i>
+                        <i class="fa fa-square-o" *ngIf="car[col.field] !== true"></i>
+                    </ng-template>
+                </p-column>
+                <p-column field="isHouqi" header="是否包括后期制作工作量">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <i class="fa fa-check-square-o" *ngIf="car[col.field] === true"></i>
+                        <i class="fa fa-square-o" *ngIf="car[col.field] !== true"></i>
+                    </ng-template>
+                </p-column>
+                <p-column field="unit" header="单位" [style]="{'width':'60px'}"></p-column>
+                <p-column field="multiple" header="倍数" [style]="{'width':'60px'}"></p-column>
+                <p-column field="remarks" header="节点说明"></p-column>
+            </p-dataTable>
+        </div>
+        <app-jsszopen #jsszopen Title (change)="bindpage(0)"></app-jsszopen>
+    </section>
+</div>

@@ -18,6 +18,12 @@ import { M3v5Component } from './m3/m3v5/m3v5.component';
 import { M3v6Component } from './m3/m3v6/m3v6.component';
 import { M3v7Component } from './m3/m3v7/m3v7.component';
 import { M4v1Component } from './m4/m4v1/m4v1.component';
+import { M4v2Component } from './m4/m4v2/m4v2.component';
+
+// 基础设置 （JsszComponent为计算设置，XswhComponent系数维护）
+import { JsszComponent } from './jcsz/jssz/jssz.component';
+import { XswhComponent } from './jcsz/xswh/xswh.component';
+
 
 const routes: Routes = [
   {
@@ -113,7 +119,23 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     component: M4v1Component,
   },
+  {
+    path: 'business/m4/m4v2',
+    canActivate: [AuthGuardService],
+    component: M4v2Component,
+  },
 
+  {
+    path: 'business/jcsz/jssz',
+    canActivate: [AuthGuardService],
+    component: JsszComponent,
+  },
+  {
+    path: 'business/jcsz/xswh',
+    canActivate: [AuthGuardService],
+    component: XswhComponent,
+  },
+  
 ];
 
 @NgModule({

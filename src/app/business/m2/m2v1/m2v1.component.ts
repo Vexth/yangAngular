@@ -1,3 +1,4 @@
+// import * as console from 'console';
 import { Component, OnInit ,Inject} from '@angular/core';
 import { GetList } from '../../services/getlist';
 import * as wjCore from 'wijmo/wijmo';
@@ -38,6 +39,7 @@ export class M2v1Component implements OnInit {
   }
 
   itemFormatter(panel, r, c, cell) {
+    console.log()
       if (panel.cellType === wjGrid.CellType.ColumnHeader) {cell.style.textAlign = 'center';}
       if(panel.cellType === wjGrid.CellType.Cell){ cell.style.textAlign = 'center'; }
   }
