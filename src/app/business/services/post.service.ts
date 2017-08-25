@@ -13,45 +13,39 @@ export class PostService extends BaseService {
     this.servicename = 'PostService-表单提交服务';
   }
 
-  // 添加/修改 /api/nodetemplate/addUpdateNode
-  addUpdateNode (postvalue: any) : Promise<any | BackCode> {
-    let url = `${ConstantsList.HOSTUser1}api/nodetemplate/addUpdateNode`;
+  publicPostServe(postvalue: any, url: string, fn: string): Promise<any | BackCode> {
     let body = postvalue; //let body = JSON.stringify(postvalue);
-    //let headers = ConstantsList.headers;
+    // let headers = ConstantsList.headers;
     // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
     // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
-    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8'});
-    let options = new RequestOptions({ headers: headers, withCredentials: true  });
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(url, body, options).toPromise().
-    then((res) => { return res.json() as BackCode; })
-    .catch((error: any) => {this.handleError('addUpdateNode',error);});
+      then((res) => { return res.json() as BackCode; })
+      .catch((error: any) => { this.handleError(fn, error); });
+  }
+
+  // 添加/修改 /api/nodetemplate/addUpdateNode
+  addUpdateNode(postvalue: any) {
+    let url = `${ConstantsList.HOSTUser1}api/nodetemplate/addUpdateNode`;
+    return this.publicPostServe(postvalue, url, 'addUpdateNode');
   }
   // 删除或批量删除 /api/nodetemplate/ batch_delete
-  batchDelete (postvalue: any) : Promise<any | BackCode> {
+  batchDelete(postvalue: any) {
     let url = `${ConstantsList.HOSTUser1}api/nodetemplate/batch_delete`;
-    let body = postvalue; //let body = JSON.stringify(postvalue);
-    //let headers = ConstantsList.headers;
-    // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
-    // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
-    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8'});
-    let options = new RequestOptions({ headers: headers, withCredentials: true  });
-    return this.http.post(url, body, options).toPromise().
-    then((res) => { return res.json() as BackCode; })
-    .catch((error: any) => {this.handleError('batchDelete',error);});
+    return this.publicPostServe(postvalue, url, 'batchDelete');
   }
 
   // 新增或修改系统方法路径：/api/ratio/addUpdateRatio
-  addUpdateRatio (postvalue: any) : Promise<any | BackCode> {
+  addUpdateRatio(postvalue: any) {
     let url = `${ConstantsList.HOSTUser1}api/ratio/addUpdateRatio`;
-    let body = postvalue; //let body = JSON.stringify(postvalue);
-    //let headers = ConstantsList.headers;
-    // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
-    // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
-    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8'});
-    let options = new RequestOptions({ headers: headers, withCredentials: true  });
-    return this.http.post(url, body, options).toPromise().
-    then((res) => { return res.json() as BackCode; })
-    .catch((error: any) => {this.handleError('batchDelete',error);});
+    return this.publicPostServe(postvalue, url, 'addUpdateRatio');
+  }
+
+  // 修改方法方法路径：/api/cr/updateCourse
+  crUpdateCourse(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/cr/updateCourse`;
+    return this.publicPostServe(postvalue, url, 'crUpdateCourse');
   }
 
   AddForm(postvalue: string): Promise<any | BackCode> {
@@ -59,11 +53,11 @@ export class PostService extends BaseService {
     let body = postvalue; //let body = JSON.stringify(postvalue);
     //let headers = ConstantsList.headers;
     //let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
-    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(url, body, options).toPromise().
-    then((res) => { return res.json() as BackCode;})
-    .catch((error: any) => {this.handleError('AddForm',error);});
+      then((res) => { return res.json() as BackCode; })
+      .catch((error: any) => { this.handleError('AddForm', error); });
   }
 
   AddFormSSM(postvalue: QmAngular): Promise<any | BackCode> {
@@ -75,9 +69,8 @@ export class PostService extends BaseService {
     //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'});
     let options = new RequestOptions({ headers: headers });
     return this.http.post(url, body, options)
-    .toPromise()
-    .then((res) => { return res.json() as BackCode;})
-    .catch((error: any) => {this.handleError('AddFormSSM',error);});
+      .toPromise()
+      .then((res) => { return res.json() as BackCode; })
+      .catch((error: any) => { this.handleError('AddFormSSM', error); });
   }
-
 }

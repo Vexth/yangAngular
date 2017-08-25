@@ -143,6 +143,13 @@ export class GetList extends BaseService {
     }).catch((error: any) => {this.handleError('findClass',error);})
   }
 
+  // 科目列表（分页）方法路径：/api/cr/list?name
+  public crList(name: string) {
+    const url = `${ConstantsList.HOSTUser1}api/cr/list?name=${name}`;
+    return this.publicGetServe(url, 'crList');
+  }
+
+
   public GetListPageBySSM(PageIndex:number,PageSize:number): Promise<any | Wijmo_PageBackList>{
     const url = `${ConstantsList.HOSTUser}yang-test/angular/pagelist/${PageIndex}/${PageSize}/`;
     return this.http.get(url)

@@ -1,0 +1,34 @@
+<div class="content-wrapper">
+    <app-navigation Showtitle="基础设置" Subtitle="科目规范化" Web="工作量管理" Module="基础设置" Page="科目规范化"></app-navigation>
+
+    <section class="content" id="content">
+        <p-growl [(value)]="msgs"></p-growl>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+            <p-footer>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+            </p-footer>
+        </p-confirmDialog>
+        <div class="button-content">
+            <!-- <button type="button" class="btn btn-success" (click)="add(username)">同步数据</button> -->
+            <div class="colSelect">
+                <label>科目：</label>
+                <input placeholder="请选择" id="input" type="text" size="15" pInputText [(ngModel)]="text">
+            </div>
+            <button style="margin-left: 5px;" type="button" class="btn btn-info" (click)="search(text)">搜索</button>
+        </div>
+
+        <div style="_height:100%;min-height:100%;">
+            <div class="tab"></div>
+
+            <p-dataTable [responsive]="true" [rows]="rows" [paginator]="true" [pageLinks]="pageLinks" [rowsPerPageOptions]="[5,10,20]" [value]="dataList" [editable]="true" [style]="{'width': '30%','text-align':'center'}">
+                <p-column field="option_name" header="科目" [style]=" {'height': '35px' }"></p-column>
+                <p-column field="course_name" header="更正后科目" [editable]="true">
+                    <ng-template let-col let-car="rowData" pTemplate="editor">
+                        <p-dropdown placeholder="请选择" (onChange)="change(car)" [(ngModel)]="car[col.field]" [options]="findCourseList" [autoWidth]="false" [style]="{'width':'100%'}" required="true"  appendTo="body"></p-dropdown>
+                    </ng-template>
+                </p-column>
+            </p-dataTable>
+        </div>
+    </section>
+</div>

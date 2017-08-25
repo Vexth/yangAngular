@@ -172,7 +172,7 @@ export class JsszopenComponent implements OnInit {
         this.change.emit();
         this.hideChildModal();
       } else {
-        this.msgs.push({severity:'error', summary:'错误提示', detail:'失败'});
+        this.msgs.push({severity:'error', summary:'错误提示', detail:res.msg});
       }
     });
   }

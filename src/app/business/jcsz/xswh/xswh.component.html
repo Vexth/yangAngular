@@ -40,7 +40,7 @@
                     <li *ngFor="let list of dataList; let i = index;">
                         <span>{{i+1}}</span>
                         <span>
-                            <span style="width:100%;" *ngIf="list.a == undefined">{{list.courseClassId}}</span>
+                            <p *ngIf="list.a == undefined">{{list.cname}}</p>
                             <p-dropdown *ngIf="list.a == ''" [style]="{'width': '80px','text-align': 'center', 'margin-left': '-10px'}" [options]="findCourseList"
                             (onChange)="findex($event)" placeholder="请选择" [(ngModel)]="findCourse" [ngModelOptions]="{standalone: true}">
                             </p-dropdown>

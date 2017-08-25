@@ -6,9 +6,6 @@ import 'rxjs/add/operator/toPromise';
 // 导入表格组件
 import { TreeNode, Message, MenuItem, ConfirmationService, SelectItem } from 'primeng/primeng';
 
-// 弹窗
-// import { ModalformComponent } from '../../../common/component/modalform/modalform.component';
-// import { JsszopenComponent } from './jsszopen/jsszopen.component';
 // 获取页面高度
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
@@ -25,7 +22,6 @@ export class XswhComponent implements OnInit{
   private GetList: GetList;
   private PostService: PostService;
   pageNews:number[] = [];
-  // @ViewChild('jsszopen') public jsszopen:JsszopenComponent;
 
   // 获取表格数据
   dataList: any[];
@@ -93,6 +89,8 @@ export class XswhComponent implements OnInit{
     itme.tabType = +this.username;
     if(itme.a == ''){
       itme.courseClassId = this.courseClassId
+    } else {
+      itme.courseClassId = itme.course_class_id
     }
     this.PostService.addUpdateRatio(itme).then(res => {
       if(res.code === 0){
@@ -101,11 +99,12 @@ export class XswhComponent implements OnInit{
       } else {
         this.msgs.push({severity:'error', summary:'错误提示', detail:res.msg});
       }
-    });
+    }).then(res => {this.newRatio = null;});
   }
 
   // tab切换
   onRenovate(itme){
+    this.username = '';
     this.findCourseList = [];
     this.findCourse = null;
     this.username = itme;

@@ -20,9 +20,10 @@ import { M3v7Component } from './m3/m3v7/m3v7.component';
 import { M4v1Component } from './m4/m4v1/m4v1.component';
 import { M4v2Component } from './m4/m4v2/m4v2.component';
 
-// 基础设置 （JsszComponent为计算设置，XswhComponent系数维护）
+// 基础设置 （JsszComponent为计算设置，XswhComponent系数维护, KmgfhComponent科目规范化）
 import { JsszComponent } from './jcsz/jssz/jssz.component';
 import { XswhComponent } from './jcsz/xswh/xswh.component';
+import { KmgfhComponent } from './jcsz/kmgfh/kmgfh.component';
 
 
 const routes: Routes = [
@@ -135,6 +136,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     component: XswhComponent,
   },
+  {
+    path: 'business/jcsz/kmgfh',
+    canActivate: [AuthGuardService],
+    component: KmgfhComponent,
+  }
   
 ];
 
