@@ -1,0 +1,40 @@
+<div class="c-content-inner">
+    <div class="row">
+        <div class="col-md-12">
+            <p class="c-line-title">示例</p>
+            <div class="row c-mt15">
+                <div class="col-md-6">
+                    <c-ztree #ztreeInstance [setting]="setting" [zNodes]="nodes"></c-ztree>
+                </div>
+            </div>
+            <div class="row c-mt15">
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-danger" (click)="getCheckedData()">获得数据</button>
+                </div>
+            </div>
+            <div class="row c-mt15">
+                <div class="col-md-6">
+                    <c-select-ztree [setting]="setting2" [zNodes]="nodes2" (onApprove)="onApprove($event)"></c-select-ztree>
+                </div>
+            </div>
+            <div class="row c-mt15">
+                <div class="col-md-6">
+                    <c-select-ztree [setting]="setting3" [zNodes]="nodes3"></c-select-ztree>
+                </div>
+            </div>
+            <div class="row c-mt15">
+                <div class="col-md-6">
+                    <c-select-ztree [setting]="setting4" [enableSearch]="false"></c-select-ztree>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="c-mt15">
+                <p class="c-line-title">说明</p>
+                使用ztree进行封装，具体使用请参考：http://www.treejs.cn/v3/main.php#_zTreeInfo
+            </div>
+        </div>
+    </div>
+</div>

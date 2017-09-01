@@ -1,0 +1,4 @@
+.form-group{ display: flex; float: left; margin-left: 10px; }
+.form-group label{line-height: 32px; margin-right: 5px;}
+.form-group input{margin-top: 10px;}
+.modal-body{ display: flex;}

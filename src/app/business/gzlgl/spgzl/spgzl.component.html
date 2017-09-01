@@ -1,0 +1,173 @@
+<div class="content-wrapper">
+    <app-navigation Showtitle="工作量管理" Subtitle="审批工作量" Web="工作量管理系统" Module="工作量管理" Page="审批工作量"></app-navigation>
+
+    <section class="content" id="content">
+        <p-growl [(value)]="msgs"></p-growl>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+            <p-footer>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+            </p-footer>
+        </p-confirmDialog>
+
+        <div class="row">
+            <div class="col-xs-6" style="display: -webkit-box;">
+                <label class="control-label">稿件名称：</label>
+                <div class="controls">
+                    <input #myval [(ngModel)]="text" type="text" placeholder="请输入稿件名称" (focus)="onFocus()" (blur)="onBlur()">
+                    <div class="success" [ngClass]="{'text-success': username == 'text' }" >
+                        <aside class="main-sidebar">
+                            <section class="sidebar">
+                                <ul class="sidebar-menu">
+                                    <li *ngFor="let name of findProductDoc" class="treeview">
+                                        <a href="javascript:;">
+                                            <span class="pull-right-container" *ngIf="name.children" >
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </span>
+                                            <span style="color:#000000;">{{ name.name }}</span>
+                                        </a>
+                                        <ul *ngIf="name.children" class="treeview-menu" style="background: #ffffff;">
+                                            <li *ngFor="let child of name.children">
+                                                <a href="javascript:;" style="color:#000000;"><i class="fa {{ child.iocn }}"></i> {{ child.name }}</a>
+                                                <ul *ngIf="child.children">
+                                                    <li  *ngFor="let name of child.children">
+                                                        <a href="javascript:;" style="color:#000000;"><i class="fa {{ child.iocn }}"></i> {{ name.name }}</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </section>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-2">
+                <label class="control-label">流程节点：</label>
+                <div class="controls">
+                    <!-- <input [(ngModel)]="text" type="text" placeholder="请输入节点名称"> -->
+                    <select [(ngModel)]="findNodeOfZzbId">
+                        <option value="">-- 请选择 --</option>
+                        <option *ngFor="let item of findNodeOfZzbList" value="{{item.nodeId}}">{{item.nodeName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <label class="control-label">人员：</label>
+                <div class="controls">
+                    <!-- <input [(ngModel)]="text" type="text" placeholder="请输入人员名称"> -->
+                    <select [(ngModel)]="findUserListId">
+                        <option value="">-- 请选择 --</option>
+                        <option *ngFor="let item of findUserList" value="{{item.id}}">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <label class="control-label">接收日期：</label>
+                <div class="controls">
+                    <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true"></p-calendar>
+
+                    <!-- <input [(ngModel)]="text" type="text" placeholder="接收时间"> -->
+                    <!-- <span>--</span> -->
+                    <!-- <p-calendar [(ngModel)]="date" [style]="{'width':'50px'}"></p-calendar> -->
+                    <!-- <input [(ngModel)]="text" type="text" placeholder="结束时间"> -->
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <label class="control-label">计算状态：</label>
+                <div class="controls">
+                    <select [(ngModel)]="statu">
+                        <option selected="selected" value="-1">全部</option>
+                        <option value="0">未审核</option>
+                        <option value="1">已审核</option>
+                        <option value="2">已完结</option>
+                    </select>
+                </div>
+                <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
+            </div>
+        </div>
+
+        <div class="button-content">
+            <button type="button" class="btn btn-success" (click)="review($event)">审核</button>
+            <button type="button" class="btn btn-success" (click)="add(username)">追加</button>
+            <button type="button" class="btn btn-primary" (click)="edit()">修改</button>
+            <button type="button" class="btn btn-danger" (click)="dellList($event)">删除</button>
+            <button type="button" class="btn btn-danger" (click)="retreat($event)">退回</button>
+            <button type="button" class="btn btn-primary" (click)="dellList()">导出</button>
+        </div>
+
+        <div style="_height:100%;min-height:100%;">
+            <div class="tab"></div>
+            <p-dataTable [responsive]="true" [rows]="rows" [paginator]="true" [pageLinks]="pageLinks" [rowsPerPageOptions]="[5,10,20]"
+                [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
+                <p-headerColumnGroup>
+                    <p-row>
+                        <p-column [style]="{'width':'38px'}" selectionMode="multiple" rowspan="3"></p-column>
+                        <p-column header="稿件名称" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'80px'}" header="流程节点" rowspan="3"></p-column>
+                    </p-row>
+                    <p-row>
+                        <p-column [style]="{'width':'38px'}" header="人员" colspan="2"></p-column>
+                        <!-- <p-column [style]="{'width':'38px'}" header="画图数" rowspan="3"></p-column> -->
+                        <p-column [style]="{'width':'38px'}" header="工作量" colspan="5"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="画图数" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="调图数" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="答题卡数" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="工作量" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'200px'}" header="接收时间" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'200px'}" header="结束时间" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="状态" rowspan="3"></p-column>
+                    </p-row>
+                    <p-row>
+                        <p-column [style]="{'width':'38px'}" header="工号"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="姓名"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="数量"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="单位"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="倍数"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="修改量"></p-column>
+                        <p-column [style]="{'width':'38px'}" header="页码量"></p-column>
+                    </p-row>
+                </p-headerColumnGroup>
+
+                <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+                <p-column field="workName" header="稿件名称"></p-column>
+                <p-column field="nodeName" header="流程节点"></p-column>
+                <p-column [style]="{'width':'38px'}" field="empNo" header="工号"></p-column>
+                <p-column [style]="{'width':'38px'}" field="userName" header="姓名"></p-column>
+                <!-- <p-column field="check_danwei_count" header="数量"></p-column> -->
+                <p-column field="check_danwei_count" header="数量"></p-column>
+                <p-column field="check_dawei" header="单位"></p-column>
+                <p-column field="multiple" header="倍数"></p-column>
+                <p-column field="check_xg_count" header="修改量"></p-column>
+                <p-column field="check_yema_count" header="页码量"></p-column>
+                <p-column field="check_ht_count" header="画图数"></p-column>
+                <p-column field="check_tt_count" header="调图数"></p-column>
+                <p-column field="check_dtk_count" header="答题卡数"></p-column>
+                <p-column field="check_calc_workload" header="工作量"></p-column>
+                <p-column [style]="{'width':'200px'}" field="stime" header="开始时间">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        {{ car[col.field] | date:'yyyy-MM-dd' }}
+                    </ng-template>
+                </p-column>
+                <p-column [style]="{'width':'200px'}" field="etime" header="结束时间">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        {{ car[col.field] | date:'yyyy-MM-dd' }}
+                    </ng-template>
+                </p-column>
+                <p-column field="check_statu" header="状态">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <div *ngIf="car[col.field] == 0" >未审核</div>
+                        <div *ngIf="car[col.field] == 1" >已审核</div>
+                        <div *ngIf="car[col.field] == 2" >已完结</div>
+                    </ng-template>
+                </p-column>
+            </p-dataTable>
+        </div>
+        <app-jsszopen #jsszopen Title (change)="bindpage(0)"></app-jsszopen>
+    </section>
+</div>

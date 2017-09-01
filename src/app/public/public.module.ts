@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from './services/auth.service';
 import { PublicRoutingModule } from './public.routing.module';
@@ -13,11 +14,16 @@ import { FooterComponent } from './footer/footer.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { PagingComponent } from './paging/paging.component';
 
+//ztree
+import { ZtreeComponent } from './ztree/ztree.component';
+import { SelectZtreeComponent } from './ztree/select-ztree.component';
+
 @NgModule({
   imports: [
     CommonModule,
     PublicRoutingModule,
     FormsModule,
+    NgbModule
   ],
   declarations: [
     LoginComponent,
@@ -26,6 +32,8 @@ import { PagingComponent } from './paging/paging.component';
     FooterComponent,
     NavigationComponent,
     PagingComponent,
+    ZtreeComponent,
+    SelectZtreeComponent
   ],
   exports: [
     TopComponent,
@@ -33,9 +41,11 @@ import { PagingComponent } from './paging/paging.component';
     FooterComponent,
     NavigationComponent,
     PagingComponent,
-    ],
-    providers: [
-      { provide: 'auth', useClass: AuthService },
-    ]
+    ZtreeComponent,
+    SelectZtreeComponent
+  ],
+  providers: [
+    { provide: 'auth', useClass: AuthService },
+  ]
 })
 export class PublicModule { }

@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
-// import 'promise';
 import ConstantsList from '../../common/constants/config';
 import { Auth ,User } from '../../module/login/entity';
 import { BackNewsCode } from '../../module/business/formdata';

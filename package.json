@@ -58,6 +58,7 @@
     "ts-node": "~2.0.0",
     "tslint": "~4.4.2",
     "primeng": "^4.1.2",
-    "typescript": "~2.3.4"
+    "typescript": "~2.3.4",
+    "ztree": "^3.5.24"
   }
 }

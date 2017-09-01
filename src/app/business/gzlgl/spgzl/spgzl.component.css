@@ -1,0 +1,56 @@
+.col-xs-2,
+.col-xs-3,
+.col-xs-3 .controls {display: -webkit-box;}
+
+.col-xs-6 .control-label,
+.col-xs-2 .control-label,
+.col-xs-3 .control-label {
+    vertical-align: middle;
+    margin-top: 5px;
+}
+.row input, 
+.row select {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.row .controls input {width: 70%;}
+
+.row, .button-content {margin-bottom: 10px;}
+
+.tab {display: flex;margin-bottom: 20px;border-bottom: 1px solid #cccccc;}
+
+.col-xs-6{display: -webkit-box;}
+.col-xs-6 .main-sidebar{
+    background: #ffffff;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding-top:0;
+}
+.col-xs-6 .controls{width: 100%;}
+.col-xs-6 .sidebar-menu li:hover a,
+.col-xs-6 .sidebar-menu li.active a{
+    color: #000000;
+    background: #ffffff;
+    border-left-color: #3c8dbc;
+}
+
+.success{
+    position: relative;
+    display: none;
+}
+.text-success{display: block;}

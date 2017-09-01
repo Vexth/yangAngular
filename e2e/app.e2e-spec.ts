@@ -1,6 +1,6 @@
 import { YangTestPage } from './app.po';
 
-describe('yang-test App', () => {
+describe('yang App', () => {
   let page: YangTestPage;
 
   beforeEach(() => {

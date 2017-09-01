@@ -20,11 +20,15 @@ import { M3v7Component } from './m3/m3v7/m3v7.component';
 import { M4v1Component } from './m4/m4v1/m4v1.component';
 import { M4v2Component } from './m4/m4v2/m4v2.component';
 
-// 基础设置 （JsszComponent为计算设置，XswhComponent系数维护, KmgfhComponent科目规范化）
+// 基础设置 （JsszComponent为计算设置，XswhComponent系数维护, KmgfhComponent科目规范化, RyjndjComponent人员技能等级, JngzwhComponent 技能工资维护）
 import { JsszComponent } from './jcsz/jssz/jssz.component';
 import { XswhComponent } from './jcsz/xswh/xswh.component';
 import { KmgfhComponent } from './jcsz/kmgfh/kmgfh.component';
-
+import { RyjndjComponent } from './jcsz/ryjndj/ryjndj.component';
+import { JngzwhComponent } from './jcsz/jngzwh/jngzwh.component';
+// 工作量管理（SpgzlComponent 审批工作量，CygzlComponent 查阅工作量）
+import { SpgzlComponent } from './gzlgl/spgzl/spgzl.component';
+import { CygzlComponent } from './gzlgl/cygzl/cygzl.component';
 
 const routes: Routes = [
   {
@@ -140,8 +144,27 @@ const routes: Routes = [
     path: 'business/jcsz/kmgfh',
     canActivate: [AuthGuardService],
     component: KmgfhComponent,
+  },
+  {
+    path: 'business/jcsz/ryjndj',
+    canActivate: [AuthGuardService],
+    component: RyjndjComponent,
+  },
+  {
+    path: 'business/jcsz/jngzwh',
+    canActivate: [AuthGuardService],
+    component: JngzwhComponent,
+  },
+  {
+    path: 'business/gzlgl/spgzl',
+    canActivate: [AuthGuardService],
+    component: SpgzlComponent,
+  },
+  {
+    path: 'business/gzlgl/cygzl',
+    canActivate: [AuthGuardService],
+    component: CygzlComponent,
   }
-  
 ];
 
 @NgModule({

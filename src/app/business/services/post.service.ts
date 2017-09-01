@@ -48,6 +48,21 @@ export class PostService extends BaseService {
     return this.publicPostServe(postvalue, url, 'crUpdateCourse');
   }
 
+  // 审核、退回、删除方法方法路径： /api/workload/checkBackDel
+  checkBackDel(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/workload/checkBackDel`;
+    return this.publicPostServe(postvalue, url, 'checkBackDel');
+  }
+
+  //	追加方法方法路径： /api/workload/
+
+  // 人员等级修改方法/api/job/updateJob
+  updateJob(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/job/updateJob`;
+    return this.publicPostServe(postvalue, url, 'updateJob');
+  }
+
+
   AddForm(postvalue: string): Promise<any | BackCode> {
     let url = `${ConstantsList.HOSTUser}AddForm.ashx`;
     let body = postvalue; //let body = JSON.stringify(postvalue);

@@ -23,7 +23,7 @@ import { M3v7Component } from './m3/m3v7/m3v7.component';
 import { M4v1Component } from './m4/m4v1/m4v1.component';
 import { M4v2Component } from './m4/m4v2/m4v2.component';
 
-// 基础设置 （JsszComponent为计算设置，XswhComponent系数维护, KmgfhComponent科目规范化）
+// 基础设置 （计算设置，系数维护, 科目规范化, 人员技能等级, 技能工资维护）
 // JsszComponent为计算设置
 import { JsszComponent } from './jcsz/jssz/jssz.component';
 import { JsszopenComponent } from './jcsz/jssz/jsszopen/jsszopen.component';
@@ -31,7 +31,17 @@ import { JsszopenComponent } from './jcsz/jssz/jsszopen/jsszopen.component';
 import { XswhComponent } from './jcsz/xswh/xswh.component';
 // KmgfhComponent科目规范化
 import { KmgfhComponent } from './jcsz/kmgfh/kmgfh.component';
+// RyjndjComponent人员技能等级
+import { RyjndjComponent } from './jcsz/ryjndj/ryjndj.component';
+// JngzwhComponent 技能工资维护
+import { JngzwhComponent } from './jcsz/jngzwh/jngzwh.component';
+import { JngzwhopenComponent } from './jcsz/jngzwh/jngzwhopen/jngzwhopen.component';
 
+// 工作量管理（SpgzlComponent审批工作量）
+// SpgzlComponent 审批工作量
+import { SpgzlComponent } from './gzlgl/spgzl/spgzl.component';
+// CygzlComponent 查阅工作量
+import { CygzlComponent } from './gzlgl/cygzl/cygzl.component';
 
 import { WjGridModule } from 'wijmo/wijmo.angular2.grid';
 import { WjInputModule } from 'wijmo/wijmo.angular2.input';
@@ -63,6 +73,7 @@ import {
   DropdownModule,
   ChipsModule,
   ButtonModule,
+  PanelMenuModule,
   CalendarModule
 } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -95,6 +106,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DropdownModule,
     ChipsModule,
     ButtonModule,
+    PanelMenuModule,
     CalendarModule,
     BrowserAnimationsModule
   ],
@@ -122,7 +134,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     JsszComponent,
     JsszopenComponent,
     XswhComponent,
-    KmgfhComponent
+    RyjndjComponent,
+    JngzwhComponent,
+    KmgfhComponent,
+    SpgzlComponent,
+    CygzlComponent
   ],
   providers: [DataSvc, PostService, GetList]
 })
