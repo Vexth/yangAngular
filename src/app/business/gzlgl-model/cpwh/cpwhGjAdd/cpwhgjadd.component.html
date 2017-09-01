@@ -1,0 +1,33 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">新增稿件</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row" style="margin:10px;">
+            <div class="col-md-3" style="text-align:right;">产品名称：</div>
+            <div class="col-md-9">xxxxxxxxxxxxxxxxxxxxxxxx</div>
+          </div>
+          <div class="row" style="line-height: 32px;margin:10px;">
+            <div class="col-md-3" style="text-align:right;">
+              <i class="text-danger">*</i>
+               稿件分类：
+            </div>
+            <div class="col-md-9">
+              <div class="jtyjy-search-text">
+                <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="请输入章节/单元/套...">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" (click)="save()">确定</button>
+          <button type="button" class="btn btn-default" (click)="hideChildModal()">关闭</button>
+        </div>
+      </div>
+    </div>
+</div>

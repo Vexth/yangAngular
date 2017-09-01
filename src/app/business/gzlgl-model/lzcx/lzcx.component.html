@@ -1,0 +1,166 @@
+<!-- <div class="wrapper">
+    <app-top></app-top>
+    <app-treeview treemodule="M4" treeitem="V2" ></app-treeview> -->
+    <div class="content-wrapper">
+      <app-navigation Showtitle="工作量管理模块" Subtitle="流转查询" Web="站点"
+      Module="工作量管理模块" Page="流转查询" ></app-navigation>
+      <section class="content" id="content">
+        <div class="row" style="_height:400px;min-height:400px;">
+          <div class="col-md-12 jtyjy-one-panel">
+            <div class="jtyjy-search-sample">
+              <div class="well well-lg">
+                <table>
+                  <colgroup>
+                    <col width="40"/>
+                    <col width="80"/>
+                    <col width="150"/>
+                    <col width="50"/>
+                    <col width="150"/>
+                    <col width="80"/>
+                    <col width="150"/>
+                    <col width="50"/>
+                    <col width="80"/>
+                    <col width="50"/>
+                  </colgroup>
+                  <tr>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-danger dropdown-toggle" (click)="delete()">删除</button>
+                      </div>
+                    </td>
+                    <td style="text-align:right;"><label style="margin-bottom:0px;">稿件名称：</label></td>
+                    <td>
+                      <div class="jtyjy-search-text">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="稿件名称...">
+                      </div>
+                    </td>
+                    <td style="text-align:right;"><label style="margin-bottom:0px;">人员：</label></td>
+                    <td>
+                      <div class="jtyjy-search-text">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="人员...">
+                      </div>
+                    </td>
+                    <td style="text-align:right;"><label style="margin-bottom:0px;">流程节点：</label></td>
+                    <td>
+                      <div class="jtyjy-search-text" style="width:100%;">
+                          <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1" placeholder="所属部门">
+                              <option value="">--请选择--</option>
+                              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                          </select>
+                      </div>
+                    </td>
+                    <td title="搜索">
+                        <button class="jtyjySearchbtn" (click)="refresh()">
+                            <span>搜索</span>
+                            <i class="fa fa-spinner fa-spin"></i>
+                        </button>
+                    </td>
+                    <td title="高级搜索"><button class="jtyjySearchbtn" (click)="adSearch()" [ngClass]="{'cpwh-isadSearch':isadSearch==1}">高级搜索</button></td>
+                    <td title="重置">
+                      <button class="jtyjySearchbtn" (click)="clearOpts()">
+                        <span>重置</span>
+                        <i class="fa fa-spinner fa-spin"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+                <div class="jtyjy-search-more" [hidden]="isadSearch == 0">
+                    
+                    <!-- <form class="form-horizontal modal-form"> -->
+                        <table style="width: 100%">
+                          <colgroup>
+                            <col width="180"/>
+                            <col width="180"/>
+                            <col width="180"/>
+                            <col width="180"/>
+                          </colgroup>
+                          <tr class="cpwh-flex">
+                              <td>
+                                  <label>人员：</label>
+                                  <div style="display:inline-block; max-width:108px;">
+                                      <input type="text" class="form-control" placeholder="人员...">
+                                  </div>
+                              </td>
+                            <td>
+                                <label>所属部门：</label>
+                                <div style="display:inline-block;">
+                                    <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                        <option value="">--请选择--</option>
+                                        <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                              <label>稿件名称：</label>
+                              <div style="display:inline-block;max-width:108px;">
+                                  <input type="text" class="form-control" placeholder="稿件名称...">
+                              </div>        
+                            </td>
+                            <td>
+                                <label>流程节点：</label>
+                                <div style="display:inline-block;">
+                                  <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                    <option value="">--请选择--</option>
+                                    <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                                  </select>
+                                </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <label style="margin-left:42px;">接收时间：</label>
+                              <div style="display:inline-block;margin: 5px 0;">
+                                  <p-calendar [(ngModel)]="startData" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100"></p-calendar>
+                                  <span style="margin-left:35px"></span>
+                              </div>
+                              <label>至</label>
+                              <div style="display:inline-block;">
+                                  <p-calendar [(ngModel)]="endData" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100"></p-calendar>
+                                  <span style="margin-left:35px"></span>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="6">
+                              <div class="moreSearchBtnContent">
+                                <span class="moreSearchBtn"
+                                
+                                  (click)="refresh()">
+                                  <span>搜索</span>
+                                  <i class="fa fa-spinner fa-spin"></i>
+                                </span>
+                                <span>|</span>
+                                <span class="moreSearchBtn" (click)="clearOpts()">重置</span>
+                                <span>|</span>
+                                <span class="moreSearchBtn" (click)="cancel()">取消</span>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                    <!-- </form> -->
+                </div>
+              </div>
+              <!-- 表格 -->
+              <!-- [itemFormatter]="itemFormatter" -->
+              <!-- <div class="well well-lg"> -->
+                  <p-dataTable [value]="cars" [(selection)]="selectedCars3" dataKey="vin" [paginator]="true" 
+                  [rows]="10" [headerCheckboxToggleAllPages]="true" [rowsPerPageOptions]="[10,20,30]">
+                      <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
+                      <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+                      <p-column field="vin" header="Vin"></p-column>
+                      <p-column field="year" header="Year"></p-column>
+                      <p-column field="brand" header="Brand"></p-column>
+                      <p-column field="color" header="Color"></p-column>
+                  </p-dataTable>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+        <p-growl [(value)]="msgs"></p-growl>
+        <p-confirmDialog></p-confirmDialog>
+      </section>
+    </div>
+    <!-- <app-footer></app-footer>
+  </div> -->
+  
+  

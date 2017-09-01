@@ -1,0 +1,57 @@
+.mbwhadd-c{
+  text-align: center;
+}
+.mbwhadd-h{
+  line-height: 25px;
+}
+.mbwhadd-hx{
+  line-height: 86px;
+}
+.border_right{
+  border-right: 1px solid #c0c0c0;
+}
+.mbwhadd-ipt{
+  width: 100%;
+  outline: none;
+  border-radius: 0;
+  border: none;
+}
+.mbwhadd-txt{
+  width: 100%;
+  outline: none;
+  border-radius: 0;
+  border: none;
+  height: 78px;
+  resize:none;
+}
+.CborderTLR{
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+.CborderLR{
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+.XborderB{
+  border-bottom: 1px solid #c0c0c0;
+}
+.XborderR{
+  border-right: 1px solid #c0c0c0;
+}
+.MborderR{
+  border-right: 1px solid #505050;
+}
+.mbwhSelect{
+  padding: 2px 12px;
+  border-radius: 3px;
+  height: 26px;
+}
+.MborderB{
+  border-bottom: 1px solid #505050;
+}
+.CborderBLR{
+  border-bottom: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}

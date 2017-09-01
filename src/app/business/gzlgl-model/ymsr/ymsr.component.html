@@ -1,0 +1,216 @@
+<!-- <div class="wrapper">
+  <app-top></app-top>
+  <app-treeview treemodule="M4" treeitem="V8" ></app-treeview> -->
+  <div class="content-wrapper">
+    <app-navigation Showtitle="工作量管理模块" Subtitle="页码输入" Web="站点"
+    Module="工作量管理模块" Page="页码输入" ></app-navigation>
+    <section class="content" id="content">
+      <div class="row" style="_height:400px;min-height:400px;">
+        <div class="col-md-12 jtyjy-one-panel">
+          <div class="jtyjy-search-sample">
+            <div class="well well-lg">
+              <table>
+                <colgroup>
+                  <col width="50"/>
+                  <col width="80"/>
+                  <col width="150"/>
+                  <col width="80"/>
+                  <col width="150"/>
+                  <col width="50"/>
+                  <col width="80"/>
+                  <col width="50"/>
+                </colgroup>
+                <tr>
+                  <td>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-info dropdown-toggle" (click)="save()">保存</button>
+                    </div>
+                  </td>
+                  <td style="text-align:right;"><label style="margin-bottom:0px;">所属部门：</label></td>
+                  <td>
+                    <div class="jtyjy-search-text" style="width:100%;">
+                        <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1" placeholder="所属部门">
+                            <option value="">--请选择--</option>
+                            <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                        </select>
+                    </div>
+                  </td>
+                  <td style="text-align:right;"><label style="margin-bottom:0px;">产品名称：</label></td>
+                  <td>
+                    <div class="jtyjy-search-text">
+                      <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="稿件名称...">
+                    </div>
+                  </td>
+                  <td title="搜索">
+                      <button class="jtyjySearchbtn" (click)="refresh()">
+                          <span>搜索</span>
+                          <i class="fa fa-spinner fa-spin"></i>
+                      </button>
+                  </td>
+                  <td title="高级搜索"><button class="jtyjySearchbtn" (click)="adSearch()" [ngClass]="{'cpwh-isadSearch':isadSearch==1}">高级搜索</button></td>
+                  <td title="重置">
+                    <button class="jtyjySearchbtn" (click)="clearOpts()">
+                      <span>重置</span>
+                      <i class="fa fa-spinner fa-spin"></i>
+                  </button>
+                  </td>
+                </tr>
+              </table>
+              <div class="jtyjy-search-more" [hidden]="isadSearch == 0">
+                  
+                  <!-- <form class="form-horizontal modal-form"> -->
+                      <table style="width: 100%">
+                        <colgroup>
+                          <col width="180"/>
+                          <col width="180"/>
+                          <col width="180"/>
+                          <col width="180"/>
+                          <col width="180"/>
+                        </colgroup>
+                        <tr class="cpwh-flex">
+                            <td>
+                                <label>产品I类：</label>
+                                <div style="display:inline-block;">
+                                  <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                    <option value="">--请选择--</option>
+                                    <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                                  </select>
+                                </div>
+                            </td>
+                          <td>
+                              <label>产品II类：</label>
+                              <div style="display:inline-block;">
+                                  <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                      <option value="">--请选择--</option>
+                                      <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                                  </select>
+                              </div>
+                          </td>
+                          <td>
+                            <label>界别：</label>
+                            <div style="display:inline-block;">
+                              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                  <option value="">--请选择--</option>
+                                  <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              </select>
+                          </div>        
+                          </td>
+                          <td>
+                              <label>分类：</label>
+                              <div style="display:inline-block;">
+                                <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                  <option value="">--请选择--</option>
+                                  <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                                </select>
+                              </div>
+                          </td>
+                          <td>
+                            <label>年级：</label>
+                            <div style="display:inline-block;">
+                              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                <option value="">--请选择--</option>
+                                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              </select>
+                            </div>
+                        </td>
+                        </tr>
+                        <tr class="cpwh-flex">
+                          <td>
+                            <label>地方版：</label>
+                            <div style="display:inline-block;">
+                              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                <option value="">--请选择--</option>
+                                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <label>版本：</label>
+                            <div style="display:inline-block;">
+                              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                <option value="">--请选择--</option>
+                                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <label>模块：</label>
+                            <div style="display:inline-block;">
+                              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                <option value="">--请选择--</option>
+                                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <label>批次：</label>
+                            <div style="display:inline-block;">
+                              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                <option value="">--请选择--</option>
+                                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <label>使用类型：</label>
+                            <div style="display:inline-block;">
+                              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                <option value="">--请选择--</option>
+                                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              </select>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="cpwh-flex">
+                          <td>
+                            <label>科目：</label>
+                            <div style="display:inline-block;">
+                              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                <option value="">--请选择--</option>
+                                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              </select>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="6">
+                            <div class="moreSearchBtnContent">
+                              <span class="moreSearchBtn"
+                              
+                                (click)="refresh()">
+                                <span>搜索</span>
+                                <i class="fa fa-spinner fa-spin"></i>
+                              </span>
+                              <span>|</span>
+                              <span class="moreSearchBtn" (click)="clearOpts()">重置</span>
+                              <span>|</span>
+                              <span class="moreSearchBtn" (click)="cancel()">取消</span>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                  <!-- </form> -->
+              </div>
+            </div>
+            <!-- 表格 -->
+            <!-- [itemFormatter]="itemFormatter" -->
+            <!-- <div class="well well-lg"> -->
+                <p-dataTable [value]="cars" [(selection)]="selectedCars3" dataKey="vin" [paginator]="true" 
+                [rows]="10" [headerCheckboxToggleAllPages]="true" [editable]="true" selectionMode="checkbox" [rowsPerPageOptions]="[10,20,30]">
+                    <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
+                    <p-column field="vin" header="Vin"></p-column>
+                    <p-column field="year" header="Year"></p-column>
+                    <p-column field="brand" header="Brand"></p-column>
+                    <p-column field="color" header="Color"></p-column>
+                </p-dataTable>
+            <!-- </div> -->
+          </div>
+        </div>
+      </div>
+      <p-growl [(value)]="msgs"></p-growl>
+      <p-confirmDialog></p-confirmDialog>
+    </section>
+  </div>
+  <!-- <app-footer></app-footer>
+</div> -->
+

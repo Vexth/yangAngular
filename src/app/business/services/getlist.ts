@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, Response ,RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'promise';
-import { findCourse, findTab, PageBackList, Wijmo_PageBackList, findType_M1V1, PageBackContent_M1V1, PageBackContentSSM, PageBackContent_M2V2,PageBackContent_M2V3,BackNews} from '../../module/business/getlist';
+import { PageBackList,Wijmo_PageBackList,PageBackContentSSM, 
+  PageBackContent_M2V2,PageBackContent_M2V3,BackNews,
+  findCourse,findTab,findType_M1V1,PageBackContent_M1V1
+} from '../../module/business/getlist';
 import ConstantsList from '../../common/constants/config';
 import * as wjcCore from 'wijmo/wijmo';
 import { BackCode } from '../../module/business/formdata';
@@ -142,13 +145,18 @@ export class GetList extends BaseService {
       }
     }).catch((error: any) => {this.handleError('findClass',error);})
   }
-
-  // 科目列表（分页）方法路径：/api/cr/list?name
-  public crList(name: string) {
-    const url = `${ConstantsList.HOSTUser1}api/cr/list?name=${name}`;
-    return this.publicGetServe(url, 'crList');
+  
+  //产品维护页面表格数据
+  public cpwhList(page: number,size: number) {
+    const url = `${ConstantsList.HOSTUser1}api/product/list?page=${page}&size=${size}`;
+    // const url = 'http://work.jtyjy.com/api/product/list?page=1&size=10';
+    return this.publicGetServe(url, 'cpwhList');
   }
-
+  //产品维护页面新增产品查询条件list
+  public cpwhadd() {
+    const url = `${ConstantsList.HOSTUser1}api/product/optionlist`;
+    return this.publicGetServe(url, 'cpwhadd');
+  }
 
   public GetListPageBySSM(PageIndex:number,PageSize:number): Promise<any | Wijmo_PageBackList>{
     const url = `${ConstantsList.HOSTUser}yang-test/angular/pagelist/${PageIndex}/${PageSize}/`;
@@ -163,17 +171,10 @@ export class GetList extends BaseService {
                   Wijmo.List = new wjcCore.ObservableArray();
                   for (let i = 0; i < PBC.length; i++) {
                       Wijmo.List.push({
-                          check :false,
                           ID: PBC[i].id,
                           P:  PBC[i].province,
                           C:  PBC[i].city,
                           A:  PBC[i].area,
-                          check1:false,
-                          check2:false,
-                          check3:false,
-                          check4:false,
-                          check5:false,
-                          id: PBC[i].id
                       });
                   }
                   Wijmo.pageNews = PB.pageNews;
@@ -327,6 +328,29 @@ export class GetList extends BaseService {
       .then((res) => { return res.json() as BackCode; })
       .catch((error: any) => {this.handleError('Form_M2V3',error);});
     }
+  }
+
+  public cpwhDataList() {
+    let cpwhDataListv1 = [ 
+      { name: '\u266B Adriane Simione', items: [ 
+        { name: '\u266A Intelligible Sky', items: [ 
+          { name: 'Theories', length: '2:02' },
+          { name: 'Giant Eyes', length: '3:29' }, 
+          { name: 'Jovian Moons', length: '1:02' }, 
+          { name: 'Open Minds', length: '2:41' }, 
+          { name: 'Spacetronic Eyes', length: '3:41' }] 
+        } ] 
+      }, 
+      { name: '\u266B Amy Winehouse', items: [ 
+        { name: '\u266A Back to Black', items: [ 
+          { name: 'Addicted', length: '1:34' }, 
+          { name: 'He Can Only Hold Her', length: '2:22' }, 
+          { name: 'Some Unholy War', length: '2:21' }, 
+          { name: 'Wake Up Alone', length: '3:43' }, 
+          { name: 'Tears Dry On Their Own', length: '1:25' }] 
+        } ] 
+      }
+    ]
   }
 
 }
