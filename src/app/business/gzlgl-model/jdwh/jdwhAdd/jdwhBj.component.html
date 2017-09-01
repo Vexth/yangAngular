@@ -1,0 +1,43 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">编辑</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="jdwhbjHide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <div class="ui-g">
+          <div class="ui-g-4 jdwh-lable">编号：</div>
+          <div class="ui-g-5">
+            <input type="text" name="" class="form-control" placeholder="流程节点...">
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-4 jdwh-lable" style="color:red;">*流程节点：</div>
+          <div class="ui-g-5">
+            <input type="text" name="" class="form-control" placeholder="流程节点...">
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-4 jdwh-lable">禁用/启用：</div>
+          <div class="ui-g-5" style="line-height:34px;">
+            <span><input type="radio" value="1" name="is" class="tjgzl-check"></span>禁用
+            <span style="margin-left:10px;"><input type="radio" value="0" name="is" class="tjgzl-check"></span>启用
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-4 jdwh-lable">说明：</div>
+          <div class="ui-g-5">
+            <textarea name="" class="mbwhadd-txt" cols="30" rows="10"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="save()">确定</button>
+        <button type="button" class="btn btn-default" (click)="jdwhbjHide()">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>

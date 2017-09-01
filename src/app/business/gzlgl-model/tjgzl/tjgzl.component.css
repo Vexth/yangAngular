@@ -1,0 +1,93 @@
+.form-control{
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.form-horizontal table tr{
+  margin-top: 10px !important;
+}
+.cpwh-flex{
+  margin: 5px;
+  display: flex;
+}
+.cpwh-flex td{
+  margin: 0 20px 0 0;
+}
+.cpwh-flex td label{
+  width: 80px;
+  text-align: right;
+}
+.cpwh-radio span{
+  margin-left: 5px;
+}
+.cpwh-isadSearch{
+  color: #fff;
+  background-color: #3c8dbc;
+}
+.workload-btn{
+  text-align: right;
+  margin: 0 0 10px 0;
+}
+
+
+ /* override the glyphs used to show sorting and grouping */ 
+ .custom-flex-grid .wj-glyph-up { 
+   /* background-image:url('../resources/ascending.png');  */
+   background-color: chocolate;
+   background-repeat: no-repeat; 
+   background-position: bottom right; 
+   width: 1em; 
+   height: 1em; 
+   border-top: 0px; 
+   border-bottom: 0px; 
+   border-left: 0px; 
+   border-right: 0px; 
+   opacity: 1; 
+  } 
+  .custom-flex-grid .wj-glyph-down { 
+    /* background-image:url('/resources/descending.png');  */
+    background-color: aqua;
+    background-repeat: no-repeat; 
+    background-position: bottom right; 
+    width: 1em; 
+    height: 1em; 
+    border-top: 0px; 
+    border-bottom: 0px; 
+    border-left: 0px; 
+    border-right: 0px;
+    opacity: 1; 
+  } 
+  .custom-flex-grid .wj-glyph-right { 
+    /* background-image:url('/resources/collapsed.png');  */
+    background-color: blue;
+    background-repeat: no-repeat; 
+    background-position: bottom right; 
+    width: 1em; 
+    height: 1em; 
+    border-top: 0px; 
+    border-bottom: 0px; 
+    border-left: 0px; 
+    border-right: 0px; 
+  } 
+  .custom-flex-grid .wj-glyph-down-right { 
+    /* background-image:url('/resources/expanded.png'); */
+    background-color: blueviolet;
+    background-repeat: no-repeat; 
+    background-position: bottom right; 
+    width: 1em; 
+    height: 1em; 
+    border-top: 0px; 
+    border-bottom: 0px; 
+    border-left: 0px; 
+    border-right: 0px; 
+  }

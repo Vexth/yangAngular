@@ -1,0 +1,61 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">新增模板</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="mbwhaddHide()">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="ui-g CborderTLR XborderB">
+            <div class="ui-g-3 mbwhadd-c mbwhadd-h border_right">名称：</div>
+            <div class="ui-g-9">
+              <input type="text" name="" class="mbwhadd-ipt" placeholder="请输入名称...">
+            </div>
+          </div>
+          <div class="ui-g CborderLR XborderB">
+            <div class="ui-g-2 XborderR mbwhadd-h mbwhadd-c">模板状态：</div>
+            <div class="ui-g-4 MborderR mbwhadd-c mbwhadd-h">
+                <span><input type="radio" value="1" name="is"></span>锁定
+                <span style="margin-left:10px;"><input type="radio" value="0" name="is"></span>不锁定
+            </div>
+            <div class="ui-g-3 XborderR mbwhadd-c mbwhadd-h">所属部门：</div>
+            <div class="ui-g-3 mbwhadd-c mbwhadd-h">
+              <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+                <option value="">--请选择--</option>
+                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="ui-g CborderLR MborderB">
+            <div class="ui-g-2 XborderR mbwhadd-c mbwhadd-h">适用于：</div>
+            <div class="ui-g-4 MborderR mbwhadd-c mbwhadd-h">
+                <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+                    <option value="">--请选择--</option>
+                    <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                  </select>
+            </div>
+            <div class="ui-g-3 XborderR mbwhadd-c mbwhadd-h">是否按页码计算工作量：</div>
+            <div class="ui-g-3 mbwhadd-c mbwhadd-h">
+                <span><input type="radio" value="1" name="is1"></span>是
+                <span style="margin-left:10px;"><input type="radio" value="0" name="is1"></span>否
+            </div>
+          </div>
+          <div class="ui-g CborderLR MborderB">
+            <div class="ui-g-2 mbwhadd-c mbwhadd-h">节点工作量：</div>
+          </div>
+          <div class="ui-g CborderBLR">
+            <div class="ui-g-3 mbwhadd-c mbwhadd-hx XborderR" style="height:100px;">备注：</div>
+            <div class="ui-g-9 mbwhadd-h">
+             <textarea class="mbwhadd-txt" placeholder="请输入备注（200字符以内）" maxlength="200"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" (click)="save()">确定</button>
+          <button type="button" class="btn btn-default" (click)="mbwhaddHide()">关闭</button>
+        </div>
+      </div>
+    </div>
+</div>

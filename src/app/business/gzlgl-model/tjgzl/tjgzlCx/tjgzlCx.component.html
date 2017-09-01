@@ -1,0 +1,160 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">查询</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="tjgzlCxHide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">产品I类：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="ui-g-2 szgzl-label">产品II类：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="ui-g-2 szgzl-label">届别：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">年级：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="ui-g-2 szgzl-label">地方版：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="ui-g-2 szgzl-label">版本：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">模块：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="ui-g-2 szgzl-label">批次：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>              
+            </select>
+          </div>
+          <div class="ui-g-2 szgzl-label">使用类型：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">分类：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="ui-g-2 szgzl-label">科目：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="ui-g-2 szgzl-label">产品名称：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">人员：</div>
+          <div class="ui-g-2">
+            <input type="text" name="" class="mbwhadd-ipt" placeholder="请输入人员名称...">
+          </div>
+          <div class="ui-g-2 szgzl-label">流程节点：</div>
+          <div class="ui-g-2">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">接收时间：</div>
+          <div class="ui-g-10">
+              <div style="display:inline-block;margin: 5px 0;">
+                  <p-calendar [(ngModel)]="startData" [monthNavigator]="true" [yearNavigator]="true" 
+                  [showIcon]="true" yearRange="1900:2100" readonlyInput="readonlyInput"></p-calendar>
+                  <span style="margin-left:35px"></span>
+              </div>
+              至
+              <div style="display:inline-block;">
+                  <p-calendar [(ngModel)]="endData" [monthNavigator]="true" [yearNavigator]="true" 
+                  [showIcon]="true" yearRange="1900:2100" readonlyInput="readonlyInput"></p-calendar>
+                  <span style="margin-left:35px"></span>
+              </div>
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">分组顺序：</div>
+          <div class="ui-g-6">
+            <input type="text" [(ngModel)]="fzsx" class="mbwhadd-ipt" disabled style="cursor:not-allowed;background-color:#ccc;">
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">分组字段：</div>
+          <div class="ui-g-10" style="line-height:34px;user-select: none;">
+            <span class="tjgzl-span" (click)="Ccpyl()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="cpyl">产品I类</span>
+            <span class="tjgzl-span" (click)="Ccpel()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="cpel">产品II类</span>
+            <span class="tjgzl-span" (click)="Ccpmc()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="cpmc">产品名称</span>
+            <span class="tjgzl-span" (click)="Clcjd()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="lcjd">流程节点</span>
+            <span class="tjgzl-span" (click)="Clx()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="lx">类型</span>
+            <span class="tjgzl-span" (click)="Ckm()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="km">科目</span>
+            <span class="tjgzl-span" (click)="Cjb()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="jb">届别</span>
+            <span class="tjgzl-span" (click)="Cbb()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="bb">版本</span>
+            <span class="tjgzl-span" (click)="Cry()"><input type="checkbox" name="fzzd" class="tjgzl-check" [(ngModel)]="ry">人员</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="text-align:center;">
+        <button type="button" class="btn btn-info" (click)="refresh()">查询</button>
+        <button type="button" class="btn btn-success" (click)="clearOpts()">重置</button>
+        <button type="button" class="btn btn-default" (click)="tjgzlCxHide()">取消</button>
+      </div>
+    </div>
+  </div>
+</div>

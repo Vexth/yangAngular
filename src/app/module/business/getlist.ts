@@ -26,6 +26,21 @@ export class findCourse{
     course_sort: number;
 }
 
+export class CpwhList{
+    optEditionId:string="";//版本
+    optGradeId:string="";//年级
+    optJieId:string="";//届别
+    optLocalEditionId:string="";//地方版
+    optUsageTypeId:string="";//使用类型
+    optTypeId:string="";//分类
+    optSubjectId:string="";//科目
+    optDepartmentId:string="";//部门
+    optBatchId:string="";//批次
+    optModuleId:string="";//模块
+    optKind1Id:string="";//产品I类
+    optKind2Id:string="";//产品II类
+}
+
 //=================================================
 
 export class PageBackContentSSM{

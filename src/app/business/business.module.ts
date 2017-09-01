@@ -1,6 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { 
+  GrowlModule,
+  Message,
+  ConfirmDialogModule,
+  ConfirmationService,
+  CalendarModule,
+  TreeTableModule,
+  SharedModule,
+  DataTableModule,
+  AutoCompleteModule,
+  DataGridModule,
+  DataListModule,
+  CheckboxModule,
+  DropdownModule,
+  ChipsModule,
+  TreeNode,
+  DialogModule
+} from '../../../primeng/primeng';
 
 import { PublicModule } from '../public/public.module';
 import { BusinessRoutingModule } from './business.routing.module';
@@ -20,6 +40,7 @@ import { M3v4Component } from './m3/m3v4/m3v4.component';
 import { M3v5Component } from './m3/m3v5/m3v5.component';
 import { M3v6Component } from './m3/m3v6/m3v6.component';
 import { M3v7Component } from './m3/m3v7/m3v7.component';
+
 import { M4v1Component } from './m4/m4v1/m4v1.component';
 import { M4v2Component } from './m4/m4v2/m4v2.component';
 
@@ -43,43 +64,70 @@ import { SpgzlComponent } from './gzlgl/spgzl/spgzl.component';
 // CygzlComponent 查阅工作量
 import { CygzlComponent } from './gzlgl/cygzl/cygzl.component';
 
+
 import { WjGridModule } from 'wijmo/wijmo.angular2.grid';
 import { WjInputModule } from 'wijmo/wijmo.angular2.input';
 import { WjCoreModule } from 'wijmo/wijmo.angular2.core';
-import { WjGridMultirowModule } from 'wijmo/wijmo.angular2.grid.multirow';
+
+import { NodeService } from './services/treeNode';
+// import { SharedModule } from 'wijmo/wijmo.angular2.core';
 
 import { DataSvc } from './services/DataSvc';
+import { DataSvcV2 } from './services/DataSvcV2';
 import { PostService } from './services/post.service';
 import { GetList } from './services/getlist';
 
-import { AlertModule, TypeaheadModule } from 'ngx-bootstrap';
+import { AlertModule,TypeaheadModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
-
-import { M1v1openComponent } from './m1/m1v1/m1v1open/m1v1open.component';
+// 产品维护
 import { M2v2openComponent } from './m2/m2v2/m2v2open/m2v2open.component';
 import { M2v3openComponent } from './m2/m2v3/m2v3open/m2v3open.component';
+import { CpwhComponent} from './gzlgl-model/cpwh/cpwh.component';
+import { cpwhcpaddComponent } from './gzlgl-model/cpwh/cpwhAdd/cpwhadd.component';
+import { cpwhgjaddComponent } from './gzlgl-model/cpwh/cpwhGjAdd/cpwhgjadd.component';
+import { cpwhpladdComponent } from './gzlgl-model/cpwh/cpwhpladd/cpwhpladd.component';
+// 流转查询
+import { LzcxComponent } from'./gzlgl-model/lzcx/lzcx.component';
+// 模板维护
+import { MbwhComponent } from './gzlgl-model/mbwh/mbwh.component';
+import { mbwhaddComponent } from './gzlgl-model/mbwh/mbwhAdd/mbwhadd.component';
+// 工作量设置
+import { SzgzlComponent } from './gzlgl-model/szgzl/szgzl.component';
+import { szgzlplComponent } from './gzlgl-model/szgzl/szgzlPl/szgzlPl.component';
+// 调整工作量
+import { TjgzlComponent } from './gzlgl-model/tjgzl/tjgzl.component';
+import { tjgzlcxComponent } from './gzlgl-model/tjgzl/tjgzlCx/tjgzlCx.component';
+// 节点维护
+import { JdwhComponent } from './gzlgl-model/jdwh/jdwh.component';
+import { jdwhaddComponent } from './gzlgl-model/jdwh/jdwhAdd/jdwhAdd.component';
+import { jdwhbjComponent } from './gzlgl-model/jdwh/jdwhAdd/jdwhBj.component';
+// 节点授权
+import { JdsqComponent } from './gzlgl-model/jdsq/jdsq.component';
+// 页码输入
+import { YmsrComponent } from './gzlgl-model/ymsr/ymsr.component';
+// 角色分配
+import { JsfpComponent } from './gzlgl-model/jsfp/jsfp.component';
+import { jsfpaddComponent } from './gzlgl-model/jsfp/jsfpAdd/jsfpAdd.component';
+// 用户管理
+import { YhglComponent } from './gzlgl-model/yhgl/yhgl.component';
 
 import { 
-  AutoCompleteModule, 
-  DataGridModule, 
-  DataTableModule, 
-  DataListModule, 
-  TreeTableModule, 
-  SharedModule, 
-  DialogModule,
-  GrowlModule,
-  ConfirmDialogModule,
-  CheckboxModule,
-  DropdownModule,
-  ChipsModule,
   ButtonModule,
-  PanelMenuModule,
-  CalendarModule
+  PanelMenuModule
 } from 'primeng/primeng';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 
 @NgModule({
+  entryComponents: [
+    cpwhcpaddComponent,
+    cpwhgjaddComponent,
+    cpwhpladdComponent,
+    mbwhaddComponent,
+    szgzlplComponent,
+    tjgzlcxComponent,
+    jdwhaddComponent,
+    jdwhbjComponent,
+    jsfpaddComponent,
+  ],
   imports: [
     CommonModule,
     PublicModule,
@@ -89,26 +137,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     WjInputModule,
     WjGridModule,
     WjCoreModule,
-    WjGridMultirowModule,
     AlertModule,
-    TypeaheadModule,
     ModalModule,
-    AutoCompleteModule,
-    DataGridModule, 
-    DataTableModule, 
-    DataListModule, 
-    TreeTableModule, 
-    SharedModule, 
-    DialogModule, 
+    TreeTableModule,
+    SharedModule,
     GrowlModule,
     ConfirmDialogModule,
+    BrowserAnimationsModule,
+    CalendarModule,
+    DataTableModule,
+    TypeaheadModule,
+    AutoCompleteModule,
+    DataGridModule,
+    DataListModule,
     CheckboxModule,
     DropdownModule,
     ChipsModule,
     ButtonModule,
     PanelMenuModule,
     CalendarModule,
-    BrowserAnimationsModule
+    DialogModule
   ],
   declarations: [
     A1Component,
@@ -125,12 +173,27 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     M3v5Component,
     M3v6Component,
     M3v7Component,
-    M4v1Component,
-    M4v2Component,
-    M1v1openComponent,
     M2v2openComponent,
     M2v3openComponent,
-
+    CpwhComponent,
+    cpwhcpaddComponent,
+    cpwhgjaddComponent,
+    cpwhpladdComponent,
+    LzcxComponent,
+    MbwhComponent,
+    mbwhaddComponent,
+    SzgzlComponent,
+    szgzlplComponent,
+    TjgzlComponent,
+    tjgzlcxComponent,
+    JdwhComponent,
+    jdwhaddComponent,
+    jdwhbjComponent,
+    JdsqComponent,
+    YmsrComponent,
+    JsfpComponent,
+    jsfpaddComponent,
+    YhglComponent,
     JsszComponent,
     JsszopenComponent,
     XswhComponent,
@@ -140,6 +203,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SpgzlComponent,
     CygzlComponent
   ],
-  providers: [DataSvc, PostService, GetList]
+  providers: [DataSvc,DataSvcV2,PostService,GetList,NodeService,ConfirmationService]
 })
 export class BusinessModule { }

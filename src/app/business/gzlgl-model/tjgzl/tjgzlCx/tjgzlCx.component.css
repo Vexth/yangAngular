@@ -1,0 +1,29 @@
+.szgzl-label{
+  line-height: 34px;
+  text-align: right;
+  width: 14%;
+}
+.mbwhadd-ipt{
+  outline: none;
+  width: 100%;
+  box-shadow: none;
+  border-radius: 0;
+  border-color: #d2d6de;
+  display: block;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+}
+.tjgzl-check{
+  vertical-align: text-top;
+  margin-top: 2px;
+}
+.tjgzl-span{
+  margin: 0px 5px;
+  cursor: pointer;
+}

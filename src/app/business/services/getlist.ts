@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, Response ,RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'promise';
-import { findCourse, findTab, PageBackList, Wijmo_PageBackList, findType_M1V1, PageBackContent_M1V1, PageBackContentSSM, PageBackContent_M2V2, PageBackContent_M2V3, BackNews } from '../../module/business/getlist';
+import { CpwhList, findCourse, findTab, PageBackList, Wijmo_PageBackList, findType_M1V1, PageBackContent_M1V1, PageBackContentSSM, PageBackContent_M2V2, PageBackContent_M2V3, BackNews } from '../../module/business/getlist';
+
 import ConstantsList from '../../common/constants/config';
 import * as wjcCore from 'wijmo/wijmo';
 import { BackCode } from '../../module/business/formdata';
@@ -99,11 +100,11 @@ export class GetList extends BaseService {
     const url = `${ConstantsList.HOSTUser1}api/ratio/findClass`;
     return this.publicGetServe(url, 'findClass').then(res => res.list);
   }
-
-  // 科目列表（分页）方法路径：/api/cr/list?name
-  public crList(name: string) {
-    const url = `${ConstantsList.HOSTUser1}api/cr/list?name=${name}`;
-    return this.publicGetServe(url, 'crList');
+  
+  //产品维护页面新增产品查询条件list
+  public cpwhadd() {
+    const url = `${ConstantsList.HOSTUser1}api/product/optionlist`;
+    return this.publicGetServe(url, 'cpwhadd');
   }
 
   // 审核工作量模块 方法路径： /api/workload/checklist?documentId=&nodeId=&uId=&statu=-1&stime=2017-08-01&etime=2018-10-12&pageNum=1&pageSize=10
@@ -138,6 +139,23 @@ export class GetList extends BaseService {
     return this.publicGetServe(url, 'jobList');
   }
 
+  //产品维护页面表格数据
+  public cpwhList(page: number,size: number): Promise<any | CpwhList> {
+    const url = `${ConstantsList.HOSTUser1}api/product/list?page=${page}&size=${size}`;
+    // const url = 'http://work.jtyjy.com/api/product/list?page=1&size=10';
+    return this.publicGetServe(url, 'cpwhList').then(res => res as CpwhList)
+  }
+  //流转查询获取查询条件
+  public lzcxOpts() {
+    const url = `${ConstantsList.HOSTUser1}api/count/productworkload`;
+    return this.publicGetServe(url, 'lzcxOpts');
+  }
+  //流转查询获取页面表格数据
+  public lzcxDataList(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/document/log?${list}`;
+    return this.publicGetServe(url, 'lzcxOpts');
+  }
 
 
 
@@ -266,8 +284,6 @@ export class GetList extends BaseService {
       .catch((error: any) => { this.handleError('GetListPageBy_M2V3', error); });
   }
 
-  //======================================================
-
   public GetSequenceCode(Type: number, IsAdd: number): Promise<any | string> {
     const url = `${ConstantsList.HOSTUser}/yang-test/angular/getsequencecode/${Type}/${IsAdd}/`;
     return this.http.get(url)
@@ -286,7 +302,6 @@ export class GetList extends BaseService {
       .catch((error: any) => { this.handleError('GetSequenceCode', error); });
   }
 
-  //======================================================
 
   public Form_M2V2(postvalue: PageBackContent_M2V2, IsAdd: boolean): Promise<any | BackCode> {
     const url = `${ConstantsList.HOSTUser}/yang-test/angular/form_m2v2/`;

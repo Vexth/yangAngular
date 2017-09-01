@@ -1,0 +1,38 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">批量设置工作量</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="szgzlplHide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">选择工作量模板：</div>
+          <div class="ui-g-3">
+            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <option value="">--请选择--</option>
+              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="ui-g">
+          <div class="ui-g-2 szgzl-label">工作量明细：</div>
+        </div>
+        <p-dataTable [value]="cars" [(selection)]="selectedCars3" dataKey="vin" 
+        [rows]="10" [rowsPerPageOptions]="[10,20,30]">
+          <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
+          <p-column field="vin" header="Vin"></p-column>
+          <p-column field="year" header="Year"></p-column>
+          <p-column field="brand" header="Brand"></p-column>
+          <p-column field="color" header="Color"></p-column>
+        </p-dataTable>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="save()">确定</button>
+        <button type="button" class="btn btn-default" (click)="szgzlplHide()">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
