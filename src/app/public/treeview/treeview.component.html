@@ -1,16 +1,15 @@
-<aside class="main-sidebar">
+<aside class="main-sidebar" [ngStyle]="{'display':styleName1 === 'vexth' ? 'none' : 'inline-block' }">
   <section class="sidebar">
     <div class="user-panel">
-      <div class="pull-left image">
+      <!-- <div class="pull-left image">
         <img src="../../assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
       </div>
       <div class="pull-left info">
         <p>作者：Vexth</p>
         <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
-      </div>
-    </div>
+      </div> --></div>
     <ul class="sidebar-menu">
-      <li class="header">导航树目录</li>
+      <!-- <li class="header">导航树目录</li> -->
 
       <li [ngClass]="{'active':check == 'A1'}"><a routerLink="/business/A1"><i class="fa fa-circle-o text-red"></i> <span>欢迎页面</span></a></li>
 
@@ -23,7 +22,8 @@
         </a>
         <ul class="treeview-menu">
           <li *ngFor="let child of name.child"  [ngClass]="{'active':check == child.check}">
-            <a routerLink="{{ child.routerLink }}"><i class="fa {{ child.iocn }}"></i> {{ child.name }}</a>
+            {{child.check}}
+            <a [queryParams]="child.button" routerLink="{{ child.routerLink }}"><i class="fa {{ child.iocn }}"></i> {{ child.name }}</a>
           </li>
         </ul>
       </li>
@@ -88,3 +88,66 @@
     </ul>
   </section>
 </aside>
+
+<div class="login-boxCom" [ngStyle]="{'display':styleName1 == 'vexth' ? 'inline-block' : 'none' }">
+    <div class="login-box">
+      <div class="login-logo">
+        <b>工作量管理系统</b>
+      </div>
+      <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
+      <!-- /.login-logo -->
+      <div class="login-box-body">
+        <p class="login-box-msg"><b>登录系统</b></p>
+  
+        <form
+        #formRef="ngForm"
+        (ngSubmit)="onSubmit(formRef.value)"
+        class="show-form"
+        >
+          <div class="form-group has-feedback">
+            <input
+            type="text"
+            name="username"
+            class="form-control"
+            placeholder="用户名"
+            id="username"
+            required
+            [(ngModel)]="username"
+            [ngModel]="username"
+            (ngModelChange)="username = $event"
+            #name="ngModel"
+            #spy
+            >
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password"
+            name="password"
+            class="form-control"
+            placeholder="密码"
+            id="password"
+            required
+            [(ngModel)]="password"
+            [ngModel]="password"
+            (ngModelChange)="password = $event"
+            #pass="ngModel"
+            >
+          </div>
+          <div class="row">
+            <div class="col-xs-8">
+              <!-- <div  *ngIf="auth?.hasError" style="color:red"><b>{{auth.errMsg}}</b></div> -->
+              <!-- <div [hidden]="name.valid || name.pristine" style="color:red">用户名为空</div>
+              <div [hidden]="pass.valid || pass.pristine" style="color:red">密码为空</div> -->
+              <!-- class="alert alert-danger" -->
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+  
+      </div>
+      <!-- /.login-box-body -->
+    </div>
+  </div>

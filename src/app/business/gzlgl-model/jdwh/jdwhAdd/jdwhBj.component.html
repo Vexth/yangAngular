@@ -1,4 +1,5 @@
-<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" 
+tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" (onShow)="openModal($event)">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -11,31 +12,32 @@
         <div class="ui-g">
           <div class="ui-g-4 jdwh-lable">编号：</div>
           <div class="ui-g-5">
-            <input type="text" name="" class="form-control" placeholder="流程节点...">
+            <!-- <input pInputText type="text" [(ngModel)]="" name="" class="form-control" placeholder="流程节点..."> -->
+            {{number}}
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-4 jdwh-lable" style="color:red;">*流程节点：</div>
           <div class="ui-g-5">
-            <input type="text" name="" class="form-control" placeholder="流程节点...">
+            <input pInputText type="text" [(ngModel)]="name" name="" class="form-control" placeholder="流程节点...">
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-4 jdwh-lable">禁用/启用：</div>
           <div class="ui-g-5" style="line-height:34px;">
-            <span><input type="radio" value="1" name="is" class="tjgzl-check"></span>禁用
-            <span style="margin-left:10px;"><input type="radio" value="0" name="is" class="tjgzl-check"></span>启用
+            <span><input type="radio" value="true" name="jdwhIs" class="tjgzl-check" [(ngModel)]="isLocked"></span>禁用
+            <span style="margin-left:10px;"><input type="radio" value="false" name="jdwhIs" class="tjgzl-check" [(ngModel)]="isLocked"></span>启用
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-4 jdwh-lable">说明：</div>
           <div class="ui-g-5">
-            <textarea name="" class="mbwhadd-txt" cols="30" rows="10"></textarea>
+            <textarea pInputText [(ngModel)]="statement" name="" class="mbwhadd-txt" cols="30" rows="10"></textarea>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-info" (click)="save()">确定</button>
+        <button type="button" class="btn btn-info" (click)="emitjdwhBJ($event)">确定</button>
         <button type="button" class="btn btn-default" (click)="jdwhbjHide()">关闭</button>
       </div>
     </div>

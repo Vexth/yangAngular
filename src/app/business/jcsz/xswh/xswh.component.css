@@ -30,7 +30,7 @@
 
 ul, li{list-style-type: none;margin: 0;padding: 0;}
 
-.tabClass ul li{line-height: 30px;border-bottom: 1px solid #eee;width: 500px;}
+.tabClass ul li{line-height: 30px;border-bottom: 1px solid #eee;width: 345px;}
 
 .tabClass ul li:nth-child(1){background: #eee;line-height: 40px;border-bottom: 0;}
 

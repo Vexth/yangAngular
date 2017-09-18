@@ -1,0 +1,26 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">修改</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="jsfpeditHide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <div class="ui-g">
+          <div class="ui-g-4" style="text-align:right;line-height:34px;">角色名称：</div>
+          <div class="ui-g-7">
+            <input type="text" name="" [(ngModel)]="postData.name" class="form-control" placeholder="角色名称...">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="emitAnEventEdit($event)">确定</button>
+        <button type="button" class="btn btn-default" (click)="jsfpeditHide()">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>
+<!-- <p-confirmDialog></p-confirmDialog> -->

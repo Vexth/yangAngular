@@ -1,0 +1,26 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h4 class="modal-title pull-left">新增稿件</h4> -->
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cpwhQrcodeHide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="ui-g">
+          <div class="ui-g-12" style="text-align:center;">
+            <qr-code [value]="url" [size]=200></qr-code>
+          </div>
+          <div class="ui-g-12" style="text-align:center;">
+            {{name}}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-info" (click)="emitCpwhGJadd($event)">确定</button>
+        <button type="button" class="btn btn-default" (click)="cpwhGJHide()">关闭</button> -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { QRCodeModule } from 'angular2-qrcode';
+
 import { 
   GrowlModule,
   Message,
@@ -19,30 +21,21 @@ import {
   DropdownModule,
   ChipsModule,
   TreeNode,
-  DialogModule
-} from '../../../primeng/primeng';
+  DialogModule,
+  InputMaskModule,
+  RadioButtonModule,
+  TreeModule,
+  ListboxModule,
+  ButtonModule,
+  PanelMenuModule,
+  PaginatorModule
+} from 'primeng/primeng';
 
 import { PublicModule } from '../public/public.module';
 import { BusinessRoutingModule } from './business.routing.module';
 import { CommonFunctionModule } from '../common/common.function.module';
 
 import { A1Component } from './a1/a1.component';
-import { M1v1Component } from './m1/m1v1/m1v1.component';
-import { M1v2Component } from './m1/m1v2/m1v2.component';
-import { M2v1Component } from './m2/m2v1/m2v1.component';
-import { M2v2Component } from './m2/m2v2/m2v2.component';
-import { M2v3Component } from './m2/m2v3/m2v3.component';
-import { M2v4Component } from './m2/m2v4/m2v4.component';
-import { M3v1Component } from './m3/m3v1/m3v1.component';
-import { M3v2Component } from './m3/m3v2/m3v2.component';
-import { M3v3Component } from './m3/m3v3/m3v3.component';
-import { M3v4Component } from './m3/m3v4/m3v4.component';
-import { M3v5Component } from './m3/m3v5/m3v5.component';
-import { M3v6Component } from './m3/m3v6/m3v6.component';
-import { M3v7Component } from './m3/m3v7/m3v7.component';
-
-import { M4v1Component } from './m4/m4v1/m4v1.component';
-import { M4v2Component } from './m4/m4v2/m4v2.component';
 
 // 基础设置 （计算设置，系数维护, 科目规范化, 人员技能等级, 技能工资维护）
 // JsszComponent为计算设置
@@ -61,36 +54,35 @@ import { JngzwhopenComponent } from './jcsz/jngzwh/jngzwhopen/jngzwhopen.compone
 // 工作量管理（SpgzlComponent审批工作量）
 // SpgzlComponent 审批工作量
 import { SpgzlComponent } from './gzlgl/spgzl/spgzl.component';
+import { SpgzlopenComponent } from './gzlgl/spgzl/spgzlopen/spgzlopen.component';
 // CygzlComponent 查阅工作量
 import { CygzlComponent } from './gzlgl/cygzl/cygzl.component';
 
-
-import { WjGridModule } from 'wijmo/wijmo.angular2.grid';
-import { WjInputModule } from 'wijmo/wijmo.angular2.input';
-import { WjCoreModule } from 'wijmo/wijmo.angular2.core';
+// 数据统计
+// KhgzglComponent 考核工资管理 ZzbgzlComponent 制作部工作量 FwrygzComponent 发外工资管理
+import { KhgzglComponent } from './sjtj/khgzgl/khgzgl.component';
+import { ZzbgzlComponent } from './sjtj/zzbgzl/zzbgzl.component';
+import { FwrygzComponent } from './sjtj/fwrygz/fwrygz.component';
 
 import { NodeService } from './services/treeNode';
-// import { SharedModule } from 'wijmo/wijmo.angular2.core';
 
-import { DataSvc } from './services/DataSvc';
-import { DataSvcV2 } from './services/DataSvcV2';
 import { PostService } from './services/post.service';
 import { GetList } from './services/getlist';
 
 import { AlertModule,TypeaheadModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
 // 产品维护
-import { M2v2openComponent } from './m2/m2v2/m2v2open/m2v2open.component';
-import { M2v3openComponent } from './m2/m2v3/m2v3open/m2v3open.component';
 import { CpwhComponent} from './gzlgl-model/cpwh/cpwh.component';
 import { cpwhcpaddComponent } from './gzlgl-model/cpwh/cpwhAdd/cpwhadd.component';
 import { cpwhgjaddComponent } from './gzlgl-model/cpwh/cpwhGjAdd/cpwhgjadd.component';
 import { cpwhpladdComponent } from './gzlgl-model/cpwh/cpwhpladd/cpwhpladd.component';
+import { cpwhqrcodeComponent } from './gzlgl-model/cpwh/cpwhQRcode/cpwhQRcode.component';
 // 流转查询
 import { LzcxComponent } from'./gzlgl-model/lzcx/lzcx.component';
 // 模板维护
 import { MbwhComponent } from './gzlgl-model/mbwh/mbwh.component';
 import { mbwhaddComponent } from './gzlgl-model/mbwh/mbwhAdd/mbwhadd.component';
+import { mbwhchangeComponent } from './gzlgl-model/mbwh/mbwhChange/mbwhchange.component';
 // 工作量设置
 import { SzgzlComponent } from './gzlgl-model/szgzl/szgzl.component';
 import { szgzlplComponent } from './gzlgl-model/szgzl/szgzlPl/szgzlPl.component';
@@ -103,18 +95,18 @@ import { jdwhaddComponent } from './gzlgl-model/jdwh/jdwhAdd/jdwhAdd.component';
 import { jdwhbjComponent } from './gzlgl-model/jdwh/jdwhAdd/jdwhBj.component';
 // 节点授权
 import { JdsqComponent } from './gzlgl-model/jdsq/jdsq.component';
+import { JdsqsetComponent } from './gzlgl-model/jdsq/jdsqSet/jdsqSet.component';
 // 页码输入
 import { YmsrComponent } from './gzlgl-model/ymsr/ymsr.component';
 // 角色分配
 import { JsfpComponent } from './gzlgl-model/jsfp/jsfp.component';
 import { jsfpaddComponent } from './gzlgl-model/jsfp/jsfpAdd/jsfpAdd.component';
+import { jsfpeditComponent } from './gzlgl-model/jsfp/jsfpAdd/jsfpEdit.component';
+import { jsfpwarComponent } from './gzlgl-model/jsfp/jsfpAdd/jsfpWar.component';
 // 用户管理
 import { YhglComponent } from './gzlgl-model/yhgl/yhgl.component';
-
-import { 
-  ButtonModule,
-  PanelMenuModule
-} from 'primeng/primeng';
+import { yhgljsComponent } from './gzlgl-model/yhgl/yhglJS/yhglJS.component';
+import { yhgldeptComponent } from './gzlgl-model/yhgl/yhglJS/yhglDept.component';
 
 @NgModule({
   entryComponents: [
@@ -127,6 +119,7 @@ import {
     jdwhaddComponent,
     jdwhbjComponent,
     jsfpaddComponent,
+    cpwhqrcodeComponent
   ],
   imports: [
     CommonModule,
@@ -134,9 +127,6 @@ import {
     BusinessRoutingModule,
     CommonFunctionModule,
     FormsModule,
-    WjInputModule,
-    WjGridModule,
-    WjCoreModule,
     AlertModule,
     ModalModule,
     TreeTableModule,
@@ -156,25 +146,16 @@ import {
     ButtonModule,
     PanelMenuModule,
     CalendarModule,
-    DialogModule
+    DialogModule,
+    InputMaskModule,
+    RadioButtonModule,
+    TreeModule,
+    ListboxModule,
+    PaginatorModule,
+    QRCodeModule
   ],
   declarations: [
     A1Component,
-    M1v1Component,
-    M1v2Component,
-    M2v1Component,
-    M2v2Component,
-    M2v3Component,
-    M2v4Component,
-    M3v1Component,
-    M3v2Component,
-    M3v3Component,
-    M3v4Component,
-    M3v5Component,
-    M3v6Component,
-    M3v7Component,
-    M2v2openComponent,
-    M2v3openComponent,
     CpwhComponent,
     cpwhcpaddComponent,
     cpwhgjaddComponent,
@@ -199,10 +180,22 @@ import {
     XswhComponent,
     RyjndjComponent,
     JngzwhComponent,
+    JngzwhopenComponent,
     KmgfhComponent,
     SpgzlComponent,
-    CygzlComponent
+    SpgzlopenComponent,
+    CygzlComponent,
+    KhgzglComponent,
+    ZzbgzlComponent,
+    FwrygzComponent,
+    JdsqsetComponent,
+    jsfpeditComponent,
+    jsfpwarComponent,
+    yhgldeptComponent,
+    yhgljsComponent,
+    mbwhchangeComponent,
+    cpwhqrcodeComponent
   ],
-  providers: [DataSvc,DataSvcV2,PostService,GetList,NodeService,ConfirmationService]
+  providers: [PostService,GetList,NodeService,ConfirmationService]
 })
 export class BusinessModule { }

@@ -10,7 +10,7 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" (onShow)="o
         </div>
         <div class="modal-body">
           <div class="row">
-            <form class="form-horizontal modal-form">
+            
               <table>
                   <colgroup>
                     <col width="90"/>
@@ -97,7 +97,7 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" (onShow)="o
                     </td>
                   </tr>
               </table>
-            </form>
+            
           </div>
           <div style="margin-top:10px;"></div>
           <p-dataTable [value]="tableList" [(selection)]="selectedCar" [style]="{'text-align':'center'}">
@@ -111,13 +111,12 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" (onShow)="o
           </p-dataTable>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-info" (click)="save()">确定</button>
+          <button type="button" class="btn btn-info" (click)="emitSave($event)">确定</button>
           <button type="button" class="btn btn-default" (click)="cpwhcpaddHide()">关闭</button>
         </div>
       </div>
     </div>
 </div>
-<p-growl [(value)]="msgs"></p-growl>
 <p-dialog header="新增" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="addTable">
       <div class="ui-grid-row">
@@ -178,7 +177,7 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" (onShow)="o
       </div>
   </p-footer>
 </p-dialog>
-
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>
 
 <!-- <ng-template let-col let-car="rowData" pTemplate="body">
   <select style="color: #000;width:100%;" [(ngModel)]="optEditionId" name="optEditionId">

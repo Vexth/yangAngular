@@ -1,12 +1,7 @@
 import { Component, OnInit, ViewChild, Input, Inject, Output, EventEmitter } from '@angular/core';
-import 'rxjs/add/observable/of';
-import { ModalformComponent } from '../../../../common/component/modalform/modalform.component';
-import * as Modal from 'ngx-bootstrap/modal';
-import { ModalDirective, ModalModule, ModalOptions } from 'ngx-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GetList } from '../../../services/getlist';
 import { PostService } from '../../../services/post.service';
-import { FormsModule } from '@angular/forms';
-import { PageBackContent_M1V1 } from '../../../../module/business/getlist';
 
 import { SelectItem, Message } from 'primeng/primeng';
 
@@ -16,22 +11,11 @@ import { SelectItem, Message } from 'primeng/primeng';
   styleUrls: ['./jngzwhopen.component.css']
 })
 export class JngzwhopenComponent implements OnInit {
-  public selected: string;
-  unit: any;//单选下拉框
-  unitList: SelectItem[];
-
   msgs: Message[] = [];
 
-  findNodeOfZzbList: SelectItem[];
-  findNodeOfZzbListCode: any;
-  isLp: boolean = false;
-  isHuat: boolean = false;
-  isTiaot: boolean = false;
-  isDatika: boolean = false;
-  isHouqi: boolean = false;
-  multiple: string;
-  type;
-  nodeId;
+  jobName: string;
+  jobIncome: number;
+  jobWorkload: number;
 
   private PostService: PostService;
 
@@ -45,13 +29,6 @@ export class JngzwhopenComponent implements OnInit {
   isdel: number = 0;
   IsAdd: boolean = true;
   ShowType: string = '编辑';
-  typeList: any = [
-    { id: 0, name: '启用' },
-    { id: 1, name: '禁用' },
-  ];
-
-  P: PageBackContent_M1V1 = new PageBackContent_M1V1();
-  Post: PageBackContent_M1V1 = new PageBackContent_M1V1();
 
   constructor( @Inject(GetList) getList: GetList, @Inject(PostService) postService: PostService ) {
     this.GetList = getList;
@@ -59,64 +36,38 @@ export class JngzwhopenComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.unitList = [{label:'套', value: '套'},{label:'页', value: '页'},{label:'版面', value: '版面'},{label:'期', value: '期'}];
-    this.GetList.findNodeOfZzb().then(res => {
-      this.findNodeOfZzbList = [];
-      for (let i = 0; i < res.length; i++) {
-        let labelList = {label: '', value: ''};
-        labelList.label = res[i].nodeName;
-        labelList.value = res[i];
-        this.findNodeOfZzbList.push(labelList)
-      }
-    })
   }
 
+  clearNoNum (obj) {
+    obj = obj.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符     
+    obj = obj.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的     
+    obj = obj.replace(".","$#$").replace(/\./g,"").replace("$#$",".");    
+    obj = obj.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数     
+    if (obj.indexOf(".") < 0 && obj !="") {//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额    
+     obj= parseFloat(obj);    
+    }
+    return obj;
+  }
+
+  jobIncomeNo (itme) {
+    this.jobIncome = this.clearNoNum(itme);
+  }
+  jobWorkloadNo (itme) {
+    this.jobWorkload = this.clearNoNum(itme);
+  }
+
+
   public showChildModal(dataItem: any): void {
+    console.log(dataItem)
     if (dataItem[0].id == null) {
       this.ShowType = '新增';
       this.IsAdd = true;
-      this.P.type = dataItem[0].type;
-      this.type = dataItem[0].type;
-      this.findNodeOfZzbListCode = null;
-      this.nodeId = null;
-      this.isLp = false;
-      this.isHuat = false;
-      this.isTiaot = false;
-      this.isDatika = false;
-      this.isHouqi = false;
-      this.multiple = null;
-      this.unit = null;
+      this.jobIncome = dataItem[0].jobIncome;
+      this.jobName = dataItem[0].jobName;
+      this.jobWorkload = dataItem[0].jobWorkload;
     } else {
       this.ShowType = '修改';
       this.IsAdd = false;
-      this.P.id = dataItem[0].id;
-      this.P.type = dataItem[0].type;
-      this.P.nodeId = dataItem[0].nodeId;
-      this.findNodeOfZzbListCode = dataItem[0].nodeId;
-
-      this.P.isLp = dataItem[0].isLp;
-      dataItem[0].isLp === true ? (this.isLp = true) : (this.isLp = false)
-
-      this.P.isHuat = dataItem[0].isHuat;
-      dataItem[0].isHuat === true ? (this.isHuat = true) : (this.isHuat = false)
-
-      this.P.isTiaot = dataItem[0].isTiaot;
-      dataItem[0].isTiaot === true ? (this.isTiaot = true) : (this.isTiaot = false)
-
-      this.P.isDatika = dataItem[0].isDatika;
-      dataItem[0].isDatika === true ? (this.isDatika = true) : (this.isDatika = false)
-
-      this.P.isHouqi = dataItem[0].isHouqi;
-      dataItem[0].isHouqi === true ? (this.isHouqi = true) : (this.isHouqi = false)
-
-      this.P.multiple = dataItem[0].multiple;
-      this.multiple = dataItem[0].multiple
-
-      this.P.unit = dataItem[0].unit;
-      this.unit = dataItem[0].unit;
-
-      this.P.remarks = dataItem[0].remarks;
-      this.P.delFlag = dataItem[0].delFlag;
     }
     this.childModal.show();
   }
@@ -126,48 +77,39 @@ export class JngzwhopenComponent implements OnInit {
   }
 
   public onSubmit(formValue: any): void {
+    console.log(this.jobIncome);
+    console.log(this.jobName);
+    console.log(this.jobWorkload);
     let List = {
-      id: null,
-      type: null,
-      nodeId: '',
-      isLp: null,
-      isHuat: null,
-      isTiaot: null,
-      isDatika: null,
-      isHouqi: null,
-      multiple: null,
-      unit: ''
+      jobIncome: null,
+      jobWorkload: null,
+      jobName: ''
     };
-    if(!this.findNodeOfZzbListCode){
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入流程节点'});
+    if(!this.jobIncome){
+      this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入等级工资'});
       return ;
     }
-    if(!this.multiple){
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入倍数'});
-      return ;
-    }
-    if(!this.unit){
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请选择单位'});
-      return ;
-    }
-    List.id = this.P.id;
-    List.type = +this.P.type;
-    List.nodeId = this.findNodeOfZzbListCode.nodeId;
-    List.isLp = Number(this.isLp);
-    List.isHuat = Number(this.isHuat);
-    List.isTiaot = Number(this.isTiaot);
-    List.isDatika = Number(this.isDatika);
-    List.isHouqi = Number(this.isHouqi);
-    List.multiple = +this.multiple;
-    List.unit = this.unit;
 
-    this.PostService.addUpdateNode(List).then(res => {
+    if(!this.jobName){
+      this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入等级名称'});
+      return ;
+    }
+
+    if(!this.jobWorkload){
+      this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入等级工作量'});
+      return ;
+    }
+    
+    List.jobIncome = +this.jobIncome;
+    List.jobWorkload = +this.jobWorkload;
+    List.jobName = this.jobName;
+    this.PostService.addUpdateJoblv(List).then(res => {
       if (res.code == 0) {
         this.change.emit();
         this.hideChildModal();
       } else {
         this.msgs.push({severity:'error', summary:'错误提示', detail:res.msg});
       }
-    });
+    })
   }
 }

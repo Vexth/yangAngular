@@ -41,6 +41,9 @@ export class RyjndjComponent implements OnInit{
   // joblvListId 技能等级
   joblvListId: number = 0;
 
+  pageNum: number = 1;
+  pageSize: number = 10;
+
   constructor(
     @Inject(GetList) getList: GetList, 
     @Inject('title') private titleService, 
@@ -70,7 +73,9 @@ export class RyjndjComponent implements OnInit{
     let nameList = {
       flag: Number(this.flag),
       level: this.level,
-      name: this.name
+      name: this.name,
+      pageNum: this.pageNum,
+      pageSize: this.pageSize
     }
     this.GetList.jobList(nameList).then(res => {
       this.rows = res.pageSize;
@@ -88,10 +93,8 @@ export class RyjndjComponent implements OnInit{
 
   // 下拉修改数据
   change(itme){
-    console.log(itme)
     this.GetList.joblvList(this.joblvListId).then(res => res.joblvList.map(res => {
       if (res.job_name == itme.jobName) {
-        console.log(res.id)
         return res.id
       }
     })).then(res => {
@@ -107,6 +110,12 @@ export class RyjndjComponent implements OnInit{
         }
       })
     })
+  }
+
+  paginate(event){
+    this.pageSize = event.rows;
+    this.pageNum = event.page + 1;
+    this.search();
   }
 
   // 查询

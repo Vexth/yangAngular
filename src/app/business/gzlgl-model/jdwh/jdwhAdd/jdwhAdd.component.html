@@ -11,25 +11,25 @@
         <div class="ui-g">
           <div class="ui-g-4 jdwh-lable" style="color:red;">*流程节点：</div>
           <div class="ui-g-5">
-            <input type="text" name="" class="form-control" placeholder="流程节点...">
+            <input pInputText [(ngModel)]="name" [ngModelOptions]="{standalone: true}" type="text" name="" class="form-control" placeholder="流程节点...">
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-4 jdwh-lable">禁用/启用：</div>
           <div class="ui-g-5" style="line-height:34px;">
-            <span><input type="radio" value="1" name="is" class="tjgzl-check"></span>禁用
-            <span style="margin-left:10px;"><input type="radio" value="0" name="is" class="tjgzl-check"></span>启用
+            <span><input type="radio" value="1" name="true" class="tjgzl-check" [(ngModel)]="isLocked" [ngModelOptions]="{standalone: true}"></span>禁用
+            <span style="margin-left:10px;"><input type="radio" value="false" name="is" class="tjgzl-check" [(ngModel)]="isLocked" [ngModelOptions]="{standalone: true}"></span>启用
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-4 jdwh-lable">说明：</div>
           <div class="ui-g-5">
-            <textarea name="" class="mbwhadd-txt" cols="30" rows="10"></textarea>
+            <textarea pInputText name="" class="mbwhadd-txt" cols="30" rows="10" [(ngModel)]="statement" [ngModelOptions]="{standalone: true}"></textarea>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-info" (click)="save()">确定</button>
+        <button type="button" class="btn btn-info" (click)="emitjdwhAdd($event)">确定</button>
         <button type="button" class="btn btn-default" (click)="jdwhaddHide()">关闭</button>
       </div>
     </div>

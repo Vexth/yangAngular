@@ -98,7 +98,7 @@ export class JsszopenComponent implements OnInit {
       this.P.id = dataItem[0].id;
       this.P.type = dataItem[0].type;
       this.P.nodeId = dataItem[0].nodeId;
-      this.findNodeOfZzbListCode = dataItem[0].nodeId;
+      this.findNodeOfZzbListCode = dataItem[0].name;
 
       this.P.isLp = dataItem[0].isLp;
       dataItem[0].isLp === true ? (this.isLp = true) : (this.isLp = false)

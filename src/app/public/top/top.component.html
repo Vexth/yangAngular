@@ -2,9 +2,9 @@
   <!-- Logo -->
   <a routerLink="/business/A1" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
-    <span class="logo-mini"><b>An</b></span>
+    <span class="logo-mini"><b>JTY</b></span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg"><b>Angular4后台管理系统</b></span>
+    <span class="logo-lg"><b>工作量管理系统</b></span>
   </a>
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar navbar-static-top">
@@ -20,12 +20,13 @@
       <ul class="nav navbar-nav">
 
         <li class="dropdown user user-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <!-- <button type="button" class="btn btn-flat" (click)="retreat($event)">退出登录</button> -->
+          <a (click)="onClick_logout()" role="button">退出登录</a>
+          <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="../../assets/img/user2-160x160.jpg" class="user-image" alt="User Image">
             <span class="hidden-xs">Vexth</span>
-          </a>
-          <ul class="dropdown-menu">
-            <!-- User image -->
+          </a> -->
+          <!-- <ul class="dropdown-menu">
             <li class="user-header">
               <img src="../../assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
@@ -34,7 +35,6 @@
                 <small>2017年8月</small>
               </p>
             </li>
-            <!-- Menu Body -->
             <li class="user-body">
               <div class="row">
                 <div class="col-xs-4 text-center">
@@ -47,9 +47,7 @@
                   <a href="#">朋友信息</a>
                 </div>
               </div>
-              <!-- /.row -->
             </li>
-            <!-- Menu Footer-->
             <li class="user-footer">
               <div class="pull-left">
 
@@ -58,7 +56,7 @@
                 <a class="btn btn-default btn-flat" (click)="onClick_logout()">退出登录</a>
               </div>
             </li>
-          </ul>
+          </ul> -->
         </li>
         <!-- Control Sidebar Toggle Button -->
 

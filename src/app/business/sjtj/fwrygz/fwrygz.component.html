@@ -1,0 +1,51 @@
+<!-- <div class="wrapper">
+    <app-top></app-top>
+    <app-treeview treemodule="sjtj" treeitem="fwrygz" ></app-treeview> -->
+<div class="content-wrapper">
+    <app-navigation Showtitle="工作量管理" Subtitle="发外工资管理" Web="工作量管理系统" Module="数据统计" Page="发外工资管理"></app-navigation>
+
+    <section class="content" id="content">
+        <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+            <p-footer>
+                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+            </p-footer>
+        </p-confirmDialog>
+        <div class="row">
+            <div class="col-xs-2">
+                <label class="control-label">期间：</label>
+                <div class="controls">
+                    <p-calendar [locale]="zh" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="bearDate" dateFormat="yy-mm"
+                        [maxDate]="maxDate"></p-calendar>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <label class="control-label">人员：</label>
+                <div class="controls">
+                    <input [(ngModel)]="findUserListId" type="text" placeholder="请输入人员或工号" />
+                    <button style="margin-left: 5px;margin-top: -3px;" type="button" class="btn btn-success" (click)="query()">查询</button>
+                </div>
+                
+            </div>
+        </div>
+        <div class="button-content">
+            <button type="button" class="btn btn-success" (click)="tongjiWaiWages()">计算</button>
+            <button type="button" class="btn btn-danger" (click)="lockWaiWages()">完结</button>
+            <button type="button" class="btn btn-primary">导出</button>
+        </div>
+
+        <div style="_height:100%;min-height:100%;">
+            <div class="tab"></div>
+            <p-dataTable [responsive]="true" [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
+                <p-column field="pay_year_month" header="统计时间"></p-column>
+                <p-column field="no" header="工号"></p-column>
+                <p-column field="name" header="人员"></p-column>
+                <p-column field="sum_money" header="工资"></p-column>
+            </p-dataTable>
+            <p-paginator rows="{{rows}}" totalRecords="{{pageLinks}}" (onPageChange)="paginate($event)" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
+        </div>
+    </section>
+</div>
+<!-- <app-footer></app-footer>
+</div> -->

@@ -1,40 +1,139 @@
-<div class="c-content-inner">
-    <div class="row">
-        <div class="col-md-12">
-            <p class="c-line-title">示例</p>
-            <div class="row c-mt15">
-                <div class="col-md-6">
-                    <c-ztree #ztreeInstance [setting]="setting" [zNodes]="nodes"></c-ztree>
+
+    <div class="content-wrapper">
+        <app-navigation Showtitle="工作量管理" Subtitle="查看工作量" Web="工作量管理系统" Module="工作量管理" Page="查看工作量"></app-navigation>
+    
+        <section class="content" id="content">
+            <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
+            <!-- <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+                <p-footer>
+                    <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+                    <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+                </p-footer>
+            </p-confirmDialog> -->
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="control-label">稿件名称：</label>
+                    <div class="controls">
+                        <input [(ngModel)]="filesTreeId" (focus)="onFocus();" style="width: 90%;" placeholder="请选择稿件名称" type="text" value="" />
+                        <p-tree class="pTree" *ngIf="hide != 0"  [style]="{'width':'100%','max-height': '400px','overflow': 'auto'}" [value]="filesTree" selectionMode="single" [(selection)]="selectedFile"
+                            (onNodeSelect)="nodeSelect($event)">
+                        </p-tree>
+                    </div>
                 </div>
             </div>
-            <div class="row c-mt15">
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-danger" (click)="getCheckedData()">获得数据</button>
+            <div class="row">
+                <div class="col-xs-2">
+                    <label class="control-label">流程节点：</label>
+                    <div class="controls">
+                        <select [(ngModel)]="findNodeOfZzbId">
+                            <option value="">-- 请选择 --</option>
+                            <option *ngFor="let item of findNodeOfZzbList" value="{{item.nodeId}}">{{item.nodeName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <label class="control-label">人员：</label>
+                    <div class="controls">
+                        <select [(ngModel)]="findUserListId">
+                            <option value="">-- 请选择 --</option>
+                            <option *ngFor="let item of findUserList" value="{{item.id}}">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <label class="control-label">接收日期：</label>
+                    <div class="controls">
+                        <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="emptyList.stime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <label class="control-label">结束时间：</label>
+                    <div class="controls">
+                        <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="结束时间" [(ngModel)]="emptyList.etime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="control-label">计算状态：</label>
+                    <div class="controls">
+                        <select [(ngModel)]="statu">
+                            <option selected="selected" value="-1">全部</option>
+                            <option value="0">未审核</option>
+                            <option value="1">已审核</option>
+                            <option value="2">已完结</option>
+                        </select>
+                    </div>
+                    <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
                 </div>
             </div>
-            <div class="row c-mt15">
-                <div class="col-md-6">
-                    <c-select-ztree [setting]="setting2" [zNodes]="nodes2" (onApprove)="onApprove($event)"></c-select-ztree>
-                </div>
+            <div class="button-content">
+                <button type="button" class="btn btn-primary" (click)="dellList(dt.exportCSV())">导出</button>
             </div>
-            <div class="row c-mt15">
-                <div class="col-md-6">
-                    <c-select-ztree [setting]="setting3" [zNodes]="nodes3"></c-select-ztree>
-                </div>
+    
+            <div style="_height:100%;min-height:100%;">
+                <div class="tab"></div>
+                <p-dataTable #dt [responsive]="true" [rows]="10" [paginator]="true" [pageLinks]="20" [rowsPerPageOptions]="[5,10,20]"
+                [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
+                <p-headerColumnGroup>
+                    <p-row>
+                        <p-column [style]="{'width':'35px'}" selectionMode="multiple" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'300px'}" header="稿件名称" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'100px'}" header="流程节点" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'90px'}" header="接收时间" rowspan="3"></p-column>
+                        <p-column [style]="{'width':'90px'}" header="结束时间" rowspan="3"></p-column>
+                    </p-row>
+                    <p-row>
+                        <p-column header="人员" colspan="2"></p-column>
+                        <p-column header="工作量" colspan="5"></p-column>
+                        <p-column header="画图数" rowspan="3"></p-column>
+                        <p-column header="调图数" rowspan="3"></p-column>
+                        <p-column header="答题卡数" rowspan="3"></p-column>
+                        <p-column header="工作量" rowspan="3"></p-column>
+                        <p-column header="状态" rowspan="3"></p-column>
+                    </p-row>
+                    <p-row>
+                        <p-column header="工号"></p-column>
+                        <p-column header="姓名"></p-column>
+                        <p-column header="数量"></p-column>
+                        <p-column header="单位"></p-column>
+                        <p-column header="倍数"></p-column>
+                        <p-column header="修改量"></p-column>
+                        <p-column header="页码量"></p-column>
+                    </p-row>
+                </p-headerColumnGroup>
+    
+                <p-column selectionMode="multiple"></p-column>
+                <p-column field="workName" header="稿件名称"></p-column>
+                <p-column field="nodeName" header="流程节点"></p-column>
+                <p-column field="stime" header="开始时间">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <p>{{ car[col.field] | date:'yyyy-MM-dd' }}</p>
+                    </ng-template>
+                </p-column>
+                <p-column field="etime" header="结束时间">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <p>{{ car[col.field] | date:'yyyy-MM-dd' }}</p>
+                    </ng-template>
+                </p-column>
+                <p-column field="empNo" header="工号"></p-column>
+                <p-column field="userName" header="姓名"></p-column>
+                <!-- <p-column field="check_danwei_count" header="数量"></p-column> -->
+                <p-column field="check_danwei_count" header="数量"></p-column>
+                <p-column field="check_dawei" header="单位"></p-column>
+                <p-column field="multiple" header="倍数"></p-column>
+                <p-column field="check_xg_count" header="修改量"></p-column>
+                <p-column field="check_yema_count" header="页码量"></p-column>
+                <p-column field="check_ht_count" header="画图数"></p-column>
+                <p-column field="check_tt_count" header="调图数"></p-column>
+                <p-column field="check_dtk_count" header="答题卡数"></p-column>
+                <p-column field="check_calc_workload" header="工作量"></p-column>
+                <p-column field="check_statu" header="状态">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <div *ngIf="car[col.field] == 0" >未审核</div>
+                        <div *ngIf="car[col.field] == 1" >已审核</div>
+                        <div *ngIf="car[col.field] == 2" >已完结</div>
+                    </ng-template>
+                </p-column>
+            </p-dataTable>
             </div>
-            <div class="row c-mt15">
-                <div class="col-md-6">
-                    <c-select-ztree [setting]="setting4" [enableSearch]="false"></c-select-ztree>
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="c-mt15">
-                <p class="c-line-title">说明</p>
-                使用ztree进行封装，具体使用请参考：http://www.treejs.cn/v3/main.php#_zTreeInfo
-            </div>
-        </div>
-    </div>
-</div>

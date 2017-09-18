@@ -1,11 +1,14 @@
 import {Component, OnInit, Inject, ViewChild ,Injectable} from '@angular/core';
+import { ModalformComponent } from '../../../common/component/modalform/modalform.component';
 
-import {CalendarModule,DataTableModule,SharedModule,TreeTableModule,TreeNode} from 'primeng/primeng';
 import { Auxiliary } from '../../../common/constants/auxiliary';
-import { GrowlModule,Message,ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';//右上角提示框组件，删除对话框
+import { Message,ConfirmationService} from 'primeng/primeng';//右上角提示框组件，删除对话框
 
 import { jdwhaddComponent } from './jdwhAdd/jdwhAdd.component';
 import { jdwhbjComponent } from './jdwhAdd/jdwhBj.component';
+
+import { JdwhList } from '../../../module/business/getlist';
+import { GetList } from '../../services/getlist';
 
 @Component({
   selector: 'app-jdwh',
@@ -13,35 +16,84 @@ import { jdwhbjComponent } from './jdwhAdd/jdwhBj.component';
   styleUrls: ['./jdwh.component.css'],
 })
 export class JdwhComponent implements OnInit {
-  comIdList:any = [
-    {id: 1, name: '公司A'},
-    {id: 2, name: '公司B'},
-    {id: 3, name: '公司C'},
-    {id: 4, name: '公司D'},
-    {id: 5, name: '公司E'},
-    {id: 6, name: '公司F'},
-  ];
-  es: any;
-  invalidDates: Array<Date>;
-  startData: Date;
-  endData: Date;//时间选择组件
-  comId:string = '';//单选下拉框
+  P:JdwhList = new JdwhList();
+  nodeList: any;
+  private GetList: GetList;
 
+  pageSize:any = 10;
+  pageNum:any = 1;
+  total:any = 10;
+
+  pageLinks:any;//
+  selected: any = {};//表格选中数据
+  msgs: Message[] = [];
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
+    this.getFormDataList();
   }
-  constructor(private confirmationService: ConfirmationService) {
-    
+  constructor(private confirmationService: ConfirmationService,@Inject(GetList) getList: GetList) {
+    this.P['nodeList'] = this.nodeList;
+    this.GetList = getList;
+  }
+
+  //获取列表数据
+  name:any;
+  isLocked:any = "";
+  getFormDataList() {
+    let optsData = {
+      pageNum:"",pageSize:"",name:"",isLocked:""
+    };
+    optsData.pageNum = this.pageNum;
+    optsData.pageSize = this.pageSize;
+    optsData.name = this.name?this.name:"";
+    optsData.isLocked = this.isLocked?this.isLocked:"";
+
+    this.GetList.jdwhDataList(optsData).catch(res => {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    }).then(res => {
+      if(res.nodeList) {
+        for(let i = 0 ; i < res.nodeList.length; i++) {
+          res.nodeList[i]['number'] = "LC"+res.nodeList[i].id;
+          if(res.nodeList[i].isLocked == false) {
+            res.nodeList[i]['isLockedName'] = '已启用';
+          }else{
+            res.nodeList[i]['isLockedName'] = '已禁用';
+          }
+        }
+      }
+      this.P = res;
+      this.pageSize = res.pageSize;
+      this.pageNum = res.pageNum;
+      this.total = res.totalCount;
+      console.log(res);
+    });
+  }
+  paginate(event){
+    this.pageSize = event.rows;
+    this.pageNum = event.page + 1;
+    this.getFormDataList();
   }
 
   // ===========================
+  public jdwhAddChange():void{
+    this.clearOpts();
+  }
+  public jdwhBJChange():void{
+    this.clearOpts();
+  }
+
   // 搜索
   refresh() {
-    console.log("a");
+    console.log(!!this.P.isLocked);
+    this.getFormDataList();
   }
   // 重置
   clearOpts() {
-    console.log("c");
+    this.name = "";this.isLocked = "";
+    this.selected = {};
+    this.getFormDataList();
   }
 
   //新增
@@ -53,6 +105,11 @@ export class JdwhComponent implements OnInit {
   //编辑
   @ViewChild('jdwhBj') public jdwhBj:jdwhbjComponent;
   edit() {
-    this.jdwhBj.jdwhbjShow();
+    if(!this.selected||!this.selected.id) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择需要编辑的数据"}];
+      return;
+    }
+    this.jdwhBj.jdwhbjShow(this.selected);
   }
 }

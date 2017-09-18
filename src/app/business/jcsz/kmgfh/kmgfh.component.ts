@@ -34,6 +34,8 @@ export class KmgfhComponent implements OnInit{
   rows: number;
   pageLinks: number;
 
+  text: string;
+
   constructor(
     @Inject(GetList) getList: GetList, 
     @Inject('title') private titleService, 
@@ -59,7 +61,12 @@ export class KmgfhComponent implements OnInit{
 
   // 获取数据填充表格
   crList(){
-    this.GetList.crList(this.name).then(res => {
+    let list = {
+      name: this.name,
+      pageNum: 1,
+      pageSize: 20000
+    }
+    this.GetList.crList(list).then(res => {
       this.rows = res.pageSize;
       this.pageLinks = res.totalCount;
       this.dataList = res.nodeList;
@@ -95,8 +102,8 @@ export class KmgfhComponent implements OnInit{
   }
 
   // 搜索
-  search (name: string) {
-    this.name = name;
+  search () {
+    this.name = this.text;
     this.crList();
   }
 }

@@ -7,15 +7,16 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./top.component.css']
 })
 export class TopComponent implements OnInit {
-
   constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
   onClick_logout() {
-    sessionStorage.removeItem('userId');
-    this.router.navigate(['/public/login']);
+    sessionStorage.removeItem('key');
+    sessionStorage.removeItem('vexth');
+    history.go(0);
+    // this.router.navigate(['/']);
   }
 
 }

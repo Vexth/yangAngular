@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ModalModule } from 'ngx-bootstrap/modal';
+// import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule, AccordionModule, ButtonsModule, TypeaheadModule } from 'ngx-bootstrap';
 
 import { BusinessModule } from './business/business.module';
@@ -14,7 +14,7 @@ import { PublicModule } from './public/public.module';
 import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app.routing.module';
 import { HashLocationStrategy,LocationStrategy} from '@angular/common';
-import { CommonFunctionModule } from './common/common.function.module';
+// import { CommonFunctionModule } from './common/common.function.module';
 
 import { AutoCompleteModule } from 'primeng/primeng';
 
@@ -26,7 +26,7 @@ import { AutoCompleteModule } from 'primeng/primeng';
     BrowserModule,
     FormsModule,
     HttpModule,
-    ModalModule.forRoot(),
+    // ModalModule.forRoot(),
     AlertModule.forRoot(),
     AccordionModule.forRoot(),
     ButtonsModule.forRoot(),
@@ -36,7 +36,7 @@ import { AutoCompleteModule } from 'primeng/primeng';
     BusinessModule,
     AppRoutingModule,
     CoreModule,
-    CommonFunctionModule,
+    // CommonFunctionModule,
     AutoCompleteModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],

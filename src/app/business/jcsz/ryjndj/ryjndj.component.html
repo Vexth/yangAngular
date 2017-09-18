@@ -1,12 +1,15 @@
+<!-- <div class="wrapper">
+    <app-top></app-top>
+    <app-treeview treemodule="jcsz" treeitem="ryjndj" ></app-treeview> -->
 <div class="content-wrapper">
     <app-navigation Showtitle="基础设置" Subtitle="人员技能等级" Web="工作量管理" Module="基础设置" Page="人员技能等级"></app-navigation>
 
     <section class="content" id="content">
-        <p-growl [(value)]="msgs"></p-growl>
+        <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
         <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
             <p-footer>
-                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
                 <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
             </p-footer>
         </p-confirmDialog>
         <div class="button-content">
@@ -18,9 +21,9 @@
             <div class="colSelect">
                 <label [ngStyle]="{'margin-top': '8px'}">技能等级：</label>
                 <select [(ngModel)]="level">
-                    <option value="-1">全部</option>
-                    <option *ngFor="let item of findCourseList" value="{{item.valueName.id}}" >{{item.label}}</option>
-                </select>
+                        <option value="-1">全部</option>
+                        <option *ngFor="let item of findCourseList" value="{{item.valueName.id}}" >{{item.label}}</option>
+                    </select>
             </div>
             <div class="colSelect">
                 <p-checkbox [(ngModel)]="flag" binary="true"></p-checkbox>
@@ -32,8 +35,7 @@
         <div style="_height:100%;min-height:100%;">
             <div class="tab"></div>
 
-            <p-dataTable [responsive]="true" [rows]="rows" [paginator]="true" [pageLinks]="pageLinks" [rowsPerPageOptions]="[5,10,20]"
-                [value]="dataList" [editable]="true" [style]="{'width': '100%','text-align':'center'}">
+            <p-dataTable [responsive]="true" [value]="dataList" [editable]="true" [style]="{'width': '100%','text-align':'center'}">
                 <p-column field="name" header="人员" [style]=" {'height': '35px' }"></p-column>
                 <p-column field="empNo" header="工号"></p-column>
                 <p-column field="jobName" header="技能等级" [editable]="true">
@@ -45,6 +47,9 @@
                 <p-column field="jobIncome" header="等级工资"></p-column>
                 <p-column field="jobWorkload" header="等级工作量"></p-column>
             </p-dataTable>
+            <p-paginator rows="{{rows}}" totalRecords="{{pageLinks}}" (onPageChange)="paginate($event)" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
         </div>
     </section>
 </div>
+<!-- <app-footer></app-footer>
+</div> -->

@@ -1,8 +1,10 @@
 import {Component, OnInit, Inject, ViewChild ,Injectable} from '@angular/core';
+// import { DatePipe } from '@angular/common';//日期格式化
 
-import {CalendarModule,DataTableModule,SharedModule} from 'primeng/primeng';
 import { Auxiliary } from '../../../common/constants/auxiliary';
-import { GrowlModule,Message,ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';//右上角提示框组件，删除对话框
+import { Message,ConfirmationService} from 'primeng/primeng';//右上角提示框组件，删除对话框
+
+import { GetList } from '../../services/getlist';
 
 @Component({
   selector: 'app-lzcx',
@@ -10,32 +12,90 @@ import { GrowlModule,Message,ConfirmDialogModule,ConfirmationService} from 'prim
   styleUrls: ['./lzcx.component.css'],
 })
 export class LzcxComponent implements OnInit {
-  comIdList:any = [
-    {id: 1, name: '公司A'},
-    {id: 2, name: '公司B'},
-    {id: 3, name: '公司C'},
-    {id: 4, name: '公司D'},
-    {id: 5, name: '公司E'},
-    {id: 6, name: '公司F'},
-  ];
+  private GetList: GetList;
+  
   es: any;
   invalidDates: Array<Date>;
-  startData: Date;
-  endData: Date;//时间选择组件
-  comId:string = '';//单选下拉框
+  pageNum:any = 1;//当前页
+  pageSize:any = 10;//每页条数
+  total:any = 10;//总条数
+  beginDate: any;
+  endDate: any;//时间选择组件
+  nodeId:any = "";//流程节点
+  departmentId:any = "";//所属部门
+  documentName:any;//稿件名称
+  username:any;//人员
+  // id:number;//数据id
   isadSearch:number = 0;//判断是否展示高级搜索模块
+  optsList:any = [];//存放搜索下拉数据字典
+  tableList:any = [];//存放表格数据
+  rows:any = 10;//分页
+  selected: any = [];//表格选中数据
+
+  cars:any[];
 
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
+    this.GetList.lzcxOpts().catch(res => {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
+      return;
+    }).then(res => {
+      this.optsList = res;
+      console.log(this.optsList);
+    });
+    this.getTableList();
   }
-  constructor(private confirmationService: ConfirmationService) {
-    
+  constructor(@Inject(GetList) getList: GetList,private confirmationService: ConfirmationService) {
+    this.GetList = getList;
   }
 
+  //获取表格数据
+  getTableList() {
+    let optsData = {
+      documentName:"",username:"",nodeId:"",departmentId:"",beginDate:"",endDate:"",pageNum:"",pageSize:""
+    }
+    optsData.documentName = this.documentName?this.documentName:"";
+    optsData.username = this.username?this.username:"";
+    optsData.nodeId = this.nodeId?this.nodeId:"";
+    optsData.departmentId = this.departmentId?this.departmentId:"";
+    optsData.beginDate = this.beginDate?this.getFormetDate(this.beginDate):"";
+    optsData.endDate = this.endDate?this.getFormetDate(this.endDate):"";
+    optsData.pageNum = this.pageNum?this.pageNum:"";
+    optsData.pageSize = this.pageSize?this.pageSize:"";
+    console.log(optsData);
+    this.GetList.lzcxDataList(optsData).catch(res => {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
+      return;
+    }).then(res => {
+      this.tableList = res;
+      this.pageSize = res.pageSize;
+      this.pageNum = res.pageNum;
+      this.total = res.totalCount;
+      console.log(res);
+    });
+  }
+  paginate(event) {
+    this.pageSize = event.rows;
+    this.pageNum = event.page + 1;
+    this.getTableList();
+  }
+  //格式化日期
+  getFormetDate(time:any) {
+    // const formatDate = ( time: any ) => {
+      const Dates = new Date( time );
+      const year: number = Dates.getFullYear();
+      const month: any = ( Dates.getMonth() + 1 ) < 10 ? '0' + ( Dates.getMonth() + 1 ) : ( Dates.getMonth() + 1 );
+      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+      console.log(year + '-' + month + '-' + day);
+      return year + '-' + month + '-' + day;
+    // };
+  }
   // ===========================
   // 搜索
   refresh() {
-    console.log("a");
+    this.getTableList();
   }
   // 高级搜索
   adSearch():void {
@@ -47,25 +107,55 @@ export class LzcxComponent implements OnInit {
   }
   // 重置
   clearOpts() {
-    console.log("c");
+    this.documentName = "";
+    this.username = "";
+    this.nodeId = "";
+    this.departmentId = "";
+    this.beginDate = "";
+    this.endDate = "";
+    this.pageNum = "";
+    this.pageSize = "";
+    this.getTableList();
   }
   // 取消
   cancel() {
     this.isadSearch = 0;
   }
+  // Date.prototype.toLocaleString = function() {
+  //   return this.getFullYear() + "/" + (this.getMonth() + 1) + "/" + this.getDate() + "/ " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+  // };
   //删除
   msgs: Message[] = [];
   delete() {
+    if(this.selected.length == 0) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择要删除的项'}];
+      return;
+    }
     this.confirmationService.confirm({
       message: '删除后无法恢复！',
       header: '你确定删除吗？',
       icon: 'fa fa-question-circle',
       accept: () => {
-          this.msgs = [{severity:'success', summary:'成功提示', detail:'删除成功'}];
+        let deleteList = [];
+        for(let i = 0; i < this.selected.length; i++){
+          deleteList.push(this.selected[i].id);
+        }
+        this.GetList.lzcxDataList(deleteList).catch(res => {
+          this.msgs = [];
+          this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+          return;
+        }).then(res => {
+          if(res.code == 0) {
+            this.getTableList();
+            this.msgs = [{severity:'success', summary:'成功提示', detail:'删除成功'}];
+          }
+        })
       },
       reject: () => {
           // this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
       }
   });
   }
+  
 }

@@ -1,0 +1,68 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">新增模板</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="mbwhchangeHide()">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="ui-g CborderTLR XborderB">
+                <div class="ui-g-2 XborderR mbwhadd-h mbwhadd-c">模板编号:</div>
+                <div class="ui-g-4 MborderR mbwhadd-c mbwhadd-h">{{modelName}}</div>
+                <div class="ui-g-3 XborderR mbwhadd-c mbwhadd-h">名称:</div>
+                <div class="ui-g-3 mbwhadd-c mbwhadd-h">
+                  <input type="text" name="" [(ngModel)]="postData.name" class="mbwhadd-ipt" placeholder="请输入名称...">
+                </div>
+              </div>
+          <div class="ui-g CborderLR XborderB">
+            <div class="ui-g-2 XborderR mbwhadd-h mbwhadd-c">模板状态：</div>
+            <div class="ui-g-4 MborderR mbwhadd-c mbwhadd-h">
+                <span><input type="radio" value="true" name="isV1" [(ngModel)]=postData.isBaned></span>锁定
+                <span style="margin-left:10px;"><input type="radio" value="false" name="isV1" [(ngModel)]=postData.isBaned></span>不锁定
+            </div>
+            <div class="ui-g-3 XborderR mbwhadd-c mbwhadd-h">所属部门：</div>
+            <div class="ui-g-3 mbwhadd-c mbwhadd-h">{{postData.departmentName}}</div>
+          </div>
+          <div class="ui-g CborderLR MborderB">
+            <div class="ui-g-2 XborderR mbwhadd-c mbwhadd-h">适用于：</div>
+            <div class="ui-g-4 MborderR mbwhadd-c mbwhadd-h">
+                <select class="form-control mbwhSelect" [(ngModel)]="postData.type" (ngModelChange)="postData.type=$event;" [ngModelOptions]="{standalone: true}" name="typeId">
+                    <option value="">--请选择--</option>
+                    <option [value]="c.optionName" *ngFor="let c of optTypeList">{{c.optionName}}</option>
+                  </select>
+            </div>
+            <div class="ui-g-3 XborderR mbwhadd-c mbwhadd-h">是否按页码计算工作量：</div>
+            <div class="ui-g-3 mbwhadd-c mbwhadd-h">
+                <span><input type="radio" value="true" name="is1V1" [(ngModel)]="postData.isPagenum" ></span>是
+                <span style="margin-left:10px;"><input type="radio" value="false" name="is1V1" [(ngModel)]="postData.isPagenum"></span>否
+            </div>
+          </div>
+          <div class="ui-g CborderLR MborderB">
+            <div class="ui-g-2 mbwhadd-c mbwhadd-h">节点工作量：</div>
+            <div class="ui-g-12 szgzl-box">
+              <div class="div1" *ngFor="let c of postData.nodeworkloads">
+                <div class="div1_2">{{c.nodeName}}</div>
+                <!-- <div class="div1_3">{{c.workload}}</div> -->
+                <div class="div1_3">
+                  <input type="text" value="{{c.workload}}" [(ngModel)]="c.workload">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui-g CborderBLR">
+            <div class="ui-g-3 mbwhadd-c mbwhadd-hx XborderR" style="height:100px;">备注：</div>
+            <div class="ui-g-9 mbwhadd-h">
+             <textarea class="mbwhadd-txt" [(ngModel)]="postData.statement" placeholder="请输入备注（200字符以内）" maxlength="200"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" (click)="emitmbwhEdit($event)">确定</button>
+          <button type="button" class="btn btn-default" (click)="mbwhchangeHide()">关闭</button>
+        </div>
+      </div>
+    </div>
+</div>
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>

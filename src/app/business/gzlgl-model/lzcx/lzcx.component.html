@@ -31,21 +31,21 @@
                     <td style="text-align:right;"><label style="margin-bottom:0px;">稿件名称：</label></td>
                     <td>
                       <div class="jtyjy-search-text">
-                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="稿件名称...">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="稿件名称..." [(ngModel)]="documentName">
                       </div>
                     </td>
                     <td style="text-align:right;"><label style="margin-bottom:0px;">人员：</label></td>
                     <td>
                       <div class="jtyjy-search-text">
-                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="人员...">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="人员..." [(ngModel)]="username">
                       </div>
                     </td>
                     <td style="text-align:right;"><label style="margin-bottom:0px;">流程节点：</label></td>
                     <td>
                       <div class="jtyjy-search-text" style="width:100%;">
-                          <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1" placeholder="所属部门">
+                          <select class="form-control" [(ngModel)]="nodeId" name="nodeId">
                               <option value="">--请选择--</option>
-                              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              <option [value]="c.optionId" *ngFor="let c of optsList.optNode">{{c.optionName}}</option>
                           </select>
                       </div>
                     </td>
@@ -75,47 +75,25 @@
                             <col width="180"/>
                           </colgroup>
                           <tr class="cpwh-flex">
-                              <td>
-                                  <label>人员：</label>
-                                  <div style="display:inline-block; max-width:108px;">
-                                      <input type="text" class="form-control" placeholder="人员...">
-                                  </div>
-                              </td>
                             <td>
                                 <label>所属部门：</label>
                                 <div style="display:inline-block;">
-                                    <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+                                    <select class="form-control" [(ngModel)]="departmentId" name="departmentId">
                                         <option value="">--请选择--</option>
-                                        <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                                        <option [value]="c.jtyId" *ngFor="let c of optsList.departments">{{c.name}}</option>
                                     </select>
                                 </div>
                             </td>
-                            <td>
-                              <label>稿件名称：</label>
-                              <div style="display:inline-block;max-width:108px;">
-                                  <input type="text" class="form-control" placeholder="稿件名称...">
-                              </div>        
-                            </td>
-                            <td>
-                                <label>流程节点：</label>
-                                <div style="display:inline-block;">
-                                  <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
-                                    <option value="">--请选择--</option>
-                                    <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
-                                  </select>
-                                </div>
-                            </td>
-                          </tr>
-                          <tr>
                             <td colspan="2">
                               <label style="margin-left:42px;">接收时间：</label>
                               <div style="display:inline-block;margin: 5px 0;">
-                                  <p-calendar [(ngModel)]="startData" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100"></p-calendar>
+                                  <p-calendar [(ngModel)]="beginDate" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100" placeholder="开始时间"></p-calendar>
                                   <span style="margin-left:35px"></span>
                               </div>
-                              <label>至</label>
+                              <!-- <label>至</label> -->
+                              --
                               <div style="display:inline-block;">
-                                  <p-calendar [(ngModel)]="endData" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100"></p-calendar>
+                                  <p-calendar [(ngModel)]="endDate" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100" placeholder="结束时间"></p-calendar>
                                   <span style="margin-left:35px"></span>
                               </div>
                             </td>
@@ -143,21 +121,30 @@
               <!-- 表格 -->
               <!-- [itemFormatter]="itemFormatter" -->
               <!-- <div class="well well-lg"> -->
-                  <p-dataTable [value]="cars" [(selection)]="selectedCars3" dataKey="vin" [paginator]="true" 
-                  [rows]="10" [headerCheckboxToggleAllPages]="true" [rowsPerPageOptions]="[10,20,30]">
+                  <p-dataTable [value]="cars" [(selection)]="selected" [headerCheckboxToggleAllPages]="true">
                       <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
                       <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
-                      <p-column field="vin" header="Vin"></p-column>
-                      <p-column field="year" header="Year"></p-column>
-                      <p-column field="brand" header="Brand"></p-column>
-                      <p-column field="color" header="Color"></p-column>
+                      <p-column field="id" header="序号" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="documentName" header="稿件名称" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="nodename" header="流程节点" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="username" header="人员" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="departmentName" header="所属部门／中心" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="workload" header="工作量(天)" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="color" header="接收时间" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="year" header="结束时间" [style]="{'text-align':'center'}"></p-column>
                   </p-dataTable>
+                  <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>                  
               <!-- </div> -->
             </div>
           </div>
         </div>
-        <p-growl [(value)]="msgs"></p-growl>
-        <p-confirmDialog></p-confirmDialog>
+        <p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+            <p-footer>
+                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+            </p-footer>
+        </p-confirmDialog>
       </section>
     </div>
     <!-- <app-footer></app-footer>

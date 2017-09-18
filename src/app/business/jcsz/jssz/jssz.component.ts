@@ -20,7 +20,7 @@ import { Auxiliary } from '../../../common/constants/auxiliary';
 })
 export class JsszComponent implements OnInit{
   // 获取tab切换的值
-  private ListFindType: string[];
+  ListFindType: any[];
 
   private GetList: GetList;
   private PostService: PostService;

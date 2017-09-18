@@ -28,3 +28,8 @@
 .ui-datatable .ui-datatable-data tr td{text-align: center}
 
 .ui-growl{top: 70px;}
+
+.btn-cx{
+    margin-left: 10px;
+    margin-top: -5px;
+}

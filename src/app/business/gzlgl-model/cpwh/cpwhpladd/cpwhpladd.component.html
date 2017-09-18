@@ -10,7 +10,7 @@
         <div class="modal-body">
           <div class="row" style="margin:10px;">
             <div class="col-md-3" style="text-align:right;">产品名称：</div>
-            <div class="col-md-9">xxxxxxxxxxxxxxxxxxxxxxxx</div>
+            <div class="col-md-9">{{data.name}}</div>
           </div>
           <div class="row" style="line-height: 32px;margin:10px;">
             <div class="col-md-3" style="text-align:right;">
@@ -18,20 +18,22 @@
                稿件分类：
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="填写数量">
+              <input type="text" [(ngModel)]="quantity" class="form-control ng-pristine ng-valid ng-touched" placeholder="填写数量">
             </div>
             <div class="col-md-4">
-              <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1">
+              <select class="form-control" [(ngModel)]="typeName" (ngModelChange)="typeName=$event;" name="typeName">
                 <option value="">--请选择--</option>
-                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                <option value="章节">章节</option>
+                <option value="课节">课节</option>
               </select>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-info" (click)="save()">确定</button>
+          <button type="button" class="btn btn-info" (click)="emitCpwhPLadd($event)">确定</button>
           <button type="button" class="btn btn-default" (click)="cpwhgjaddHide()">关闭</button>
         </div>
       </div>
     </div>
 </div>
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>

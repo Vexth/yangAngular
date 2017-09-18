@@ -1,6 +1,8 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, OnDestroy } from '@angular/core';
 import { GetList } from '../../services/getlist';
 import { PostService } from '../../services/post.service';
+
+import {ActivatedRoute} from "@angular/router";
 
 import 'rxjs/add/operator/toPromise';
 // 导入表格组件
@@ -12,7 +14,7 @@ import { SpgzlopenComponent } from './spgzlopen/spgzlopen.component';
 // 获取页面高度
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
-import { ZtreeComponent } from '../../../public/ztree/ztree.component'
+// import { ZtreeComponent } from '../../../public/ztree/ztree.component';
 
 @Component({
   selector: 'app-spgzl',
@@ -20,11 +22,10 @@ import { ZtreeComponent } from '../../../public/ztree/ztree.component'
   styleUrls: ['./spgzl.component.css'],
   providers: [ConfirmationService]
 })
-export class SpgzlComponent implements OnInit {
-  @ViewChild('ztreeInstance') ztreeInstance: ZtreeComponent;
-
+export class SpgzlComponent implements OnInit,OnDestroy {
   private GetList: GetList;
   private PostService: PostService;
+  zh: any;
   pageNews: number[] = [];
   @ViewChild('spgzlopen') public spgzlopen: SpgzlopenComponent;
 
@@ -54,25 +55,32 @@ export class SpgzlComponent implements OnInit {
   // statu 计算状态
   statu: string = '-1';
   // findProductDoc	产品稿件树
-  findProductDoc: MenuItem[];
-  username: string;
+  filesTree: TreeNode[];
+  selectedFile: TreeNode;
+  filesTreeId: string;
+  // 下拉树显示隐藏
+  hide: number = 0;
 
   // rangeDates
   rangeDates: string;
+
+  private sub:any;
 
   constructor(
     @Inject(GetList) getList: GetList,
     @Inject('title') private titleService,
     private confirmationService: ConfirmationService,
-    @Inject(PostService) postService: PostService,
+    private _activatedRoute: ActivatedRoute,
+    @Inject(PostService) postService: PostService
   ) {
     this.GetList = getList;
     this.PostService = postService;
     this.titleService.setTitle("审批工作量");
   }
 
-  bindpage (name) {
-    this.GetList.workloadChecklist(name).then(res => {
+  bindpage (name: number): void {
+    this.GetList.workloadChecklist(this.emptyList).then(res => {
+      this.dataListCode = [];
       if (res.checkList != undefined) {
         this.dataList = res.checkList;
         this.rows = res.pageSize;
@@ -84,15 +92,42 @@ export class SpgzlComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.zh = {
+      firstDayOfWeek: 0,
+      dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+      dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      dayNamesMin: ["日","一","二","三","四","五","六"],
+      monthNames: [ "一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月" ],
+      monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+      today: 'Today',
+      clear: 'Clear'
+    };
+    this.sub = this._activatedRoute.queryParams.subscribe(queryParams=>{
+      console.log("queryParams参数:",queryParams);
+    })
     this.emptyList.statu = +this.statu;
-    this.bindpage(this.emptyList);
+    this.bindpage(0);
     this.GetList.findNodeOfZzb().then(res => this.findNodeOfZzbList = res);
     this.GetList.findUserList().then(res => this.findUserList = res);
-    this.GetList.findProductDoc().then(res => {
-      this.findProductDoc = res;
-      console.log(res)
-    });
+    this.GetList.findProductDoc().then(res => this.filesTree = res);
     Auxiliary.prototype.ControlHeight();
+  }
+  ngOnDestroy(){
+    this.sub.unsubscribe();
+  }
+  paginate(event){
+    this.emptyList.pageSize = event.rows;
+    this.emptyList.pageNum = event.page + 1;
+    this.bindpage(0);
+  }
+
+  formatDate (date) {  
+    let y = date.getFullYear();  
+    let m = date.getMonth() + 1;  
+    m = m < 10 ? '0' + m : m;  
+    let d = date.getDate();  
+    d = d < 10 ? ('0' + d) : d;  
+    return y + '-' + m + '-' + d;  
   }
 
   // 查询
@@ -101,29 +136,27 @@ export class SpgzlComponent implements OnInit {
     this.emptyList.nodeId = this.findNodeOfZzbId;
     this.emptyList.uId = this.findUserListId;
     this.emptyList.statu = +this.statu;
-    
-    this.bindpage(this.emptyList);
+    this.emptyList.stime = this.emptyList.stime == '' ? '' : this.formatDate(this.emptyList.stime);
+    this.emptyList.etime = this.emptyList.etime == '' ? '' : this.formatDate(this.emptyList.etime);
+
+    this.bindpage(0);
   }
 
   onFocus(){
-    this.username = 'text';
+    this.hide = 1;
   }
-  onBlur(){
-    this.username = '';
+  onHide(){
+    this.hide = 0;
+  }
+  nodeSelect(event):void{
+    this.filesTreeId = event.node.label;
+    this.emptyList.documentId = event.node.id;
+    this.onHide();
   }
 
   publicFunc (typeId, obj) {
     let ids, teleit, checkList;
     let newData = this.dataListCode;
-    if (obj == '审核') {
-      teleit = '只有未审核的数据才能被审核！';
-    } else if (obj == '退回') {
-      teleit = '只有已审核的数据才能被退回！';
-    } else if (obj == '删除') {
-      teleit = '只有未审核的数据才能被删除！';
-    } else {
-      return ;
-    }
     if (newData == undefined) {
       this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择你要'+ obj +'的数据！' });
       return ;
@@ -133,13 +166,21 @@ export class SpgzlComponent implements OnInit {
     } else {
       let arr = [];
       for (let i = 0; i < newData.length; i++) {
-        if (newData[i].check_statu != (typeId - 1)) { console.log(newData[i].check_statu)
-          this.msgs.push({ severity: 'error', summary: '错误提示', detail: teleit });
-          return ;
-        }
-        if(newData[i].check_statu == typeId || newData[i].check_statu == 3){
-          this.msgs.push({ severity: 'error', summary: '错误提示', detail: teleit });
-          return ;
+        if (obj == '审核') {
+          if (newData[i].check_statu != 0) {
+            this.msgs.push({ severity: 'error', summary: '错误提示', detail: '只有未审核的数据才能被审核！' });
+            return ;
+          }
+        } else if (obj == '退回') {
+          if (newData[i].check_statu != 1) {
+            this.msgs.push({ severity: 'error', summary: '错误提示', detail: '只有已审核的数据才能被退回！' });
+            return ;
+          }
+        } else if (obj == '删除') {
+          if (newData[i].check_statu != 0) {
+            this.msgs.push({ severity: 'error', summary: '错误提示', detail: '只有未审核的数据才能被删除！' });
+            return ;
+          }
         }
         arr.push(newData[i].id);
       }
@@ -162,6 +203,7 @@ export class SpgzlComponent implements OnInit {
           this.msgs = [{ severity: 'info', summary: '取消', detail: '取消成功' }];
         }
       });
+      this.dataListCode = [];
     }
   }
 
@@ -182,23 +224,30 @@ export class SpgzlComponent implements OnInit {
   }
 
   // 追加
-  add(): void {}
+  add(): void {
+    let dataItem = '追加';
+    this.spgzlopen.showChildModal(dataItem);
+  }
 
-  // 修改
+  // 调整
   public edit(): void {
     let flex = this.dataListCode;
-    if (flex.length === 0) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择你要修改的数据' });
+    if (flex === undefined) {
+      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择你要调整的数据' });
+    } else if (flex.length === 0) {
+      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择你要调整的数据' });
     } else if (flex.length > 1) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择一条数据进行修改' });
+      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择一条数据进行调整' });
+    } else if(flex[0].check_statu != 0){
+      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择未审核的数据进行调整' });
     } else {
       this.confirmationService.confirm({
-        message: '确定要修改此记录吗?',
-        header: '修改',
+        message: '确定要调整此记录吗?',
+        header: '调整',
         icon: 'fa fa-question-circle',
         accept: () => {
           this.spgzlopen.showChildModal(flex);
-          // this.msgs = [{severity:'info', summary:'成功', detail:'修改成功'}];
+          // this.msgs = [{severity:'info', summary:'成功', detail:'调整成功'}];
         },
         reject: () => {
           this.msgs = [{ severity: 'info', summary: '取消', detail: '取消成功' }];
@@ -206,7 +255,4 @@ export class SpgzlComponent implements OnInit {
       });
     }
   }
-
-  // 切换
-
 }

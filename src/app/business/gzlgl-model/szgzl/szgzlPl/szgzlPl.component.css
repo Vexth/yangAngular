@@ -2,3 +2,21 @@
   line-height: 34px;
   text-align: center;
 }
+.div1{
+  float: left;
+}
+.szgzl-box{
+  overflow-x: scroll;
+  height: 104px;
+  display: inline-flex;
+}
+.div1 div{
+  width: 135px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border: 1px solid #ccc;
+}
+.div1_2{
+  background-color: rgb(235, 239, 243);
+}

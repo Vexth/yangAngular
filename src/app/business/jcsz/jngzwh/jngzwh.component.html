@@ -1,41 +1,67 @@
+<!-- <div class="wrapper">
+    <app-top></app-top>
+    <app-treeview treemodule="jcsz" treeitem="jngzwh"></app-treeview> -->
 <div class="content-wrapper">
-    <app-navigation Showtitle="基础设置" Subtitle="计算设置" Web="工作量管理" Module="基础设置" Page="计算设置"></app-navigation>
+    <app-navigation Showtitle="基础设置" Subtitle="技能工资维护" Web="技能工资维护" Module="基础设置" Page="技能工资维护"></app-navigation>
 
     <section class="content" id="content">
-        <p-growl [(value)]="msgs"></p-growl>
-        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
-            <p-footer>
-                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
-                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
-            </p-footer>
-        </p-confirmDialog>
+        
         <div class="button-content">
             <div class="colSelect" style="margin: 0 0 15px 0;">
                 <label [ngStyle]="{'margin-top': '8px'}">启用状态：</label>
                 <select [(ngModel)]="level">
-                    <option value="-1">全部</option>
-                    <option value="0">启用</option>
-                    <option value="1">禁用</option>
-                </select>
+                        <option value="-1">全部</option>
+                        <option value="0">启用</option>
+                        <option value="1">禁用</option>
+                    </select>
             </div>
-            <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
+            <button type="button" class="btn btn-success btn-cx" (click)="query()">查询</button>
         </div>
         <div class="button-content">
-            <button type="button" class="btn btn-success" (click)="add(username)">新增</button>
+            <button type="button" class="btn btn-success" (click)="add($event)">新增</button>
+            <button type="button" class="btn btn-primary" (click)="batchOpen($event)">启用</button>
+            <button type="button" class="btn btn-danger" (click)="batchClose($event)">禁用</button>
         </div>
 
         <div style="_height:100%;min-height:100%;">
             <div class="tab"></div>
-            <p-dataTable [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
+            <p-dataTable [value]="dataList" [editable]="true" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
                 <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
-                <p-column field="nodeId" header="编号" [style]="{'width':'80px'}"></p-column>
-                <p-column field="isLp" header="技能等级"></p-column>
-                <p-column field="isHuat" header="等级工资"></p-column>
-                <p-column field="isTiaot" header="等级工作量"></p-column>
-                <p-column field="isDatika" header="状态"></p-column>
+                <p-column field="id" header="编号" [style]="{'width':'80px'}"></p-column>
+                <p-column field="job_name" header="技能等级" [style]="{'width':'140px'}" [editable]="true">
+                    <ng-template let-col let-car="rowData" pTemplate="editor">
+                        <p-dropdown placeholder="请选择" (onChange)="addUpdateJoblv(car)" [(ngModel)]="car[col.field]" [options]="findCourseList" [autoWidth]="false"
+                            [style]="{'width':'100%'}" required="true" appendTo="body"></p-dropdown>
+                    </ng-template>
+                </p-column>
+                <p-column field="job_income" header="等级工资" [style]="{'width':'140px'}" [editable]="true">
+                    <ng-template let-col let-car="rowData" pTemplate="editor">
+                        <span style="display: block;" (dblclick)="ShowElement($event, car, 'djgz')">{{car[col.field]}}</span>
+                    </ng-template>
+                </p-column>
+                <p-column field="job_workload" header="等级工作量" [style]="{'width':'140px'}" [editable]="true">
+                    <ng-template let-col let-car="rowData" pTemplate="editor">
+                        <span style="display: block;" (dblclick)="ShowElement($event, car, 'djgzl')">{{car[col.field]}}</span>
+                    </ng-template>
+                </p-column>
+                <p-column field="job_flag" header="状态" [style]="{'width':'80px'}">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <span *ngIf="car[col.field] === 0">启用</span>
+                        <span *ngIf="car[col.field] === 1">禁用</span>
+                    </ng-template>
+                </p-column>
                 <p-column field="isHouqi" header="备注"></p-column>
             </p-dataTable>
         </div>
-        <app-jsszopen #jngzwhopen Title (change)="bindpage(0)"></app-jsszopen>
+        <app-jngzwhopen #jngzwhopen Title (change)="bindpage(0)"></app-jngzwhopen>
+        <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+            <p-footer>
+                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+            </p-footer>
+        </p-confirmDialog>
     </section>
 </div>
+<!-- <app-footer></app-footer>
+</div> -->

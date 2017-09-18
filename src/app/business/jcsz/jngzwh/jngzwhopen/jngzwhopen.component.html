@@ -1,6 +1,6 @@
 <div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog" style="width:1330px;">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <form #formRef="ngForm" (ngSubmit)="onSubmit(formRef.value)" class="show-form">
         <div class="modal-header">
@@ -11,52 +11,25 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>流程节点:</label>
-            <p-dropdown [options]="findNodeOfZzbList" [(ngModel)]="findNodeOfZzbListCode" [style]="{'width':'100px','margin-top':'0px'}" editable="editable" placeholder="输入搜索" [ngModelOptions]="{standalone: true}"></p-dropdown>
+            <label>等级名称：</label>
+            <input type="text" size="8" pInputText [(ngModel)]="jobName" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="form-group">
+            <label>等级工资：</label>
+            <input type="text" size="8" (blur)="jobIncomeNo(jobIncome)" (keyup)="jobIncomeNo(jobIncome)" pInputText [(ngModel)]="jobIncome" [ngModelOptions]="{standalone: true}">
           </div>
 
           <div class="form-group">
-            <label>是否包括录排工作量:</label>
-            <p-checkbox [(ngModel)]="isLp" binary="true" name="isLp" [style]="{'margin-top': '9px'}"></p-checkbox>
+            <label>等级工作量：</label>
+            <input type="text" size="8" (blur)="jobWorkloadNo(jobWorkload)" (keyup)="jobWorkloadNo(jobWorkload)" pInputText [(ngModel)]="jobWorkload" [ngModelOptions]="{standalone: true}">
           </div>
-
-          <div class="form-group">
-            <label>是否包括画图工作量:</label>
-            <p-checkbox [(ngModel)]="isHuat" binary="true" name="isHuat" [style]="{'margin-top': '9px'}"></p-checkbox>
-          </div>
-
-          <div class="form-group">
-            <label>是否包括调图工作量:</label>
-            <p-checkbox [(ngModel)]="isTiaot" binary="true" name="isTiaot" [style]="{'margin-top': '9px'}"></p-checkbox>
-          </div>
-
-          <div class="form-group">
-            <label>是否包括答题卡工作量:</label>
-            <p-checkbox [(ngModel)]="isDatika" binary="true" name="isDatika" [style]="{'margin-top': '9px'}"></p-checkbox>
-          </div>
-
-          <div class="form-group">
-            <label>是否包括后期制作工作量:</label>
-            <p-checkbox [(ngModel)]="isHouqi" binary="true" name="isHouqi" [style]="{'margin-top': '9px'}"></p-checkbox>
-          </div>
-
-          <div class="form-group">
-            <label style="display: inline-table;">倍数:</label>
-            <input style="margin-top: 0px" id="input" type="text" size="1" pInputText [(ngModel)]="multiple" [ngModelOptions]="{standalone: true}"> 
-          </div>
-
-          <div class="form-group">
-            <label style="display: inline-table;">单位:</label>
-            <p-dropdown [style]="{'width':'85px'}" [options]="unitList" [(ngModel)]="unit" placeholder="请选择" [ngModelOptions]="{standalone: true}"></p-dropdown>
-          </div>
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="hideChildModal()">关闭</button>
           <button type="submit" class="btn btn-primary">提交</button>
         </div>
-        <p-growl [(value)]="msgs"></p-growl>
       </form>
     </div>
   </div>
 </div>
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>

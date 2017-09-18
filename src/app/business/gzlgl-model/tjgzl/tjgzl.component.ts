@@ -1,6 +1,5 @@
 import {Component, OnInit, Inject, ViewChild ,Injectable} from '@angular/core';
 
-import {CalendarModule,DataTableModule,SharedModule} from 'primeng/primeng';
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
 import { tjgzlcxComponent } from './tjgzlCx/tjgzlCx.component';
@@ -11,19 +10,46 @@ import { tjgzlcxComponent } from './tjgzlCx/tjgzlCx.component';
   styleUrls: ['./tjgzl.component.css'],
 })
 export class TjgzlComponent implements OnInit {
-  comIdList:any = [
-    {id: 1, name: '公司A'},
-    {id: 2, name: '公司B'},
-    {id: 3, name: '公司C'},
-    {id: 4, name: '公司D'},
-    {id: 5, name: '公司E'},
-    {id: 6, name: '公司F'},
-  ];
-
+  selected: any;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
   }
+  total:any = 10;
+  pageSize:any = 10;
+  pageNum:any = 1;
+  formData:any = {
+    // dataPage:{},colList:[]
+    dataPage:{
+      content:[]
+    }
+  };
+  getFromData() {
 
+  }
+  paginate(event){
+    this.pageSize = event.rows;
+    this.pageNum = event.page + 1;
+    this.getFromData();
+  }
+  indexArr:any = [];
+  public tzgzlCxChange(event):void{
+    this.indexArr = [];
+    console.log(event);
+    event.data.result.colList.forEach((x,i) => {
+      let indexData = {
+        id: i,name: x
+      }
+      this.indexArr.push(indexData);
+      event.data.result['headerList'] = this.indexArr;
+    });
+    // console.log(event.data.result.dataPage.content);
+    event.data.result.dataPage.content.push(["1","2"]);
+    
+    this.formData = event.data.result;
+
+    console.log(this.formData);
+    this.getFromData();
+  }
  //================
   //查询
   @ViewChild('tjgzlCx') public tjgzlCx:tjgzlcxComponent;

@@ -11,105 +11,102 @@
         <div class="ui-g">
           <div class="ui-g-2 szgzl-label">产品I类：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.kindId1" (ngModelChange)="kindId1=$event;" [ngModelOptions]="{standalone: true}" name="kindId1">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optKind1">{{c.optionName}}</option>
             </select>
           </div>
           <div class="ui-g-2 szgzl-label">产品II类：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.kindId2" (ngModelChange)="kindId2=$event;" [ngModelOptions]="{standalone: true}" name="kindId2">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optKind2">{{c.optionName}}</option>
             </select>
           </div>
           <div class="ui-g-2 szgzl-label">届别：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.jieId" (ngModelChange)="jieId=$event;" [ngModelOptions]="{standalone: true}" name="jieId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optJie">{{c.optionName}}</option>
             </select>
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-2 szgzl-label">年级：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.gradeId" (ngModelChange)="gradeId=$event;" [ngModelOptions]="{standalone: true}" name="gradeId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optGrade">{{c.optionName}}</option>
             </select>
           </div>
           <div class="ui-g-2 szgzl-label">地方版：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.localEditionId" (ngModelChange)="localEditionId=$event;" [ngModelOptions]="{standalone: true}" name="localEditionId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optLocalEdition">{{c.optionName}}</option>
             </select>
           </div>
           <div class="ui-g-2 szgzl-label">版本：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.editionId" (ngModelChange)="editionId=$event;" [ngModelOptions]="{standalone: true}" name="editionId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optEdition">{{c.optionName}}</option>
             </select>
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-2 szgzl-label">模块：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.moduleId" (ngModelChange)="moduleId=$event;" [ngModelOptions]="{standalone: true}" name="moduleId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optModule">{{c.optionName}}</option>
             </select>
           </div>
           <div class="ui-g-2 szgzl-label">批次：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.batchId" (ngModelChange)="batchId=$event;" [ngModelOptions]="{standalone: true}" name="batchId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>              
+              <option [value]="c.optionId" *ngFor="let c of optsList.optBatch">{{c.optionName}}</option>              
             </select>
           </div>
           <div class="ui-g-2 szgzl-label">使用类型：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.usageId" (ngModelChange)="usageId=$event;" [ngModelOptions]="{standalone: true}" name="usageId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optUsageType">{{c.optionName}}</option>
             </select>
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-2 szgzl-label">分类：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.typeId" (ngModelChange)="typeId=$event;" [ngModelOptions]="{standalone: true}" name="typeId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optType">{{c.optionName}}</option>
             </select>
           </div>
           <div class="ui-g-2 szgzl-label">科目：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.subjectId" (ngModelChange)="subjectId=$event;" [ngModelOptions]="{standalone: true}" name="subjectId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optSubject">{{c.optionName}}</option>
             </select>
           </div>
           <div class="ui-g-2 szgzl-label">产品名称：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
-              <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
-            </select>
+            <input type="text" name="" class="mbwhadd-ipt" [(ngModel)]="P.productName" [ngModelOptions]="{standalone: true}" placeholder="请输入产品名称...">
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-2 szgzl-label">人员：</div>
           <div class="ui-g-2">
-            <input type="text" name="" class="mbwhadd-ipt" placeholder="请输入人员名称...">
+            <input type="text" name="" class="mbwhadd-ipt" [(ngModel)]="P.userName" [ngModelOptions]="{standalone: true}" placeholder="请输入人员名称...">
           </div>
           <div class="ui-g-2 szgzl-label">流程节点：</div>
           <div class="ui-g-2">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="P.nodeId" (ngModelChange)="nodeId=$event;" [ngModelOptions]="{standalone: true}" name="nodeId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.optionId" *ngFor="let c of optsList.optNode">{{c.optionName}}</option>
             </select>
           </div>
         </div>
@@ -117,14 +114,14 @@
           <div class="ui-g-2 szgzl-label">接收时间：</div>
           <div class="ui-g-10">
               <div style="display:inline-block;margin: 5px 0;">
-                  <p-calendar [(ngModel)]="startData" [monthNavigator]="true" [yearNavigator]="true" 
-                  [showIcon]="true" yearRange="1900:2100" readonlyInput="readonlyInput"></p-calendar>
+                  <p-calendar [(ngModel)]="dateFrom" [monthNavigator]="true" [yearNavigator]="true" 
+                  [showIcon]="true" yearRange="1900:2100" readonlyInput="readonlyInput" placeholder="开始时间"></p-calendar>
                   <span style="margin-left:35px"></span>
               </div>
               至
               <div style="display:inline-block;">
-                  <p-calendar [(ngModel)]="endData" [monthNavigator]="true" [yearNavigator]="true" 
-                  [showIcon]="true" yearRange="1900:2100" readonlyInput="readonlyInput"></p-calendar>
+                  <p-calendar [(ngModel)]="dateTo" [monthNavigator]="true" [yearNavigator]="true" 
+                  [showIcon]="true" yearRange="1900:2100" readonlyInput="readonlyInput" placeholder="结束时间"></p-calendar>
                   <span style="margin-left:35px"></span>
               </div>
           </div>
@@ -151,7 +148,7 @@
         </div>
       </div>
       <div class="modal-footer" style="text-align:center;">
-        <button type="button" class="btn btn-info" (click)="refresh()">查询</button>
+        <button type="button" class="btn btn-info" (click)="refresh($event)">查询</button>
         <button type="button" class="btn btn-success" (click)="clearOpts()">重置</button>
         <button type="button" class="btn btn-default" (click)="tjgzlCxHide()">取消</button>
       </div>

@@ -1,13 +1,6 @@
-import * as wjcCore from 'wijmo/wijmo';
-
 export class PageBackList{
     pageNews:number[];
     pageBackContent:any[];
-}
-
-export class Wijmo_PageBackList{
-    pageNews:number[];
-    List:wjcCore.ObservableArray;
 }
 
 export class findType_M1V1{
@@ -39,6 +32,37 @@ export class CpwhList{
     optModuleId:string="";//模块
     optKind1Id:string="";//产品I类
     optKind2Id:string="";//产品II类
+}
+
+export class JdwhList{
+    id:number;//LC+id=编号
+    isLocked:any = "";//状态 （false为已启用）
+    name:string;//流程节点
+    statement:string;//说明
+}
+
+export class TjgzlList{
+    kindId1:string = "";
+    kindId2:string = "";
+    jieId:string = "";
+    gradeId:string = "";
+    localEditionId:string = "";
+    editionId:string = "";
+    moduleId:string = "";
+    batchId:string = "";
+    usageId:string = "";
+    typeId:string = "";
+    subjectId:string = "";
+    productName:string = "";
+    userName:string = "";
+    nodeId:string = "";
+    dateFrom:any;
+    dateTo:any;
+    groupList:any = [];
+}
+
+export interface mbwhDataListV1 {
+    code;name;type;isPagenumName;statement;isBanedName;departmentId;id;isBaned;isPagenum;
 }
 
 //=================================================

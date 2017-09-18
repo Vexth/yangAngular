@@ -1,4 +1,73 @@
-.form-group{ display: flex; float: left; margin-left: 10px; }
-.form-group label{line-height: 32px; margin-right: 5px;}
-.form-group input{margin-top: 10px;}
-.modal-body{ display: flex;}
+select {
+    /* width: 100%; */
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+span {
+    margin-right: 5px;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+/* .ui-g .empNo{
+    border: 1px solid #d6d6d6;
+    margin-left: 0px;
+    display: inline-block;
+    min-width: 80px;
+    height: 30px;
+} */
+
+.modal-body .form-group label{
+    text-align: center;
+}
+
+.No {
+    vertical-align: top;
+}
+
+.df{display: flex;}
+.width120{width: 120px;}
+.ui-g .empNo,
+input {
+    width: 100px;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.lh35{line-height: 35px;}
+
+.radio{
+    border: 0;
+    box-shadow: none;
+    width: 20px;
+    margin-top: 10px;
+}
+
+.pTree{
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    z-index: 9;
+    width: 88.6%;
+}

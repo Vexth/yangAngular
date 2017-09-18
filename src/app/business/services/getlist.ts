@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response ,RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'promise';
-import { CpwhList, findCourse, findTab, PageBackList, Wijmo_PageBackList, findType_M1V1, PageBackContent_M1V1, PageBackContentSSM, PageBackContent_M2V2, PageBackContent_M2V3, BackNews } from '../../module/business/getlist';
+import { CpwhList, findCourse, findTab, PageBackList, findType_M1V1, PageBackContent_M1V1, PageBackContentSSM, PageBackContent_M2V2, PageBackContent_M2V3, BackNews } from '../../module/business/getlist';
 
 import ConstantsList from '../../common/constants/config';
-import * as wjcCore from 'wijmo/wijmo';
 import { BackCode } from '../../module/business/formdata';
 import { BaseService } from '../../common/services/base.service';
 'use strict';
@@ -23,7 +22,18 @@ export class GetList extends BaseService {
     return this.http.get(url, { withCredentials: true }).toPromise().then(res => {
       let status: number = res.status;
       if (status === 200) {
-        let PB = res.json().data;
+        let PB;
+        if(res.json().code != 10003){
+          if(res.json().code == 0){
+            PB = res.json().data;
+          }else{
+            PB = res.json();
+          }
+        } else {
+          sessionStorage.removeItem('key');
+          sessionStorage.removeItem('vexth');
+          history.go(0);
+        }
         return PB;
       } else {
         console.error('服务端返回的 http status 错误 : ', status);
@@ -100,50 +110,17 @@ export class GetList extends BaseService {
     const url = `${ConstantsList.HOSTUser1}api/ratio/findClass`;
     return this.publicGetServe(url, 'findClass').then(res => res.list);
   }
-  
+
+  //产品维护页面表格数据
+  public cpwhList(data): Promise<any | CpwhList> {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/product/list?${list}`;
+    return this.publicGetServe(url, 'cpwhList').then(res => res as CpwhList)
+  }
   //产品维护页面新增产品查询条件list
   public cpwhadd() {
     const url = `${ConstantsList.HOSTUser1}api/product/optionlist`;
     return this.publicGetServe(url, 'cpwhadd');
-  }
-
-  // 审核工作量模块 方法路径： /api/workload/checklist?documentId=&nodeId=&uId=&statu=-1&stime=2017-08-01&etime=2018-10-12&pageNum=1&pageSize=10
-  public workloadChecklist(name: any) {
-    const nameNode = this.formatParams(name);
-    const url = `${ConstantsList.HOSTUser1}api/workload/checkList?${nameNode}`;
-    return this.publicGetServe(url, 'workloadChecklist');
-  }
-
-  // 产品稿件树方法路径：/api/workload/findProductDoc
-  public findProductDoc() {
-    const url = `${ConstantsList.HOSTUser1}api/workload/findProductDoc`;
-    return this.publicGetServe(url, 'findProductDoc').then(res => res.productDocList);
-  }
-
-  // 获取制作部人员方法方法路径： /api/workload/findUserList
-  public findUserList() {
-    const url = `${ConstantsList.HOSTUser1}api/workload/findUserList`;
-    return this.publicGetServe(url, 'findUserList').then(res => res.userList);
-  }
-
-  // 技能等级方法路径：/ api/joblv/list?type=-1
-  public joblvList(name: any) {
-    const url = `${ConstantsList.HOSTUser1}api/joblv/list?type=${name}`;
-    return this.publicGetServe(url, 'joblvList');
-  }
-
-  // 人员等级模块 列表方法路径：/api/job/list?flag=0&level=-1
-  public jobList(name: any) {
-    const nameNode = this.formatParams(name);
-    const url = `${ConstantsList.HOSTUser1}api/job/list?${nameNode}`;
-    return this.publicGetServe(url, 'jobList');
-  }
-
-  //产品维护页面表格数据
-  public cpwhList(page: number,size: number): Promise<any | CpwhList> {
-    const url = `${ConstantsList.HOSTUser1}api/product/list?page=${page}&size=${size}`;
-    // const url = 'http://work.jtyjy.com/api/product/list?page=1&size=10';
-    return this.publicGetServe(url, 'cpwhList').then(res => res as CpwhList)
   }
   //流转查询获取查询条件
   public lzcxOpts() {
@@ -157,182 +134,224 @@ export class GetList extends BaseService {
     return this.publicGetServe(url, 'lzcxOpts');
   }
 
-
-
-  public GetListPageBySSM(PageIndex: number, PageSize: number): Promise<any | Wijmo_PageBackList> {
-    const url = `${ConstantsList.HOSTUser}yang-test/angular/pagelist/${PageIndex}/${PageSize}/`;
-    return this.http.get(url)
-      .toPromise()
-      .then(res => {
-        let status: number = res.status;
-        if (status === 200) {
-          let PB: PageBackList = res.json() as PageBackList;
-          let PBC: PageBackContentSSM[] = PB.pageBackContent as PageBackContentSSM[];
-          let Wijmo: Wijmo_PageBackList = new Wijmo_PageBackList();
-          Wijmo.List = new wjcCore.ObservableArray();
-          for (let i = 0; i < PBC.length; i++) {
-            Wijmo.List.push({
-              check: false,
-              ID: PBC[i].id,
-              P: PBC[i].province,
-              C: PBC[i].city,
-              A: PBC[i].area,
-              check1: false,
-              check2: false,
-              check3: false,
-              check4: false,
-              check5: false,
-              id: PBC[i].id
-            });
-          }
-          Wijmo.pageNews = PB.pageNews;
-          return Wijmo;
-        }
-        else {
-          console.error('服务端返回的 http status 错误 : ', status);
-          return null;
-        }
-      })
-      .catch((error: any) => { this.handleError('GetListPageBySSM', error); });
+  // 审核工作量模块 方法路径： /api/workload/checkList?documentId=&nodeId=&uId=&statu=-1&stime=2017-08-01&etime=2018-10-12&pageNum=1&pageSize=10
+  public workloadChecklist(name: any) {
+    const nameNode = this.formatParams(name);
+    const url = `${ConstantsList.HOSTUser1}api/workload/checkList?${nameNode}`;
+    return this.publicGetServe(url, 'workloadChecklist');
   }
 
-  public GetListPageBy_M2V2(PageIndex: number): Promise<any | Wijmo_PageBackList> {
-    const url = `${ConstantsList.HOSTUser}/yang-test/angular/getbnindex/${PageIndex}/${ConstantsList.pageSize}/`;
-    return this.http.get(url)
-      .toPromise()
-      .then(res => {
-        let status: number = res.status;
-        if (status === 200) {
-          let PB: PageBackList = res.json() as PageBackList;
-          let PBC: PageBackContent_M2V2[] = PB.pageBackContent as PageBackContent_M2V2[];
-          let Wijmo: Wijmo_PageBackList = new Wijmo_PageBackList();
-
-          Wijmo.List = new wjcCore.ObservableArray();
-          for (let i = 0; i < PBC.length; i++) {
-            Wijmo.List.push({
-              check: false,
-              id: PBC[i].id,
-              indexcode: PBC[i].indexcode,
-              indexname: PBC[i].indexname,
-              indexremark: PBC[i].indexremark,
-              //isdel: PBC[i].isdel === 0 ? '启用':'禁用',
-              //isdelandedit: PBC[i].isdelandedit === 0 ? '可编辑':'已锁定',
-              isdel: PBC[i].isdel,
-              isdelandedit: PBC[i].isdelandedit,
-              button: PBC[i].id,
-            });
-          }
-          Wijmo.pageNews = PB.pageNews;
-          return Wijmo;
-        }
-        else {
-          console.error('服务端返回的 http status 错误 : ', status);
-          return null;
-        }
-      })
-      .catch((error: any) => { this.handleError('GetListPageBy_M2V2', error); });
+  // 查看工作量列表方法路径：api/workload/findList?documentId=&nodeId=&uId=&statu=-1&stime=&etime=&pageNum=1&pageSize=10
+  public workloadFindList(name: any) {
+    const nameNode = this.formatParams(name);
+    const url = `${ConstantsList.HOSTUser1}api/workload/findList?${nameNode}`;
+    return this.publicGetServe(url, 'workloadFindList');
   }
 
-  public GetListPageBy_M2V3_List(): Promise<any | PageBackContent_M2V2[]> {
-    const url = `${ConstantsList.HOSTUser}/yang-test/angular/getbnindexlist/`;
-    return this.http.get(url)
-      .toPromise()
-      .then(res => { return res.json() as PageBackContent_M2V2[]; })
-      .catch((error: any) => { this.handleError('GetListPageBy_M2V3_List', error); });
+  // 产品稿件树方法路径：/api/workload/findProductDoc
+  public findProductDoc() {
+    const url = `${ConstantsList.HOSTUser1}api/workload/findProductDoc`;
+    return this.publicGetServe(url, 'findProductDoc').then(res => res.productDocList);
+  }
+  // 产品稿件树方法路径：/api/workload/getProductDoc 增加了科目，年级，类别
+  public getProductDoc() {
+    const url = `${ConstantsList.HOSTUser1}api/workload/getProductDoc`;
+    return this.publicGetServe(url, 'getProductDoc').then(res => res.productDocList);
   }
 
-  public GetListPageBy_M2V3(PageIndex: number, Type: string): Promise<any | Wijmo_PageBackList> {
-    const url = `${ConstantsList.HOSTUser}/yang-test/angular/getbasenews/${PageIndex}/${ConstantsList.pageSize}/${Type}/`;
-    return this.http.get(url)
-      .toPromise()
-      .then(res => {
-        let status: number = res.status;
-        if (status === 200) {
-          let PB: PageBackList = res.json() as PageBackList;
-          let PBC: PageBackContent_M2V3[] = PB.pageBackContent as PageBackContent_M2V3[]
-          let Wijmo: Wijmo_PageBackList = new Wijmo_PageBackList();
-
-          Wijmo.List = new wjcCore.ObservableArray();
-          for (let i = 0; i < PBC.length; i++) {
-            Wijmo.List.push({
-              check: false,
-              id: PBC[i].id,
-              indexcode: PBC[i].indexcode,
-              code: PBC[i].code,
-              name: PBC[i].name,
-              //workid: PBC[i].workid,
-              //worktime: PBC[i].worktime,
-              remark: PBC[i].remark,
-              //lastworkid: PBC[i].lastworkid,
-              //updatetime: PBC[i].updatetime,
-              orderid: PBC[i].orderid,
-              isdel: PBC[i].isdel,
-              isdelandedit: PBC[i].isdelandedit,
-              //isdel: PBC[i].isdel === 0 ? '启用':'禁用',
-              //isdelandedit: PBC[i].isdelandedit === 0 ? '可编辑':'已锁定',
-              button: PBC[i].id,
-            });
-          }
-          Wijmo.pageNews = PB.pageNews;
-          return Wijmo;
-        }
-        else {
-          console.error('服务端返回的 http status 错误 : ', status);
-          return null;
-        }
-      })
-      .catch((error: any) => { this.handleError('GetListPageBy_M2V3', error); });
+  // 获取制作部人员方法方法路径： /api/workload/findUserList
+  public findUserList() {
+    const url = `${ConstantsList.HOSTUser1}api/workload/findUserList`;
+    return this.publicGetServe(url, 'findUserList').then(res => res.userList);
   }
 
-  public GetSequenceCode(Type: number, IsAdd: number): Promise<any | string> {
-    const url = `${ConstantsList.HOSTUser}/yang-test/angular/getsequencecode/${Type}/${IsAdd}/`;
-    return this.http.get(url)
-      .toPromise()
-      .then(res => {
-        let status: number = res.status;
-        if (status === 200) {
-          let Back = res.json() as BackNews;
-          return Back.backNews;
-        }
-        else {
-          console.error('服务端返回的 http status 错误 : ', status);
-          return null;
-        }
-      })
-      .catch((error: any) => { this.handleError('GetSequenceCode', error); });
+  // 技能等级方法路径：/ api/joblv/list?type=-1
+  public joblvList(name: any) {
+    const url = `${ConstantsList.HOSTUser1}api/joblv/list?type=${name}`;
+    return this.publicGetServe(url, 'joblvList');
+  }
+  // '/zzdocument/'+ documentId + '/' + NodeId
+  public zzdocument(documentId: number, NodeId: number) {
+    const url = `${ConstantsList.HOSTUser1}/zzdocument/${documentId}/${NodeId}`;
+    return this.publicGetServe(url, 'zzdocument').then(res => {
+      if(res == undefined){
+        console.error('服务端返回的数据错误 : ', res);
+        return null;
+      } else {
+        return res.nodeTemplate[0];
+      }
+    });
+  }
+
+  // 人员等级模块 列表方法路径：/api/job/list?flag=0&level=-1
+  public jobList(name: any) {
+    const nameNode = this.formatParams(name);
+    const url = `${ConstantsList.HOSTUser1}api/job/list?${nameNode}`;
+    return this.publicGetServe(url, 'jobList');
+  }
+  // 方法路径：/api/cr/list?name
+  public crList(name: any) {
+    const nameNode = this.formatParams(name);
+    const url = `${ConstantsList.HOSTUser1}api/cr/list?${nameNode}`;
+    return this.publicGetServe(url, 'crList');
+  }
+  // 考核工资管理 列表方法（必带年月日期—按月份）路径：/api/tongji/tongjiList?name=&level=-1&bearDate=2017-08
+  public tongjiList(name: any) {
+    const nameNode = this.formatParams(name);
+    const url = `${ConstantsList.HOSTUser1}api/tongji/tongjiList?${nameNode}`;
+    return this.publicGetServe(url, 'tongjiList');
+  }
+  // 统计计算（界面上的计算）方法路径: api/tongji/tongjiWages?bearDate=2017-08
+  public tongjiWages(name: any) {
+    const url = `${ConstantsList.HOSTUser1}api/tongji/tongjiWages?bearDate=${name}`;
+    // 在get请求中使用fetch方法 --- 对于由后台返回结果与提示结果的方法可以使用
+    return fetch(url).then(res => res.json())
+  }
+  // 完结（锁定）方法路径： /api/tongji/lockWages?bearDate=2017-08
+  public lockWages(name: any) {
+    const url = `${ConstantsList.HOSTUser1}api/tongji/lockWages?bearDate=${name}`;
+    return fetch(url).then(res => res.json())
+  }
+  // 工作量统计 统计列表方法路径：/api/tongji/wagesList?name=&level=-1&bearDate=2017-08
+  public wagesList(name: any) {
+    const nameNode = this.formatParams(name);
+    const url = `${ConstantsList.HOSTUser1}api/tongji/wagesList?${nameNode}`;
+    return this.publicGetServe(url, 'wagesList');
+  }
+  // 发外人员工资列表方法（必带年月日期—按月份）方法路径：/api/wai/ tongjiWaiList?name=& bearDate=2017-08
+  public tongjiWaiList(name: any) {
+    const nameNode = this.formatParams(name);
+    const url = `${ConstantsList.HOSTUser1}api/wai/tongjiWaiList?${nameNode}`;
+    return this.publicGetServe(url, 'tongjiWaiList');
+  }
+  // 统计方法路径：/api/wai/tongjiWaiWages?bearDate=2017-08
+  public tongjiWaiWages(name: any) {
+    const url = `${ConstantsList.HOSTUser1}api/wai/tongjiWaiWages?bearDate=${name}`;
+    return fetch(url).then(res => res.json());
+  }
+  // 完结方法路径：/api/wai/lockWaiWages?bearDate=2017-08
+  public lockWaiWages(name: any) {
+    const url = `${ConstantsList.HOSTUser1}api/wai/lockWaiWages?bearDate=${name}`;
+    return fetch(url).then(res => res.json());
   }
 
 
-  public Form_M2V2(postvalue: PageBackContent_M2V2, IsAdd: boolean): Promise<any | BackCode> {
-    const url = `${ConstantsList.HOSTUser}/yang-test/angular/form_m2v2/`;
-    let headers = ConstantsList.headers;
-    let options = new RequestOptions({ headers: headers });
-    if (IsAdd) {
-      return this.http.post(url, postvalue, options).toPromise()
-        .then((res) => { return res.json() as BackCode; })
-        .catch((error: any) => { this.handleError('Form_M2V2', error); });
-    }
-    else {
-      return this.http.put(url, postvalue, options).toPromise()
-        .then((res) => { return res.json() as BackCode; })
-        .catch((error: any) => { this.handleError('Form_M2V2', error); });
-    }
+  //流转查询删除
+  public lzcxDelete(id) {
+    const url = `${ConstantsList.HOSTUser1}api/document/log/batch_delete?${id}`;
+    return this.publicGetServe(url, 'lzcxDelete');
+  }
+  //流程节点维护页面表格数据
+  public jdwhDataList(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/node?${list}`;
+    return this.publicGetServe(url, 'jdwhDataList');
+  }
+  //工作量统计查询条件
+  public tjgzlOptsList() {
+    const url = `${ConstantsList.HOSTUser1}api/count/productworkload`;
+    return this.publicGetServe(url, 'tjgzlOptsList');
+  }
+  //公共获取部门
+  public getDeptList() {
+    const url = `${ConstantsList.HOSTUser1}api/department`;
+    return this.publicGetServe(url, 'getDeptList');
+  }
+  //公共获取角色
+  public getRoleList() {
+    const url = `${ConstantsList.HOSTUser1}api/role`;
+    return this.publicGetServe(url, 'getRoleList');
+  }
+  //公共获取节点
+  public getNodeList() {
+    const url = `${ConstantsList.HOSTUser1}api/node?pageSize=10000&pageNum=1`;
+    return this.publicGetServe(url, 'getNodeList');
+  }
+  //流程节点授权
+  public jdsqDataList(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/node_authorization?${list}`;
+    return this.publicGetServe(url, 'jdsqDataList');
+  }
+  //流程节点授权获取选中数据
+  public jdsqGetCheck(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/node_authorization/node?${list}`;
+    return this.publicGetServe(url, 'jdsqGetCheck');
+  }
+  //页码输入表格数据
+  public ymsrDataList(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/product/pagelist?${list}`;
+    return this.publicGetServe(url, 'ymsrDataList');
+  }
+  //角色分配表格数据
+  public jsfpDataList() {
+    const url = `${ConstantsList.HOSTUser1}api/role`;
+    return this.publicGetServe(url, 'jsfpDataList');
+  }
+  //角色分配.授权的模块
+  public jsfpWarLeft() {
+    const url = `${ConstantsList.HOSTUser1}api/roleauth/viewlist`;
+    return this.publicGetServe(url, 'jsfpWarLeft');
+  }
+  //角色分配授权获取右侧list
+  public jsfpWarRight(menuId,roleId) {
+    const url = `${ConstantsList.HOSTUser1}api/roleauth/view/${menuId}/authlist?roleId=${roleId}`;
+    return this.publicGetServe(url, 'jsfpWarLeft');
+  }
+  //用户管理获取部门
+  public yhglGetDept() {
+    const url = `${ConstantsList.HOSTUser1}api/department/all`;
+    return this.publicGetServe(url, 'yhglGetDept');
+  }
+  //用户管理表格数据
+  public yhglGetFromData(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/user?${list}`;
+    return this.publicGetServe(url, 'yhglGetDept');
+  }
+  //设置产品工作量
+  public szgzlDataList(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/product/workloadlist?${list}`;
+    return this.publicGetServe(url, 'szgzlDataList');
+  }
+  //设置产品工作量批量设置获取data
+  public szgzlSetPL(data) {
+    const url = `${ConstantsList.HOSTUser1}api/product/templatelist/${data}`;
+    return this.publicGetServe(url, 'szgzlSetPL');
+  }
+  //模板维护页面数据
+  public mbwhDataList(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/worktemplate?${list}`;
+    return this.publicGetServe(url, 'mbwhDataList');
+  }
+  //模板维护新增的下拉数据
+  public mbwhAddDataList() {
+    const url = `${ConstantsList.HOSTUser1}api/worktemplate/createoption`;
+    return this.publicGetServe(url, 'mbwhAddDataList');
+  }
+  //模板维护新增部门改变时获取节点
+  public mbwhAddNodeList(data) {
+    const url = `${ConstantsList.HOSTUser1}api/department/authnodelist/${data}`;
+    return this.publicGetServe(url, 'mbwhAddNodeList');
+  }
+  public mbwhEditModel(data) {
+    const url = `${ConstantsList.HOSTUser1}api/worktemplate/${data}`;
+    return this.publicGetServe(url, 'mbwhEditModel');
   }
 
-  public Form_M2V3(postvalue: PageBackContent_M2V3, IsAdd: boolean): Promise<any | BackCode> {
-    const url = `${ConstantsList.HOSTUser}/yang-test/angular/form_m2v3/`;
-    let headers = ConstantsList.headers;
-    let options = new RequestOptions({ headers: headers });
-    if (IsAdd) {
-      return this.http.post(url, postvalue, options).toPromise()
-        .then((res) => { return res.json() as BackCode; })
-        .catch((error: any) => { this.handleError('Form_M2V3', error); });
-    }
-    else {
-      return this.http.put(url, postvalue, options).toPromise()
-        .then((res) => { return res.json() as BackCode; })
-        .catch((error: any) => { this.handleError('Form_M2V3', error); });
-    }
+  //设置工作量批量设置选择模板时获取模板数据
+  public szgzlSetModel(data) {
+    const url = `${ConstantsList.HOSTUser1}api/worktemplate/${data}/workload`;
+    return this.publicGetServe(url, 'szgzlSetModel');
   }
-
+  
+  public jdwhBjV1(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/node/242?${list}`;
+    return this.publicGetServe(url, 'jdwhDataList');
+  }
 }

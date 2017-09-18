@@ -1,4 +1,12 @@
-.form-group{ display: flex; float: left; margin-left: 10px; }
-.form-group label{line-height: 32px; margin-right: 5px;}
-.form-group input{margin-top: 10px;}
-.modal-body{ display: flex;}
+
+.form-group label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    width: 159px;
+    text-align: right;
+    margin-right: 5px;
+    vertical-align: top;
+    margin-top: 5px;
+}

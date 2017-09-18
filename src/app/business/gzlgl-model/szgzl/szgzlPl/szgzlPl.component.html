@@ -11,28 +11,27 @@
         <div class="ui-g">
           <div class="ui-g-2 szgzl-label">选择工作量模板：</div>
           <div class="ui-g-3">
-            <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+            <select class="form-control mbwhSelect" [(ngModel)]="modelId" (ngModelChange)="modelId=$event;modelChange()" [ngModelOptions]="{standalone: true}" name="modelId">
               <option value="">--请选择--</option>
-              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+              <option [value]="c.templateId" *ngFor="let c of selectList">{{c.templateName}}</option>
             </select>
           </div>
         </div>
         <div class="ui-g">
           <div class="ui-g-2 szgzl-label">工作量明细：</div>
+          <div class="ui-g-12 szgzl-box">
+            <div class="div1" *ngFor="let c of nodeList">
+              <div class="div1_2">{{c.nodeName}}</div>
+              <div class="div1_3">{{c.workload}}</div>
+            </div>
+          </div>
         </div>
-        <p-dataTable [value]="cars" [(selection)]="selectedCars3" dataKey="vin" 
-        [rows]="10" [rowsPerPageOptions]="[10,20,30]">
-          <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
-          <p-column field="vin" header="Vin"></p-column>
-          <p-column field="year" header="Year"></p-column>
-          <p-column field="brand" header="Brand"></p-column>
-          <p-column field="color" header="Color"></p-column>
-        </p-dataTable>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-info" (click)="save()">确定</button>
+        <button type="button" class="btn btn-info" (click)="emitszgzlPl($event)">确定</button>
         <button type="button" class="btn btn-default" (click)="szgzlplHide()">关闭</button>
       </div>
     </div>
   </div>
 </div>
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>

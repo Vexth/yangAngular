@@ -31,15 +31,15 @@
                   <td style="text-align:right;"><label style="margin-bottom:0px;">姓名/工号：</label></td>
                   <td>
                     <div class="jtyjy-search-text">
-                      <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="姓名/工号...">
+                      <input type="text" class="form-control ng-pristine ng-valid ng-touched" [(ngModel)]="nameOrId" placeholder="姓名/工号...">
                     </div>
                   </td>
                   <td style="text-align:right;"><label style="margin-bottom:0px;">部门：</label></td>
                   <td>
                     <div class="jtyjy-search-text" style="width:100%;">
-                        <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1" placeholder="部门">
+                        <select class="form-control" [(ngModel)]="deptData" (ngModelChange)="deptData=$event;" name="deptData" placeholder="部门">
                             <option value="">--请选择--</option>
-                            <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                            <option [value]="c.treeSign" *ngFor="let c of deptList">{{c.name}}</option>
                         </select>
                     </div>
                   </td>
@@ -61,20 +61,28 @@
             <!-- 表格 -->
             <!-- [itemFormatter]="itemFormatter" -->
             <!-- <div class="well well-lg"> -->
-                <p-dataTable [value]="cars" [(selection)]="selectedCars3" dataKey="vin" [paginator]="true" 
-                [rows]="10" [headerCheckboxToggleAllPages]="true" [editable]="true" selectionMode="checkbox" [rowsPerPageOptions]="[10,20,30]">
+                <p-dataTable [value]="formDataList" [(selection)]="selected" selectionMode="single" [headerCheckboxToggleAllPages]="true">
                     <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
-                    <p-column field="vin" header="Vin"></p-column>
-                    <p-column field="year" header="Year"></p-column>
-                    <p-column field="brand" header="Brand"></p-column>
-                    <p-column field="color" header="Color"></p-column>
+                    <p-column field="empNo" header="工号" [style]="{'width':'100px','text-align':'center'}"></p-column>
+                    <p-column field="name" header="姓名" [style]="{'width':'100px','text-align':'center'}"></p-column>
+                    <p-column field="departmentStr" header="部门" [style]="{'text-align':'center'}"></p-column>
+                    <p-column field="dutyName" header="岗位" [style]="{'width':'200px','text-align':'center'}"></p-column>
+                    <p-column field="roleStr" header="角色列表" [style]="{'text-align':'center'}"></p-column>
                 </p-dataTable>
+                <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
             <!-- </div> -->
           </div>
         </div>
       </div>
-      <p-growl [(value)]="msgs"></p-growl>
-      <p-confirmDialog></p-confirmDialog>
+      <yhgl-Dept #yhglDept (saveDept)="saveDeptChange()"></yhgl-Dept>
+      <yhgl-JS #yhglJS (saveJS)="saveJSChange()"></yhgl-JS>
+      <p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>
+      <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+          <p-footer>
+              <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+              <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+          </p-footer>
+      </p-confirmDialog>
     </section>
   </div>
   <!-- <app-footer></app-footer>

@@ -1,0 +1,11 @@
+.overBox{
+  overflow-y:scroll; 
+}
+.boxRid{
+  border: 1px solid #d1dbe5;
+  border-radius: 10px;
+  overflow: auto;
+}
+.boxCursor{
+  cursor: pointer;
+}

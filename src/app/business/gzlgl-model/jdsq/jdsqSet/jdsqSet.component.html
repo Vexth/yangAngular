@@ -1,0 +1,38 @@
+<div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">设置节点授权</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="jdsqsetHide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <div class="ui-g">
+          <div class="ui-g-6">
+            <div class="ui-g-12">部门</div>
+            <div class="ui-g-12 boxCursor" >
+              <p-listbox [options]="deptList" [(ngModel)]="dept" [ngModelOptions]="{standalone: true}" [style]="{'width':'100%','height':'220px'}"></p-listbox>
+            </div>
+            <div class="ui-g-12">角色</div>
+            <div class="ui-g-12 boxCursor">
+              <p-listbox [options]="roleList" [(ngModel)]="role" [ngModelOptions]="{standalone: true}" [style]="{'width':'100%','height':'180px'}"></p-listbox>
+            </div>
+          </div>
+          <div class="ui-g-6">
+            <div class="ui-g-12">节点</div>
+            <div class="ui-g-12 boxCursor">
+              <p-listbox [options]="nodeList" [(ngModel)]="node" multiple="multiple" checkbox="checkbox" 
+              [ngModelOptions]="{standalone: true}" filter="filter" [style]="{'width':'100%','height':'448px'}"></p-listbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="text-align:center;">
+        <button type="submit" class="btn btn-info" (click)="emitjdsqSet($event)">保存</button>
+        <button type="button" class="btn btn-default" (click)="jdsqsetHide()">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>

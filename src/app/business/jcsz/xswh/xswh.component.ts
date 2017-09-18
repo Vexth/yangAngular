@@ -17,7 +17,7 @@ import { Auxiliary } from '../../../common/constants/auxiliary';
 })
 export class XswhComponent implements OnInit{
   // 获取tab切换的值
-  private ListFindType: string[];
+  ListFindType: any[];
 
   private GetList: GetList;
   private PostService: PostService;
@@ -65,7 +65,7 @@ export class XswhComponent implements OnInit{
 
   ngOnInit() {
     this.GetList.findTab().then(res => this.ListFindType = res);
-    this.onRenovate(this.username);
+    this.ColToggler(this.username);
     this.GetList.GetListFindType().then(res => this.unitList = this.bindpage(res, 'text')); // 产品类别
     Auxiliary.prototype.ControlHeight();
   }
@@ -94,16 +94,18 @@ export class XswhComponent implements OnInit{
     }
     this.PostService.addUpdateRatio(itme).then(res => {
       if(res.code === 0){
-        this.onRenovate(this.username);
+        this.msgs = [];
+        this.ColToggler(this.username);
         this.msgs.push({severity:'info', summary:'成功提示', detail:'保存成功'});
       } else {
+        this.msgs = [];
         this.msgs.push({severity:'error', summary:'错误提示', detail:res.msg});
       }
     }).then(res => {this.newRatio = null;});
   }
 
   // tab切换
-  onRenovate(itme){
+  ColToggler(itme: any){
     this.username = '';
     this.findCourseList = [];
     this.findCourse = null;
@@ -118,7 +120,7 @@ export class XswhComponent implements OnInit{
   }
 
   // 下拉切换数据
-  onChange(){
+  OnChange () {
     let tabid = +this.username;
     let typeid = this.unit != undefined ? this.unit.id : '';
     this.dataLiat(tabid, typeid);
@@ -133,12 +135,15 @@ export class XswhComponent implements OnInit{
 
   // 表格中下拉框选中的参数
   findex (itme) {
-    this.courseClassId = itme.value.id;
+    // console.log(itme)
+    this.courseClassId = this.findCourse.id;
+    // this.courseClassId = itme.value.id;
+    this.conserve(itme);
   }
 
   // 双击修改
-  ShowElement(element) {
-    // console.log(element)
+  ShowElement(element, list) {
+    // console.log(list)
     let oldhtml = element.target.innerHTML;
     //创建新的input元素
     let newobj = document.createElement('input');
@@ -150,10 +155,17 @@ export class XswhComponent implements OnInit{
     newobj.value = oldhtml;
     //为新增元素添加光标离开事件
     newobj.addEventListener('blur', () => {
+      if(newobj.value == oldhtml){
+        element.target.innerHTML = oldhtml;
+        return ;
+      } else {
+        element.target.innerHTML = newobj.value;
+        this.newRatio = element.target.innerHTML;
+        this.conserve(list);
+      }
       //当触发时判断新增元素值是否为空，为空则不修改，并返回原有值 
-      element.target.innerHTML = newobj.value == oldhtml ? oldhtml : newobj.value;
+      // element.target.innerHTML = newobj.value == oldhtml ? oldhtml : newobj.value;
       //当触发时设置父节点的双击事件为ShowElement
-      this.newRatio = element.target.innerHTML;
       // element.target.setAttribute("ondblclick", "ShowElement(this);");
     });
     //设置该标签的子节点为空

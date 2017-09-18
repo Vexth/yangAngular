@@ -11,51 +11,61 @@
           <div class="ui-g CborderTLR XborderB">
             <div class="ui-g-3 mbwhadd-c mbwhadd-h border_right">名称：</div>
             <div class="ui-g-9">
-              <input type="text" name="" class="mbwhadd-ipt" placeholder="请输入名称...">
+              <input type="text" name="" [(ngModel)]="postData.name" class="mbwhadd-ipt" placeholder="请输入名称...">
             </div>
           </div>
           <div class="ui-g CborderLR XborderB">
             <div class="ui-g-2 XborderR mbwhadd-h mbwhadd-c">模板状态：</div>
             <div class="ui-g-4 MborderR mbwhadd-c mbwhadd-h">
-                <span><input type="radio" value="1" name="is"></span>锁定
-                <span style="margin-left:10px;"><input type="radio" value="0" name="is"></span>不锁定
+                <span><input type="radio" value="true" name="is" [(ngModel)]=postData.isBaned></span>锁定
+                <span style="margin-left:10px;"><input type="radio" value="false" name="is" [(ngModel)]=postData.isBaned></span>不锁定
             </div>
             <div class="ui-g-3 XborderR mbwhadd-c mbwhadd-h">所属部门：</div>
             <div class="ui-g-3 mbwhadd-c mbwhadd-h">
-              <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+              <select class="form-control mbwhSelect" [(ngModel)]="postData.departmentId" (ngModelChange)="postData.departmentId=$event;deptchange()" [ngModelOptions]="{standalone: true}" name="departmentId">
                 <option value="">--请选择--</option>
-                <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                <option [value]="c.optionId" *ngFor="let c of optDepartmentList">{{c.optionName}}</option>
               </select>
             </div>
           </div>
           <div class="ui-g CborderLR MborderB">
             <div class="ui-g-2 XborderR mbwhadd-c mbwhadd-h">适用于：</div>
             <div class="ui-g-4 MborderR mbwhadd-c mbwhadd-h">
-                <select class="form-control mbwhSelect" [(ngModel)]="comId" (ngModelChange)="comId=$event;" [ngModelOptions]="{standalone: true}" name="select1">
+                <select class="form-control mbwhSelect" [(ngModel)]="postData.type" (ngModelChange)="postData.type=$event;" [ngModelOptions]="{standalone: true}" name="typeId">
                     <option value="">--请选择--</option>
-                    <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                    <option [value]="c.optionName" *ngFor="let c of optTypeList">{{c.optionName}}</option>
                   </select>
             </div>
             <div class="ui-g-3 XborderR mbwhadd-c mbwhadd-h">是否按页码计算工作量：</div>
             <div class="ui-g-3 mbwhadd-c mbwhadd-h">
-                <span><input type="radio" value="1" name="is1"></span>是
-                <span style="margin-left:10px;"><input type="radio" value="0" name="is1"></span>否
+                <span><input type="radio" value="true" name="is1" [(ngModel)]="postData.isPagenum" ></span>是
+                <span style="margin-left:10px;"><input type="radio" value="false" name="is1" [(ngModel)]="postData.isPagenum"></span>否
             </div>
           </div>
           <div class="ui-g CborderLR MborderB">
             <div class="ui-g-2 mbwhadd-c mbwhadd-h">节点工作量：</div>
+            <div class="ui-g-12 szgzl-box" [ngClass]="{'disNone':isadSearch==1}">
+              <div class="div1" *ngFor="let c of nodeList">
+                <div class="div1_2">{{c.nodeName}}</div>
+                <!-- <div class="div1_3">{{c.workload}}</div> -->
+                <div class="div1_3">
+                  <input type="text" value="{{c.workload}}" [(ngModel)]="c.workload">
+                </div>
+              </div>
+            </div>
           </div>
           <div class="ui-g CborderBLR">
             <div class="ui-g-3 mbwhadd-c mbwhadd-hx XborderR" style="height:100px;">备注：</div>
             <div class="ui-g-9 mbwhadd-h">
-             <textarea class="mbwhadd-txt" placeholder="请输入备注（200字符以内）" maxlength="200"></textarea>
+             <textarea class="mbwhadd-txt" [(ngModel)]="postData.statement" placeholder="请输入备注（200字符以内）" maxlength="200"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-info" (click)="save()">确定</button>
+          <button type="button" class="btn btn-info" (click)="emitmbwhAdd($event)">确定</button>
           <button type="button" class="btn btn-default" (click)="mbwhaddHide()">关闭</button>
         </div>
       </div>
     </div>
 </div>
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>

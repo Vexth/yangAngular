@@ -13,31 +13,53 @@ export class PostService extends BaseService {
     this.servicename = 'PostService-表单提交服务';
   }
 
-  publicPostServe(postvalue: any, url: string, fn: string) : Promise<any | BackCode> {
-    let body = postvalue; //let body = JSON.stringify(postvalue);
+  publicPostServe(postvalue: any, url: string, fn: string): Promise<any | BackCode> {
+    let body = postvalue; // let body = JSON.stringify(postvalue);
     //let headers = ConstantsList.headers;
     // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
     // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
-    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8'});
-    let options = new RequestOptions({ headers: headers, withCredentials: true  });
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(url, body, options).toPromise().
-    then((res) => { return res.json() as BackCode; })
-    .catch((error: any) => {this.handleError(fn, error);});
+      then((res) => {
+        if (res.json().code != 10003) {
+          return res.json() as BackCode;
+        } else {
+          sessionStorage.removeItem('key');
+          sessionStorage.removeItem('vexth');
+          history.go(0);
+        }
+      })
+      .catch((error: any) => { this.handleError(fn, error); });
+  }
+
+  /**put方法**/
+  publicPutServe(putvalue: any, url: string, fn: string): Promise<any | BackCode> {
+    let body = putvalue;
+    // let body = JSON.stringify(postvalue);
+    // let headers = ConstantsList.headers;
+    // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
+    // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.put(url, body, options).toPromise().
+      then((res) => { return res.json() as BackCode; })
+      .catch((error: any) => { this.handleError(fn, error); });
   }
 
   // 添加/修改 /api/nodetemplate/addUpdateNode
-  addUpdateNode (postvalue: any) : Promise<any | BackCode> {
+  addUpdateNode(postvalue: any): Promise<any | BackCode> {
     let url = `${ConstantsList.HOSTUser1}api/nodetemplate/addUpdateNode`;
     return this.publicPostServe(postvalue, url, 'addUpdateNode');
   }
   // 删除或批量删除 /api/nodetemplate/ batch_delete
-  batchDelete (postvalue: any) : Promise<any | BackCode> {
+  batchDelete(postvalue: any): Promise<any | BackCode> {
     let url = `${ConstantsList.HOSTUser1}api/nodetemplate/batch_delete`;
     return this.publicPostServe(postvalue, url, 'batchDelete');
   }
 
   // 新增或修改系统方法路径：/api/ratio/addUpdateRatio
-  addUpdateRatio (postvalue: any) : Promise<any | BackCode> {
+  addUpdateRatio(postvalue: any): Promise<any | BackCode> {
     let url = `${ConstantsList.HOSTUser1}api/ratio/addUpdateRatio`;
     return this.publicPostServe(postvalue, url, 'addUpdateRatio');
   }
@@ -48,6 +70,12 @@ export class PostService extends BaseService {
     return this.publicPostServe(postvalue, url, 'checkBackDel');
   }
 
+  // /api/cr/updateCourse
+  crUpdateCourse(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/cr/updateCourse`;
+    return this.publicPostServe(postvalue, url, 'crUpdateCourse');
+  }
+
   //	追加方法方法路径： /api/workload/
 
   // 人员等级修改方法/api/job/updateJob
@@ -56,38 +84,151 @@ export class PostService extends BaseService {
     return this.publicPostServe(postvalue, url, 'updateJob');
   }
 
+  // 新增或修改方法路径： /api/joblv/addUpdateJoblv
+  addUpdateJoblv(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/joblv/addUpdateJoblv`;
+    // postvalue = JSON.stringify(postvalue);
+    return this.publicPostServe(postvalue, url, 'addUpdateJoblv');
+  }
+
+  // 启用方法路径： /api/joblv/batch_open
+  joblvBatchOpen(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/joblv/batch_open`;
+    return this.publicPostServe(postvalue, url, 'joblvBatchOpen');
+  }
+  // 禁用方法路径：/api/joblv/batch_close
+  joblvBatchClose(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/joblv/batch_close`;
+    return this.publicPostServe(postvalue, url, 'joblvBatchClose');
+  }
+  // 自动计算工作量方法路径： /api/workload/calc
+  workloadCalc(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/workload/calc`;
+    return this.publicPostServe(postvalue, url, 'workloadCalc');
+  }
+  // 追加方法路径： /api/workload/addOfCheck
+  addOfCheck(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/workload/addOfCheck`;
+    return this.publicPostServe(postvalue, url, 'addOfCheck');
+  }
+  // 调整方法路径： /api/workload/updateOfCheck
+  updateOfCheck(postvalue: any) {
+    postvalue = JSON.stringify(postvalue);
+    const url = `${ConstantsList.HOSTUser1}api/workload/updateOfCheck`;
+    return this.publicPostServe(postvalue, url, 'updateOfCheck');
+  }
 
   //产品维护新增
-  cpwhAdd (postvalue: any) : Promise<any | BackCode> {
+  cpwhAdd(postvalue: any): Promise<any | BackCode> {
     let url = `${ConstantsList.HOSTUser1}api/product/create`;
     return this.publicPostServe(postvalue, url, 'cpwhAdd');
   }
 
-
-  AddForm(postvalue: string): Promise<any | BackCode> {
-    let url = `${ConstantsList.HOSTUser}AddForm.ashx`;
-    let body = postvalue; //let body = JSON.stringify(postvalue);
-    //let headers = ConstantsList.headers;
-    //let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
-    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
-    let options = new RequestOptions({ headers: headers });
-    return this.http.post(url, body, options).toPromise().
-    then((res) => { return res.json() as BackCode;})
-    .catch((error: any) => {this.handleError('AddForm',error);});
+  // 给内部人员增加发外工资 方法路径：/api/tongji/updateUserInnerMoney
+  updateUserInnerMoney(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/tongji/updateUserInnerMoney`;
+    return this.publicPostServe(postvalue, url, 'updateUserInnerMoney');
   }
 
-  AddFormSSM(postvalue: QmAngular): Promise<any | BackCode> {
-    let url = `${ConstantsList.HOSTUser}yang-test/angular/addfrom/`;
-    //let body = JSON.stringify(postvalue);//这个也可以
-    let body = postvalue;//这个可以
-    let headers = ConstantsList.headers;//spring的restful接口用这个
-    // ashx后台页面用这个
-    //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'});
-    let options = new RequestOptions({ headers: headers });
-    return this.http.post(url, body, options)
-    .toPromise()
-    .then((res) => { return res.json() as BackCode;})
-    .catch((error: any) => {this.handleError('AddFormSSM',error);});
+  //页码输入
+  ymsrSet(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/product/setpagelist`;
+    return this.publicPostServe(postvalue, url, 'ymsrSet');
+  }
+  //角色分配，新增角色
+  jsfpAdd(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/role`;
+    return this.publicPostServe(postvalue, url, 'jsfpAdd');
+  }
+  //角色分配，修改角色
+  jsfpEdit(putvalue: any, urlvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/role/${urlvalue}`;
+    return this.publicPutServe(putvalue, url, 'jsfpEdit');
+  }
+  //角色分配,删除
+  jsfpDelete(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/role/batch_delete`;
+    return this.publicPostServe(postvalue, url, 'jsfpDelete');
+  }
+  //角色分配授权保存
+  jsfpWar(postvalue: any, menuId, roleId): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/roleauth/view/${menuId}/setauth?roleId=${roleId}`;
+    return this.publicPostServe(postvalue, url, 'jsfpWar');
+  }
+  //用户管理角色分配保存
+  yhglJS(putvalue: any, urlvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/user/${urlvalue}/role`;
+    return this.publicPutServe(putvalue, url, 'yhglJS');
+  }
+  //用户管理部门授权保存
+  yhglDept(putvalue: any, urlvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/user/${urlvalue}/department`;
+    return this.publicPutServe(putvalue, url, 'yhglDept');
+  }
+  //流程节点授权保存
+  jdsqSet(postvalue: any, departmentId, roleId): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/node_authorization/node?department=${departmentId}&role=${roleId}`;
+    return this.publicPostServe(postvalue, url, 'jdsqSet');
+  }
+  //工作量模板维护新增保存
+  mbwhAdd(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/worktemplate`;
+    return this.publicPostServe(postvalue, url, 'mbwhAdd');
+  }
+  //工作量模板维护修改保存
+  mbwhEdit(putvalue: any, urlvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/worktemplate/${urlvalue}`;
+    return this.publicPutServe(putvalue, url, 'mbwhEdit');
+  }
+  //产品维护新增稿件
+  cpwhGJAdd(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/product/createdoc`;
+    return this.publicPostServe(postvalue, url, 'cpwhGJAdd');
+  }
+  //产品维护删除
+  cpwhDelete(postvalue: any) {
+    let url = `${ConstantsList.HOSTUser1}api/product/deletedoclist`;
+    // return this.publicPostServe(postvalue, url, 'cpwhDelete');
+    let body = postvalue; //let body = JSON.stringify(postvalue);
+    // let headers = ConstantsList.headers;
+    // let headers = new Headers({ 'Content-Type': 'application/json','Access-Control-Allow-Origin': '*' });
+    // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(url, body, options).toPromise().
+      then((res) => { return res.json(); })
+    // .catch((error: any) => {this.handleError(fn, error);});
+  }
+  //工作量统计
+  tjgzl(postvalue: any, pageStr: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/count/productworkload?${pageStr}`;
+    return this.publicPostServe(postvalue, url, 'tjgzl');
+  }
+  //流程节点维护新增
+  jdwhAdd(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/node`;
+    return this.publicPostServe(postvalue, url, 'jdwhAdd');
+  }
+  //流程节点修改
+  jdwhBj(putvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/node/242`;
+    return this.publicPutServe(putvalue, url, 'jdwhBj');
+  }
+
+  //设置产品工作量--设置
+  szgzlSet(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/product/setworkload`;
+    return this.publicPostServe(postvalue, url, 'szgzlSet');
+  }
+  //设置产品工作量--保存设置
+  szgzlPlSetSave(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/product/settemplate`;
+    return this.publicPostServe(postvalue, url, 'szgzlPlSetSave');
+  }
+  //工作量模板维护--删除
+  mbwhDelete(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/worktemplate/batch_delete`;
+    return this.publicPostServe(postvalue, url, 'mbwhDelete');
   }
 
 }

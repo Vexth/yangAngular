@@ -1,6 +1,3 @@
-<!-- <div class="wrapper">
-    <app-top></app-top>
-    <app-treeview treemodule="M4" treeitem="V6" ></app-treeview> -->
     <div class="content-wrapper">
       <app-navigation Showtitle="工作量管理模块" Subtitle="流程节点维护" Web="站点"
       Module="工作量管理模块" Page="流程节点维护" ></app-navigation>
@@ -31,15 +28,16 @@
                     <td style="text-align:right;"><label style="margin-bottom:0px;">流程节点：</label></td>
                     <td>
                       <div class="jtyjy-search-text">
-                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="稿件名称...">
+                        <input type="text" [(ngModel)]="name" class="form-control ng-pristine ng-valid ng-touched" placeholder="稿件名称...">
                       </div>
                     </td>
                     <td style="text-align:right;"><label style="margin-bottom:0px;">状态：</label></td>
                     <td>
                       <div class="jtyjy-search-text" style="width:100%;">
-                          <select class="form-control" [(ngModel)]="comId" (ngModelChange)="comId=$event;" name="select1" placeholder="所属部门">
+                          <select class="form-control" [(ngModel)]="isLocked" name="isLocked">
                               <option value="">--请选择--</option>
-                              <option [value]="c.id" *ngFor="let c of comIdList">{{c.name}}</option>
+                              <option value="0">启用</option>
+                              <option value="1">禁用</option>
                           </select>
                       </div>
                     </td>
@@ -58,29 +56,24 @@
                   </tr>
                 </table>
               </div>
-              <!-- 表格 -->
-              <!-- [itemFormatter]="itemFormatter" -->
-              <!-- <div class="well well-lg"> -->
-                  <p-dataTable [value]="cars" [(selection)]="selectedCars3" dataKey="vin" [paginator]="true" 
-                  [rows]="10" [headerCheckboxToggleAllPages]="true" [editable]="true" selectionMode="checkbox" [rowsPerPageOptions]="[10,20,30]">
-                      <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
-                      <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
-                      <p-column field="vin" header="Vin"></p-column>
-                      <p-column field="year" header="Year"></p-column>
-                      <p-column field="brand" header="Brand"></p-column>
-                      <p-column field="color" header="Color"></p-column>
+                  <p-dataTable [value]="P['nodeList']" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" selectionMode="single">
+                      <p-column field="number" header="编号" [style]="{'width':'80px','text-align':'center'}"></p-column>
+                      <p-column field="name" header="流程节点" [style]="{'width':'150px','text-align':'center'}"></p-column>
+                      <p-column field="isLockedName" header="状态" [style]="{'width':'150px','text-align':'center'}"></p-column>
+                      <p-column field="statement" header="说明"[style]="{'text-align':'center'}"></p-column>
                   </p-dataTable>
-              <!-- </div> -->
+                  <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
             </div>
           </div>
         </div>
-        <jdwh-add #jdwhAdd></jdwh-add>
-        <jdwh-bj #jdwhBj></jdwh-bj>
-        <p-growl [(value)]="msgs"></p-growl>
-        <p-confirmDialog></p-confirmDialog>
+        <jdwh-add #jdwhAdd (jdwhAddData)="jdwhAddChange()"></jdwh-add>
+        <jdwh-bj #jdwhBj (jdwhBJData)="jdwhBJChange()"></jdwh-bj>
+        <p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+            <p-footer>
+                <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+                <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+            </p-footer>
+        </p-confirmDialog>
       </section>
     </div>
-    <!-- <app-footer></app-footer>
-  </div> -->
-  
-  

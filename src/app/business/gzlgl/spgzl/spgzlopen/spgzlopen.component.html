@@ -1,6 +1,6 @@
 <div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" style="width:1330px;">
+  aria-hidden="true" (click)="hideList()">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <form #formRef="ngForm" (ngSubmit)="onSubmit(formRef.value)" class="show-form">
         <div class="modal-header">
@@ -11,45 +11,117 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>流程节点:</label>
-            <p-dropdown [options]="findNodeOfZzbList" [(ngModel)]="findNodeOfZzbListCode" [style]="{'width':'100px','margin-top':'0px'}" editable="editable" placeholder="输入搜索" [ngModelOptions]="{standalone: true}"></p-dropdown>
+            <label>人员信息</label>
+            <div class="ui-g">
+              <div class="ui-g-4"><span>追加日期</span>
+                <p-calendar *ngIf="ShowType == '追加'" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="gmtCreate"
+                  [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130" [ngModelOptions]="{standalone: true}"></p-calendar>
+                <span class="empNo" style="margin-top: 0px;" *ngIf="ShowType == '调整'">{{gmtCreate | date:'yyyy-MM-dd' }}</span>
+              </div>
+              <div class="ui-g-4"><span>所追加人员</span>
+                <p-dropdown *ngIf="ShowType == '追加'" [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'100px','margin-top':'0px'}"
+                  editable="editable" placeholder="输入搜索" [ngModelOptions]="{standalone: true}"></p-dropdown>
+
+                <span class="empNo" style="margin-top: 0px;" *ngIf="ShowType == '调整'">{{findUserListId}}</span>
+              </div>
+              <div class="ui-g-4 df">
+                <span class="No">工号</span>
+                <span class="empNo" style="margin-top: 0px;" *ngIf="ShowType == '调整'">{{empNo}}</span>
+                <span *ngIf="ShowType == '追加'" class="empNo" style="width:150px;margin-top: 0px;">{{findUserListId ? findUserListId.emp_no : ' '}}</span>
+              </div>
+            </div>
           </div>
 
           <div class="form-group">
-            <label>是否包括录排工作量:</label>
-            <p-checkbox [(ngModel)]="isLp" binary="true" name="isLp" [style]="{'margin-top': '9px'}"></p-checkbox>
+            <label>产品信息</label>
+            <div class="ui-g">
+              <div class="ui-g-12 df" style="position: relative;">
+                <span>稿件</span>
+                <span *ngIf="ShowType == '调整'" class="empNo" style="width: 90%;">{{filesTreeId}}</span>
+                <div style="width: 90%;" *ngIf="ShowType == '追加'">
+                  <input [(ngModel)]="filesTreeId" (click)="$event.stopPropagation(); onFocus();" style="width: 90%;" placeholder="请选择稿件" type="text" value="" [ngModelOptions]="{standalone: true}"
+                  />
+                  <p-tree class="pTree" *ngIf="hide != 0" [style]="{'width':'100%','max-height': '400px','overflow': 'auto'}" [value]="filesTree"
+                    selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)">
+                  </p-tree>
+                </div>
+              </div>
+            </div>
+            <div class="ui-g" *ngIf="ShowType == '追加'">
+              <div class="ui-g-12 ui-md-6 ui-lg-3 df"><span class="No">分类</span><span class="empNo" style="margin-top: 0px;">{{selectedFile ? selectedFile.typeName : ' '}}</span></div>
+              <div class="ui-g-12 ui-md-6 ui-lg-3 df"><span class="No">学科</span><span class="empNo" style="margin-top: 0px;">{{selectedFile ? selectedFile.xkName : ' '}}</span></div>
+              <div class="ui-g-12 ui-md-6 ui-lg-3 df"><span class="No">年级</span><span class="empNo" style="margin-top: 0px;">{{selectedFile ? selectedFile.njName : ' '}}</span></div>
+              <div class="ui-g-12 ui-md-6 ui-lg-3"><span>流程节点</span>
+                <p-dropdown (onChange)="onChange()" [options]="findNodeOfZzbList" [(ngModel)]="findNodeOfZzbListCode" [style]="{'width':'100px','margin-top':'0px'}"
+                  editable="editable" placeholder="输入搜索" [ngModelOptions]="{standalone: true}"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="ui-g" *ngIf="ShowType == '调整'">
+              <div class="ui-g-12 ui-md-6 ui-lg-3 df"><span class="No">分类</span><span class="empNo" style="margin-top: 0px;">{{njName}}</span></div>
+              <div class="ui-g-12 ui-md-6 ui-lg-3 df"><span class="No">学科</span><span class="empNo" style="margin-top: 0px;">{{xkName}}</span></div>
+              <div class="ui-g-12 ui-md-6 ui-lg-3 df"><span class="No">年级</span><span class="empNo" style="margin-top: 0px;">{{njName}}</span></div>
+              <div class="ui-g-12 ui-md-6 ui-lg-3 df"><span class="No">流程节点</span><span class="empNo" style="margin-top: 0px;">{{nodeName}}</span></div>
+            </div>
           </div>
 
           <div class="form-group">
-            <label>是否包括画图工作量:</label>
-            <p-checkbox [(ngModel)]="isHuat" binary="true" name="isHuat" [style]="{'margin-top': '9px'}"></p-checkbox>
-          </div>
-
-          <div class="form-group">
-            <label>是否包括调图工作量:</label>
-            <p-checkbox [(ngModel)]="isTiaot" binary="true" name="isTiaot" [style]="{'margin-top': '9px'}"></p-checkbox>
-          </div>
-
-          <div class="form-group">
-            <label>是否包括答题卡工作量:</label>
-            <p-checkbox [(ngModel)]="isDatika" binary="true" name="isDatika" [style]="{'margin-top': '9px'}"></p-checkbox>
-          </div>
-
-          <div class="form-group">
-            <label>是否包括后期制作工作量:</label>
-            <p-checkbox [(ngModel)]="isHouqi" binary="true" name="isHouqi" [style]="{'margin-top': '9px'}"></p-checkbox>
-          </div>
-
-          <div class="form-group">
-            <label style="display: inline-table;">倍数:</label>
-            <input style="margin-top: 0px" id="input" type="text" size="1" pInputText [(ngModel)]="multiple" [ngModelOptions]="{standalone: true}"> 
-          </div>
-
-          <div class="form-group">
-            <label style="display: inline-table;">单位:</label>
-            <p-dropdown [style]="{'width':'85px'}" [options]="unitList" [(ngModel)]="unit" placeholder="请选择" [ngModelOptions]="{standalone: true}"></p-dropdown>
-          </div>
-
+            <label>工作量信息</label>
+            <div class="ui-g">
+              <div class="ui-g-4 df">
+                <span class="lh35">工作量计算方式</span>
+                <span>
+                  <input (change)="noChange()" [(ngModel)]="calc" class="radio" type="radio" name="a" value="0"> 自动
+                  <input (change)="noChange()" [(ngModel)]="calc" class="radio" type="radio" name="b" value="1"> 手动
+                </span>
+              </div>
+              <div class="ui-g-4 df">
+                <span class="lh35">工作量</span>
+                <span>
+                  <input *ngIf="calc != '1'" type="text" [(ngModel)]="checkCalcWorkload" [ngModelOptions]="{standalone: true}" readonly="readonly" />
+                  <input *ngIf="calc == '1'" type="text" [(ngModel)]="checkCalcWorkload" [ngModelOptions]="{standalone: true}" />
+                  <button *ngIf="calc == '0' && unit != undefined" style="margin-top: -4px;" type="button" class="btn btn-success" (click)="workloadCalc()">计算</button>
+                </span>
+              </div>
+            </div>
+            <div class="ui-g" *ngIf="calc == '0' && unit != undefined">
+              <div *ngIf="unit != '页'" class="ui-g-4 df">
+                <span class="lh35">页码量</span>
+                <span>
+                  <input [(ngModel)]="checkYemaCount" type="text" [ngModelOptions]="{standalone: true}" /> 页
+                </span>
+              </div>
+              <div class="ui-g-4 df">
+                <span class="lh35">单位数</span>
+                <span>
+                  <input [(ngModel)]="checkDanweiCount" type="text" [ngModelOptions]="{standalone: true}" /> {{unit}}
+                </span>
+              </div>
+              <div class="ui-g-4 df">
+                <span class="lh35">修改量</span>
+                <span>
+                  <input [(ngModel)]="checkXgCount" type="text" [ngModelOptions]="{standalone: true}" /> %
+                </span>
+              </div>
+              <div *ngIf="is_huat != false" class="ui-g-4 df">
+                <span class="lh35">画图数</span>
+                <span>
+                  <input [(ngModel)]="checkHtCount" type="text" [ngModelOptions]="{standalone: true}" /> 个
+                </span>
+              </div>
+              <div *ngIf="is_tiaot != false" class="ui-g-4 df">
+                <span class="lh35">调图数</span>
+                <span>
+                  <input [(ngModel)]="checkTtCount" type="text" [ngModelOptions]="{standalone: true}" /> 个
+                </span>
+              </div>
+              <div *ngIf="is_datika != false" class="ui-g-4 df">
+                <span class="lh35">答题卡数</span>
+                <span>
+                  <input [(ngModel)]="checkDtkCount" type="text" [ngModelOptions]="{standalone: true}" /> 张
+                </span>
+              </div>
+            </div></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="hideChildModal()">关闭</button>
@@ -58,5 +130,4 @@
         <p-growl [(value)]="msgs"></p-growl>
       </form>
     </div>
-  </div>
-</div>
+  </div></div>

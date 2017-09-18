@@ -15,52 +15,52 @@ export class AuthService extends BaseService {
     this.servicename = 'AuthService-用户服务';
   }
 
-  public loginWithCredentials(username: string, password: string): Promise<any | Auth> {
-    //return this.userService
-    return this.findUserBySSM(username,password)
-      .then(backCode => {
-        let auth = new Auth();
-        switch(backCode.backCode){
-          case 0:
-            auth.hasError = true;
-            auth.errMsg = '没有这个用户';
-          break;
-          case 1:
-            sessionStorage.removeItem('userId');
-            sessionStorage.setItem('userId',String(backCode.Id));
-            auth.redirectUrl = (sessionStorage.getItem('redirectUrl') === null)? '/': sessionStorage.getItem('redirectUrl');
-            auth.hasError = false;
-          break;
-          case 2:
-            auth.hasError = true;
-            auth.errMsg = '密码错误';
-          break;
-          default:
-            auth.hasError = true;
-            auth.errMsg = 'Http状态错误';
-          break;
-        }
-        return auth;
-      })
-      .catch((error: any) => {this.handleError('loginWithCredentials',error);});
-  }
+  // public loginWithCredentials(username: string, password: string): Promise<any | Auth> {
+  //   //return this.userService
+  //   return this.findUserBySSM(username,password)
+  //     .then(backCode => {
+  //       let auth = new Auth();
+  //       switch(backCode.backCode){
+  //         case 0:
+  //           auth.hasError = true;
+  //           auth.errMsg = '没有这个用户';
+  //         break;
+  //         case 1:
+  //           sessionStorage.removeItem('userId');
+  //           sessionStorage.setItem('userId',String(backCode.Id));
+  //           auth.redirectUrl = (sessionStorage.getItem('redirectUrl') === null)? '/': sessionStorage.getItem('redirectUrl');
+  //           auth.hasError = false;
+  //         break;
+  //         case 2:
+  //           auth.hasError = true;
+  //           auth.errMsg = '密码错误';
+  //         break;
+  //         default:
+  //           auth.hasError = true;
+  //           auth.errMsg = 'Http状态错误';
+  //         break;
+  //       }
+  //       return auth;
+  //     })
+  //     .catch((error: any) => {this.handleError('loginWithCredentials',error);});
+  // }
 
-  private findUserBySSM(username: string, password:string): Promise<any | BackNewsCode> {
-    const url = `${ConstantsList.HOSTUser}yang-test/angular/login/${username}/${password}/`;
-    return this.http.get(url)
-              .toPromise()
-              .then(res => {
-                let status:number = res.status;//SSM框架返回的状态
-                if(status === 200) { //服务端正确执行
-                  return res.json() as BackNewsCode;
-                }
-                else {
-                  var backCode:BackNewsCode = new BackNewsCode();
-                  backCode.backCode = 3;
-                  backCode.Id = 0;
-                  return backCode;
-                }
-              })
-              .catch((error: any) => {this.handleError('findUserBySSM',error);});
-  }
+  // private findUserBySSM(username: string, password:string): Promise<any | BackNewsCode> {
+  //   const url = `${ConstantsList.HOSTUser}yang-test/angular/login/${username}/${password}/`;
+  //   return this.http.get(url)
+  //             .toPromise()
+  //             .then(res => {
+  //               let status:number = res.status;//SSM框架返回的状态
+  //               if(status === 200) { //服务端正确执行
+  //                 return res.json() as BackNewsCode;
+  //               }
+  //               else {
+  //                 var backCode:BackNewsCode = new BackNewsCode();
+  //                 backCode.backCode = 3;
+  //                 backCode.Id = 0;
+  //                 return backCode;
+  //               }
+  //             })
+  //             .catch((error: any) => {this.handleError('findUserBySSM',error);});
+  // }
 }

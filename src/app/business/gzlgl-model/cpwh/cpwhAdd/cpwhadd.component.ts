@@ -5,12 +5,13 @@ import { ModalformComponent } from '../../../../common/component/modalform/modal
 import * as Modal from 'ngx-bootstrap/modal';
 import { ModalDirective,ModalModule,ModalOptions } from 'ngx-bootstrap/modal';
 
-import { Header, Footer,ConfirmationService,Message,MenuItem} from '../../../../../../primeng/primeng';//右上角提示框组件
+import { Header, Footer,ConfirmationService,Message,MenuItem} from 'primeng/primeng';//右上角提示框组件
 
 import { GetList } from '../../../services/getlist';
 import { PostService } from '../../../services/post.service';
 
 import { CpwhList } from '../../../../module/business/getlist';
+import { FormsModule } from '@angular/forms';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -25,17 +26,16 @@ export class cpwhcpaddComponent implements OnInit {
   @ViewChild('childModal') public childModal:ModalDirective;
   private GetList: GetList;
   private PostService: PostService;
-  cpAddTjhs:number;//添加行数
+  // cpAddTjhs:number;//添加行数
+  // dataList:any = [];
   addList:any = [];//条件集合
-  model:any = [];//提交条件
-
   departId:string="";//部门
   typeId:string="";//分类
   jieId:string="";//届别
   gradeId:string="";//年级
   kindId1:string="";//产品I类
   kindId2:string="";//产品II类
-  workloadType:number;//是否按页码计算工作量
+  workloadType:string = "";//是否按页码计算工作量
   subjectId:string="";//科目
 
   optEditionId:string="";//版本
@@ -43,15 +43,8 @@ export class cpwhcpaddComponent implements OnInit {
   optLocalEditionId:string="";//地方版
   optUsageTypeId:string="";//使用类型
   optBatchId:string="";//批次
-  dataList:any = [];
-  constructor(@Inject(GetList) getList: GetList,private confirmationService: ConfirmationService,@Inject(PostService) postService: PostService){
-    this.GetList = getList;
-    this.PostService = postService;
-  }
+  msgs: Message[] = [];
 
-  ngOnInit() {
-    this.GetList.cpwhadd().then(res => this.addList = res);
-  }
   optJieV2 = [];
   optKind1V2 = [];
   optGradeV2 = [];
@@ -61,8 +54,19 @@ export class cpwhcpaddComponent implements OnInit {
   optLocalEditionV2 = [];
   optUsageTypeV2 = [];
   optBatchV2 = [];
-  public cpwhcpaddShow():void {
+
+  constructor(@Inject(GetList) getList: GetList,private confirmationService: ConfirmationService,@Inject(PostService) postService: PostService){
+    this.GetList = getList;
+    this.PostService = postService;
+  }
+
+  ngOnInit() {
+
+  }
+
+  public cpwhcpaddShow(data):void {
     this.childModal.show();
+    this.addList = data;
     for(let i = 0;i <　this.addList.optJie.length; i++) {
       this.optJieV2[this.addList.optJie[i].optionId] = this.addList.optJie[i].optionName;
     }
@@ -94,10 +98,12 @@ export class cpwhcpaddComponent implements OnInit {
 
   public cpwhcpaddHide():void {
     this.childModal.hide();
+    this.departId="";this.typeId="";this.jieId="";this.gradeId="";this.kindId1="";this.kindId2="";this.subjectId="";
+    this.optEditionId="";this.optModuleId="";this.optLocalEditionId="";this.optUsageTypeId="";this.optBatchId="";
+    this.workloadType = "";this.tableList=[];
   }
 
   //点击批量添加
-  msgs: Message[] = [];
   // dataList2: any = [];
   // pladd() {
   //   this.dataList = [];
@@ -126,25 +132,26 @@ export class cpwhcpaddComponent implements OnInit {
   handler($event: ModalDirective) {
     this.getDataList();
   }
-  P:CpwhList = new CpwhList();
+
   getDataList() {
-    this.GetList.cpwhList(1,10).catch(res => {
+    /*this.GetList.cpwhList(1,10).catch(res => {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       return;
     }).then(res => {
         this.P = res.products.content;
         this.change.emit();
-    });
+    });*/
   }
   //保存
   /*uploadData = {
     batchId:"",usageId:"",localEditionId:"",moduleId:"",editionId:"",departId:"",gradeId:"",jieId:"",kindId1:"",subjectId:"",kindId2:"",typeId:"",workloadType:"",name:""
   }*/
-  uploadName = {
-    optJieName:"",optKind1Name:"",optGradeName:"",optModuleName:"",optSubjectName:"",optEditionName:"",optLocalEditionName:"",optUsageTypeName:"",optBatchName:""
-  }
-  save() {
+
+  @Output()
+  public cpwhAdd=new EventEmitter<string>();
+
+  public emitSave(event):void {
     if(!this.departId||!this.typeId||!this.jieId||!this.gradeId||!this.kindId1||!this.kindId2||!this.subjectId||!this.workloadType){
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:'请填写完全后提交'}];
@@ -161,7 +168,7 @@ export class cpwhcpaddComponent implements OnInit {
     let uploadTabList = [];
     let uploadList = [];
     let uploadData = {
-      batchId:"",usageId:"",localEditionId:"",moduleId:"",editionId:"",departId:"",gradeId:"",jieId:"",kindId1:"",subjectId:"",kindId2:"",typeId:"",workloadType:0,name:""
+      batchId:"",usageId:"",localEditionId:"",moduleId:"",editionId:"",departId:"",gradeId:"",jieId:"",kindId1:"",subjectId:"",kindId2:"",typeId:"",workloadType:"",name:""
     }
     for(let i = 0; i < this.tableList.length; i++) {
       indexofKey.push(this.tableList[i].tabListKeyId);
@@ -173,7 +180,7 @@ export class cpwhcpaddComponent implements OnInit {
     }
     for(let x = 0; x < uploadTabList.length; x++){
       uploadData = {
-        batchId:"",usageId:"",localEditionId:"",moduleId:"",editionId:"",departId:"",gradeId:"",jieId:"",kindId1:"",subjectId:"",kindId2:"",typeId:"",workloadType:0,name:""
+        batchId:"",usageId:"",localEditionId:"",moduleId:"",editionId:"",departId:"",gradeId:"",jieId:"",kindId1:"",subjectId:"",kindId2:"",typeId:"",workloadType:"",name:""
       }
       uploadData.batchId = uploadTabList[x].batchId;
       uploadData.usageId = uploadTabList[x].usageId;
@@ -188,8 +195,11 @@ export class cpwhcpaddComponent implements OnInit {
       uploadData.kindId2 = this.kindId2;
       uploadData.typeId = this.typeId;
       uploadData.workloadType = this.workloadType;
-      uploadData.name=this.optJieV2[this.jieId]+this.optKind1V2[this.kindId1]+this.optGradeV2[this.gradeId]+uploadTabList[x].moduleId?this.optModuleV2[uploadTabList[x].moduleId]:""+this.optSubjectV2[this.subjectId]+this.optEditionV2[uploadTabList[x].editionId]+
-      uploadTabList[x].localEditionId?this.optLocalEditionV2[uploadTabList[x].localEditionId]:""+uploadTabList[x].usageId?this.optUsageTypeV2[uploadTabList[x].usageId]:""+uploadTabList[x].batchId?this.optBatchV2[uploadTabList[x].batchId]:"";
+      let uploadNameData = {
+        jieId:this.optJieV2[this.jieId],kindId1:this.optKind1V2[this.kindId1],gradeId:this.optGradeV2[this.gradeId],moduleId:uploadTabList[x].moduleId?this.optModuleV2[uploadTabList[x].moduleId]:"",subjectId:this.optSubjectV2[this.subjectId],editionId:this.optEditionV2[uploadTabList[x].editionId],
+        localEditionId:uploadTabList[x].localEditionId?this.optLocalEditionV2[uploadTabList[x].localEditionId]:"",usageId:uploadTabList[x].usageId?this.optUsageTypeV2[uploadTabList[x].usageId]:"",batchId:uploadTabList[x].batchId?this.optBatchV2[uploadTabList[x].batchId]:""
+      }
+      uploadData.name = uploadNameData.jieId+uploadNameData.kindId1+uploadNameData.gradeId+uploadNameData.moduleId+uploadNameData.subjectId+uploadNameData.editionId+uploadNameData.localEditionId+uploadNameData.usageId+uploadNameData.batchId;
       product.productList.push(uploadData);
     }
     this.PostService.cpwhAdd(product).catch(res => {
@@ -197,9 +207,10 @@ export class cpwhcpaddComponent implements OnInit {
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       return;
     }).then(res => {
+      this.cpwhAdd.emit("cpwhAdd");
+      this.cpwhcpaddHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:'新增产品成功'}];
-      this.childModal.hide();
     });
   }
 
