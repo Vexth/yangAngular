@@ -1,4 +1,4 @@
-# Yang (项目还在开发当中……)
+# Yang (项目开发完成，目前进入测试阶段)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.3.
 
