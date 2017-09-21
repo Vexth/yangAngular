@@ -7,6 +7,8 @@ import { GetList } from '../../../services/getlist';
 import { PostService } from '../../../services/post.service';
 import { FormsModule } from '@angular/forms';
 
+import { Auxiliary } from '../../../../common/constants/auxiliary';
+
 import { SelectItem, Message, MenuItem, TreeNode } from 'primeng/primeng';
 
 @Component({
@@ -16,6 +18,7 @@ import { SelectItem, Message, MenuItem, TreeNode } from 'primeng/primeng';
 })
 export class SpgzlopenComponent implements OnInit {
   msgs: Message[] = [];
+  zh: any;
   // findUserList 人员
   findUserListId: any;
   findUserList: SelectItem[];
@@ -85,26 +88,29 @@ export class SpgzlopenComponent implements OnInit {
     this.ShowType = '编辑';
   }
 
-  publicList(arr, str) {
-    let List = [];
-    for (let i = 0; i < arr.length; i++) {
-      let labelList = { label: '', value: '' };
-      labelList.label = arr[i][str];
-      labelList.value = arr[i];
-      List.push(labelList)
-    }
-    return List;
+  onNodeExpand(event: any):void {
+    event.originalEvent.stopPropagation();
   }
 
   ngOnInit() {
+    this.zh = {
+      firstDayOfWeek: 0,
+      dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+      dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      dayNamesMin: ["日","一","二","三","四","五","六"],
+      monthNames: [ "一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月" ],
+      monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+      today: 'Today',
+      clear: 'Clear'
+    };
     this.GetList.getProductDoc().then(res => this.filesTree = res)
     this.GetList.findNodeOfZzb().then(res => {
       this.findNodeOfZzbList = [];
-      this.findNodeOfZzbList = this.publicList(res, 'nodeName');
+      this.findNodeOfZzbList = Auxiliary.prototype.publicList(res, 'nodeName');
     })
     this.GetList.findUserList().then(res => {
       this.findUserList = [];
-      this.findUserList = this.publicList(res, 'name');
+      this.findUserList = Auxiliary.prototype.publicList(res, 'name');
     })
   }
 
@@ -176,10 +182,11 @@ export class SpgzlopenComponent implements OnInit {
       checkDtkCount: this.checkDtkCount == undefined ? null : +this.checkDtkCount
     }
     this.PostService.workloadCalc(list).then(res => {
+      this.msgs = [];
       if (res.code == 0) {
         this.checkCalcWorkload = res.data;
       } else {
-        this.msgs.push({ severity: 'error', summary: '错误提示', detail: res.msg });
+        this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
       }
     })
   }
@@ -222,6 +229,9 @@ export class SpgzlopenComponent implements OnInit {
       this.checkYemaCount = null;
       this.userId = null;
       this.id = null;
+
+      this.selectedFile = null;
+      this.findNodeOfZzbListCode = null;
     } else {
       this.ShowType = '调整';
       this.IsAdd = false;
@@ -269,28 +279,34 @@ export class SpgzlopenComponent implements OnInit {
 
   public onSubmit(formValue: any): void {
     if (!this.checkCalcWorkload || this.checkCalcWorkload.toString() == '') {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '工作量不能为空' });
+      this.msgs = [];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '工作量不能为空' }];
       return;
     }
     if (this.ShowType == '追加') {
       if (!this.gmtCreate) {
-        this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择追加日期' });
+        this.msgs = [];
+        this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择追加日期' }];
         return;
       }
       if (!this.findUserListId) {
-        this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择追加人员' });
+        this.msgs = [];
+        this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择追加人员' }];
         return;
       }
       if (!this.findNodeOfZzbListCode) {
-        this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择流程节点' });
+        this.msgs = [];
+        this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择流程节点' }];
         return;
       }
       if (!this.filesTreeId) {
-        this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择稿件' });
+        this.msgs = [];
+        this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择稿件' }];
         return;
       }
       if (!this.calc) {
-        this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择工作量计算方式' });
+        this.msgs = [];
+        this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择工作量计算方式' }];
         return;
       }
       let list = {
@@ -314,7 +330,8 @@ export class SpgzlopenComponent implements OnInit {
           this.change.emit();
           this.hideChildModal();
         } else {
-          this.msgs.push({ severity: 'error', summary: '错误提示', detail: res.msg });
+          this.msgs = [];
+          this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
         }
       });
     } else if (this.ShowType == '调整') {
@@ -338,7 +355,8 @@ export class SpgzlopenComponent implements OnInit {
           this.change.emit();
           this.hideChildModal();
         } else {
-          this.msgs.push({ severity: 'error', summary: '错误提示', detail: res.msg });
+          this.msgs = [];
+          this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
         }
       })
     }

@@ -1,7 +1,4 @@
-<!-- <div class="wrapper">
-    <app-top></app-top>
-    <app-treeview treemodule="M4" treeitem="V4" ></app-treeview> -->
-    <div class="content-wrapper">
+<div class="content-wrapper">
       <app-navigation Showtitle="工作量管理模块" Subtitle="设置产品工作量" Web="站点"
       Module="工作量管理模块" Page="设置产品工作量" ></app-navigation>
       <section class="content" id="content">
@@ -60,8 +57,6 @@
                   </tr>
                 </table>
                 <div class="jtyjy-search-more" [hidden]="isadSearch == 0">
-                    
-                    <!-- <form class="form-horizontal modal-form"> -->
                         <table style="width: 100%">
                           <colgroup>
                             <col width="180"/>
@@ -201,30 +196,28 @@
                             </td>
                           </tr>
                         </table>
-                    <!-- </form> -->
                 </div>
               </div>
-              <!-- 表格 -->
-              <p-treeTable [value]="fromDataList.pagelist.content" selectionMode="single" [(selection)]="selected">
+              <p-treeTable [value]="fromDataList.pagelist.content" selectionMode="single" [(selection)]="selected" [style]="{'overflow-x':'scroll'}">
                 <p-column [style]="{'width':'100px'}">
                   <ng-template let-node="rowData" pTemplate="body">
                     <input type="checkbox" value="node.data.documentId" (click)="iptIsChecked(node.data.documentId)">
                   </ng-template>
                 </p-column>
                 <p-column field="name" header="产品名称" [style]="{'width':'250px','text-align':'center','white-space':'normal'}"></p-column>
-                <p-column field="departName" header="所属部门/中心" [style]="{'text-align':'center','white-space':'normal'}"></p-column>
-                <p-column field="document" header="是否按页码计算工作量" [style]="{'text-align':'center','white-space':'normal'}">
+                <p-column field="departName" header="所属部门/中心" [style]="{'width':'120px','text-align':'center','white-space':'normal'}"></p-column>
+                <p-column field="document" header="是否按页码计算工作量" [style]="{'width':'160px','text-align':'center','white-space':'normal'}">
                   <ng-template let-node="rowData" pTemplate="body" >
                     <span>{{node.data.workloadType == 0?'否':'是'}}</span>
                   </ng-template> 
                 </p-column>
-                <p-column field="document" header={{x.name}} *ngFor="let x of fromDataList.nodelist;let i = index;" [style]="{'text-align':'center'}">
+                <p-column field="document" header={{x.name}} *ngFor="let x of fromDataList.nodelist;let i = index;" [style]="{'text-align':'center','width':'100px'}">
                   <ng-template let-node="rowData" pTemplate="body" >
-                    <span class="{{i}}" (dblclick)="ShowElement($event,selected)">{{node.data.workloadList[i] == -1?'未设置':node.data.workloadList[i]}}</span>
+                    <div class="{{i}}" (dblclick)="ShowElement($event,selected)">{{node.data.workloadList[i] == -1?'未设置':node.data.workloadList[i]}}</div>
                   </ng-template> 
                 </p-column>
               </p-treeTable>
-              <p-paginator rows="{{opts.size}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
+              <p-paginator rows="{{opts.size}}" totalRecords="{{total}}" (onPageChange)="paginate($event)"></p-paginator>
             </div>
           </div>
         </div>

@@ -76,15 +76,16 @@ export class jdwhbjComponent implements OnInit {
     addData.statement = this.statement;
     addData.id = this.id;
     addData.lc = this.number;
-    this.PostService.jdwhBj(addData).catch(res => {
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res => {
+    this.PostService.jdwhBj(addData,this.id).then(res => {
       this.jdwhBJData.emit("jdwhBJData");
       this.jdwhbjHide();
       this.msgs = [];
-      this.msgs = [{severity:'success', summary:'成功提示', detail:"新增流程节点成功"}];
+      this.msgs = [{severity:'success', summary:'成功提示', detail:"修改流程节点成功"}];
+    }).catch(res => {
+      res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
     });
   }
 }

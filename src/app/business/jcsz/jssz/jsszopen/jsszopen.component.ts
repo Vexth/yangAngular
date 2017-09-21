@@ -69,12 +69,6 @@ export class JsszopenComponent implements OnInit {
         this.findNodeOfZzbList.push(labelList)
       }
     })
-    /*
-    this.GetList.GetSequenceCode(1,1).
-      then(backobj =>{
-           alert(backobj.toString());
-      });
-    */
   }
 
   public showChildModal(dataItem: any): void {
@@ -145,15 +139,15 @@ export class JsszopenComponent implements OnInit {
       unit: ''
     };
     if(!this.findNodeOfZzbListCode){
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入流程节点'});
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请输入流程节点'}];
       return ;
     }
     if(!this.multiple){
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入倍数'});
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请输入倍数'}];
       return ;
     }
     if(!this.unit){
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请选择单位'});
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择单位'}];
       return ;
     }
     List.id = this.P.id;
@@ -172,7 +166,7 @@ export class JsszopenComponent implements OnInit {
         this.change.emit();
         this.hideChildModal();
       } else {
-        this.msgs.push({severity:'error', summary:'错误提示', detail:res.msg});
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       }
     });
   }

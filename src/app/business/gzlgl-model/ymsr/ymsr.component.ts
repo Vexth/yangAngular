@@ -16,13 +16,16 @@ export class YmsrComponent implements OnInit {
   private PostService: PostService;
   msgs: Message[] = [];
   deptData:any;
+  selected: any;
   optsDataList:any = {
     departments:[],optBatch:[],optEdition:[],optGrade:[],optGroup:[],optJie:[],optKind1:[],
     optKind2:[],optLocalEdition:[],optModule:[],optNode:[],optSubject:[],optType:[],optUsageType:[]
   }
   total:any = 10;
   formDataList:any = [];
-  selected: any;
+  optsData:any = {
+    name:"",departId:"",kindId1:"",kindId2:"",typeId:"",jieId:"",gradeId:"",localEditionId:"",subjectId:"",editionId:"",moduleId:"",usageId:"",batchId:"",page:"1",size:"10"
+  }
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getDeptList();
@@ -30,9 +33,6 @@ export class YmsrComponent implements OnInit {
   }
   constructor(private confirmationService: ConfirmationService,@Inject(GetList) getList: GetList,@Inject(PostService) postService: PostService) {
     this.GetList = getList;this.PostService = postService;
-  }
-  optsData:any = {
-    name:"",departId:"",kindId1:"",kindId2:"",typeId:"",jieId:"",gradeId:"",localEditionId:"",subjectId:"",editionId:"",moduleId:"",usageId:"",batchId:"",page:"1",size:"10"
   }
   clearOptData() {
     this.optsData = {
@@ -62,16 +62,19 @@ export class YmsrComponent implements OnInit {
         x["children"] = x.document.children;
         x["data"] = x.document.data;
       })
+      
       this.formDataList = res.pagelist.content;
-      this.optsData.pageSize = res.pageSize;
-      this.optsData.pageNum = res.pageNum;
-      this.total = res.totalCount;
+      this.optsData.size = res.pagelist.count?res.pagelist.count:10;
+      this.optsData.page = res.pagelist.page;
+      let indexTotal = (+res.pagelist.totalPage)*(+res.pagelist.count);
+      if(indexTotal>0) {this.total = indexTotal;}else{this.total = 10;}
+      // this.total = (+res.pagelist.totalPage)*(+res.pagelist.count);
       console.log(this.formDataList);
     });
   }
   paginate(event) {
-    this.optsData.pageSize = event.rows;
-    this.optsData.pageNum = event.page + 1;
+    this.optsData.size = event.rows;
+    this.optsData.page = event.page + 1;
     this.getFormData();
   }
   //数据处理docId
@@ -127,8 +130,7 @@ export class YmsrComponent implements OnInit {
     });
   }
   // 双击修改
-  ShowElement(element,selected) {
-    console.log(selected);
+  ShowElement(element, selected) {
     if(selected.children.length !== 0) {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"非子集稿件不能修改"}];
@@ -151,7 +153,8 @@ export class YmsrComponent implements OnInit {
     newobj.value = oldhtml;
     //为新增元素添加光标离开事件
     newobj.addEventListener('blur', () => {
-      //当触发时判断新增元素值是否为空，为空则不修改，并返回原有值 
+      //当触发时判断新增元素值是否为空，为空则不修改，并返回原有值
+      if(isNaN(+newobj.value) || newobj.value==="") {newobj.value = "未设置";}
       element.target.innerHTML = newobj.value == oldhtml ? oldhtml : newobj.value;
       if(this.updataList.length > 0) {
         this.updataList.forEach((x,i) => {
@@ -160,9 +163,11 @@ export class YmsrComponent implements OnInit {
           }
         });
       }
-      pushData.docId = indexDocId;
-      pushData.pageNum = newobj.value;
-      this.updataList.push(pushData);
+      if(newobj.value !== "未设置") {
+        pushData.docId = indexDocId;
+        pushData.pageNum = newobj.value;
+        this.updataList.push(pushData);
+      }
       //当触发时设置父节点的双击事件为ShowElement
       // element.target.setAttribute("ondblclick", "ShowElement(this);");
     });

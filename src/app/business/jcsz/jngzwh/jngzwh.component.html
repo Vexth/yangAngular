@@ -25,7 +25,7 @@
 
         <div style="_height:100%;min-height:100%;">
             <div class="tab"></div>
-            <p-dataTable [value]="dataList" [editable]="true" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
+            <p-dataTable emptyMessage="暂无数据" [value]="dataList" [editable]="true" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
                 <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
                 <p-column field="id" header="编号" [style]="{'width':'80px'}"></p-column>
                 <p-column field="job_name" header="技能等级" [style]="{'width':'140px'}" [editable]="true">

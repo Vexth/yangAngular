@@ -60,7 +60,6 @@ export class SzgzlComponent implements OnInit {
       console.log(res);
       this.fromDataList = res;
       this.total = (+res.pagelist.count)*(+res.pagelist.totalPage);
-      this.opts.size = res.pagelist.count;
     })
   }
   /**
@@ -137,15 +136,15 @@ export class SzgzlComponent implements OnInit {
     let postData = {
       dataList:this.saveDataList
     }
-    this.PostService.szgzlSet(postData).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.szgzlSet(postData).then(res=>{
       this.clearOpts();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"工作量保存成功"}];
-    })
+    }).catch(res=>{
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    });
   }
 
    // 双击修改
@@ -168,6 +167,7 @@ export class SzgzlComponent implements OnInit {
     //为新增元素添加光标离开事件
     newobj.addEventListener('blur', () => {
       //当触发时判断新增元素值是否为空，为空则不修改，并返回原有值 
+      if(isNaN(+newobj.value) || newobj.value==="") {newobj.value = "未设置";}
       element.target.innerHTML = newobj.value == oldhtml ? oldhtml : newobj.value;
       // console.log(element.path[0].className);
       postData.workloadList[+element.path[0].className] = newobj.value;
@@ -176,7 +176,9 @@ export class SzgzlComponent implements OnInit {
           this.saveDataList.splice(i,1);
         }
       });
-      this.saveDataList.push(postData);
+      if(newobj.value !== "未设置") {
+        this.saveDataList.push(postData);
+      }
       //当触发时设置父节点的双击事件为ShowElement
       // element.target.setAttribute("ondblclick", "ShowElement(this);");
     });
@@ -205,8 +207,10 @@ export class SzgzlComponent implements OnInit {
     console.log("刷新");
     this.clearOpts();
   }
-
-  paginate(event){
-    console.log(event)
+  paginate(event) {
+    console.log(event);
+    this.opts.size = 10;
+    this.opts.page = event.page + 1;
+    this.getFormData();
   }
 }

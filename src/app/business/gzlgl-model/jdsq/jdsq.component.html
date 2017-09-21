@@ -66,7 +66,7 @@
             <!-- 表格 -->
             <!-- [itemFormatter]="itemFormatter" -->
             <!-- <div class="well well-lg"> -->
-                <p-dataTable [value]="formDataList" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" selectionMode="single">
+                <p-dataTable [value]="formDataList" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" selectionMode="single" emptyMessage="暂无数据">
                     <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
                     <p-column field="department.name" header="部门" [style]="{'width':'200px','text-align':'center'}"></p-column>
                     <p-column field="role.name" header="角色" [style]="{'width':'300px','text-align':'center'}"></p-column>

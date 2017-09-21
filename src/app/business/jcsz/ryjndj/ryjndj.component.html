@@ -35,7 +35,7 @@
         <div style="_height:100%;min-height:100%;">
             <div class="tab"></div>
 
-            <p-dataTable [responsive]="true" [value]="dataList" [editable]="true" [style]="{'width': '100%','text-align':'center'}">
+            <p-dataTable [responsive]="true" [value]="dataList" [editable]="true" [style]="{'width': '100%','text-align':'center'}" emptyMessage="暂无数据">
                 <p-column field="name" header="人员" [style]=" {'height': '35px' }"></p-column>
                 <p-column field="empNo" header="工号"></p-column>
                 <p-column field="jobName" header="技能等级" [editable]="true">

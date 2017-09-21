@@ -103,7 +103,6 @@ export class CpwhComponent implements OnInit {
       return data;
   }
   paginate(event) {
-    console.log(this.total);
     this.opts.size = event.rows;
     this.opts.page = event.page + 1;
     this.getDataList();
@@ -115,7 +114,6 @@ export class CpwhComponent implements OnInit {
     }else{
       this.checkList.splice(this.checkList.indexOf(data),1);
     }
-    console.log(this.checkList);
   }
 
   // ===========================
@@ -163,8 +161,7 @@ export class CpwhComponent implements OnInit {
   //新增稿件
   @ViewChild('cpwhgjadd') public cpwhgjadd:cpwhgjaddComponent;
   addgj() {
-    console.log(this.selected);
-    if(!this.selected || !this.selected.productId) {
+    if(!this.selected || !this.selected.data) {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择一条数据进行操作"}];
       return;
@@ -175,7 +172,7 @@ export class CpwhComponent implements OnInit {
   //批量新增稿件
   @ViewChild('cpwhpladd') public cpwhpladd:cpwhpladdComponent;
   pladd():void {
-    if(!this.selected || !this.selected.productId) {
+    if(!this.selected || !this.selected.data) {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择一条数据进行操作"}];
       return;
@@ -222,7 +219,6 @@ export class CpwhComponent implements OnInit {
       return;
     }
     let hashStr = this.checkList.join('&id=');
-    console.log(hashStr);
     window.open('http://ches.jtyjy.com/qrcode.html?id='+hashStr+'&');
   }
 
@@ -231,4 +227,57 @@ export class CpwhComponent implements OnInit {
   goQrcode(id,name) {
     this.cpwhqrcode.cpwhQrcodeShow(id,name);
   }
+
+  // 双击修改
+  ShowElement(element,selected) {
+    if(selected.children.length !== 0 || !selected.data.docName) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:"非子集稿件不能修改"}];
+      return;
+    }
+    let indexDocId = selected.data.documentId;
+    let pushData = {
+      docId:"",pageNum:""
+    }
+    // let postData = {};
+    // console.log(element)
+    // let oldhtml = element.target.innerHTML;
+    let oldhtml = selected.data.docName;
+    //创建新的input元素
+    let newobj = document.createElement('input');
+    //为新增元素添加类型
+    newobj.type = 'text';
+    newobj.style.width = '100%';
+    newobj.style.color = '#000';
+    newobj.maxLength = 5;
+    //为新增元素添加value值
+    newobj.value = oldhtml;
+    //为新增元素添加光标离开事件
+    newobj.addEventListener('blur', () => {
+      //当触发时判断新增元素值是否为空，为空则不修改，并返回原有值 
+      // element.target.innerHTML = newobj.value == oldhtml ? oldhtml : newobj.value;
+      this.PostService.cpwhSaveEdit({},selected.documentId,newobj.value).catch(res=>{
+        this.clearOpts();
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }).then(res=>{
+        this.clearOpts();
+        this.msgs = [];
+        this.msgs = [{severity:'success', summary:'成功提示', detail:"稿件名称修改保存成功"}];
+      })
+      //当触发时设置父节点的双击事件为ShowElement
+      // element.target.setAttribute("ondblclick", "ShowElement(this);");
+    });
+    //设置该标签的子节点为空
+    element.target.innerHTML = '';
+    //添加该标签的子节点，input对象
+    element.target.appendChild(newobj);
+    //设置选择文本的内容或设置光标位置（两个参数：start,end；start为开始位置，end为结束位置；如果开始位置和结束位置相同则就是光标位置）
+    newobj.setSelectionRange(0, oldhtml.length);
+    //设置获得光标
+    newobj.focus();
+    //设置父节点的双击事件为空
+    // newobj.parentNode.setAttribute("ondblclick", "");
+  } 
 }

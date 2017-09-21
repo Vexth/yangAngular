@@ -58,7 +58,7 @@ export class jsfpwarComponent implements OnInit {
     this.viewListL = [];this.nodeList = [];this.node = [];this.selected = [];
   }
 
-  nodeSelect() {
+  nodeSelect(event) {
     this.nodeList = [];
     this.node = [];
     console.log(this.forRitId);

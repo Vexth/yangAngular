@@ -104,9 +104,9 @@ export class RyjndjComponent implements OnInit{
       this.PostService.updateJob(postvalue).then(res => {
         if (res.code == 0) {
           this.jobList();
-          this.msgs.push({severity:'info', summary:'成功提示', detail:'保存成功'});
+          this.msgs = [{severity:'info', summary:'成功提示', detail:'保存成功'}];
         } else {
-          this.msgs.push({severity:'error', summary:'错误提示', detail:'保存失败'});
+          this.msgs = [{severity:'error', summary:'错误提示', detail:'保存失败'}];
         }
       })
     })

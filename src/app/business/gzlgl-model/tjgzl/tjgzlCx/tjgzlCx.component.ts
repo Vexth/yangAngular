@@ -68,9 +68,9 @@ export class tjgzlcxComponent implements OnInit {
   }
 
   @Output()
-  public tzgzlCx = new EventEmitter<string>();
+  public tzgzlCx=new EventEmitter<string>();
 
-  public refresh(event):void {
+  public refresh():void {
     console.log("查询");
     if(this.dateFrom) {this.P.dateFrom = this.getFormetDate(this.dateFrom);}else{this.P.dateFrom = "";}
     if(this.dateTo) {this.P.dateTo = this.getFormetDate(this.dateTo);}else{this.P.dateTo = "";}

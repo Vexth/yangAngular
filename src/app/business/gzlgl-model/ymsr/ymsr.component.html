@@ -55,8 +55,6 @@
                 </tr>
               </table>
               <div class="jtyjy-search-more" [hidden]="isadSearch == 0">
-                  
-                  <!-- <form class="form-horizontal modal-form"> -->
                       <table style="width: 100%">
                         <colgroup>
                           <col width="180"/>
@@ -186,7 +184,6 @@
                           </td>
                         </tr>
                       </table>
-                  <!-- </form> -->
               </div>
             </div>
             <!-- 表格 -->
@@ -196,11 +193,11 @@
               <p-column field="departName" header="所属部门" [style]="{'text-align':'center'}"></p-column>
               <p-column field="pageNumber" header="定稿页码数" [style]="{'text-align':'center'}">
                 <ng-template let-node="rowData" pTemplate="body">
-                  <span (dblclick)="ShowElement($event, selected)">{{node.data.pageNumber}}</span>
+                  <div (dblclick)="ShowElement($event, selected)">{{node.data.pageNumber===0?"未设置":node.data.pageNumber}}</div>
                 </ng-template>
               </p-column>
             </p-treeTable>
-            <p-paginator rows="{{optsData.pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
+            <p-paginator rows="{{optsData.size}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
           </div>
         </div>
       </div>

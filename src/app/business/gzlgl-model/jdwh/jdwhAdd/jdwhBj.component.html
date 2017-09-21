@@ -11,7 +11,7 @@ tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="tru
       <div class="modal-body" >
         <div class="ui-g">
           <div class="ui-g-4 jdwh-lable">编号：</div>
-          <div class="ui-g-5">
+          <div class="ui-g-5" style="line-height: 34px;">
             <!-- <input pInputText type="text" [(ngModel)]="" name="" class="form-control" placeholder="流程节点..."> -->
             {{number}}
           </div>
@@ -43,3 +43,4 @@ tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="tru
     </div>
   </div>
 </div>
+<p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>

@@ -14,13 +14,13 @@
             <label>人员信息</label>
             <div class="ui-g">
               <div class="ui-g-4"><span>追加日期</span>
-                <p-calendar *ngIf="ShowType == '追加'" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="gmtCreate"
+                <p-calendar [locale]="zh" dateFormat="yy-mm-dd" *ngIf="ShowType == '追加'" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="gmtCreate"
                   [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130" [ngModelOptions]="{standalone: true}"></p-calendar>
                 <span class="empNo" style="margin-top: 0px;" *ngIf="ShowType == '调整'">{{gmtCreate | date:'yyyy-MM-dd' }}</span>
               </div>
               <div class="ui-g-4"><span>所追加人员</span>
-                <p-dropdown *ngIf="ShowType == '追加'" [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'100px','margin-top':'0px'}"
-                  editable="editable" placeholder="输入搜索" [ngModelOptions]="{standalone: true}"></p-dropdown>
+                <p-dropdown [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'150px', 'text-align': 'center'}" filter="filter" placeholder="输入搜索" [ngModelOptions]="{standalone: true}">
+                </p-dropdown>
 
                 <span class="empNo" style="margin-top: 0px;" *ngIf="ShowType == '调整'">{{findUserListId}}</span>
               </div>
@@ -42,7 +42,7 @@
                   <input [(ngModel)]="filesTreeId" (click)="$event.stopPropagation(); onFocus();" style="width: 90%;" placeholder="请选择稿件" type="text" value="" [ngModelOptions]="{standalone: true}"
                   />
                   <p-tree class="pTree" *ngIf="hide != 0" [style]="{'width':'100%','max-height': '400px','overflow': 'auto'}" [value]="filesTree"
-                    selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)">
+                    selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeExpand)="onNodeExpand($event)" (onNodeCollapse)="onNodeExpand($event)">
                   </p-tree>
                 </div>
               </div>

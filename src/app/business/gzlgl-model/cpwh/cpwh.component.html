@@ -225,7 +225,11 @@
                   <span class="fa fa-qrcode qrcodeSize" (click)="goQrcode(node.data.documentId,node.data.name)"></span>
                 </ng-template>
               </p-column>
-              <p-column field="name" header="产品名称" [style]="{'width':'250px','white-space':'normal'}"></p-column>
+              <p-column field="name" header="产品名称" [style]="{'width':'250px','text-align':'center','white-space':'normal'}">
+                <ng-template let-node="rowData" pTemplate="body">
+                  <span (dblclick)="ShowElement($event,selected)">{{node.name}}</span>
+                </ng-template>
+              </p-column>
               <p-column field="jieId" header="届别" [style]="{'text-align':'center','white-space':'normal'}"></p-column>
               <p-column field="kindId2" header="产品II类" [style]="{'text-align':'center','white-space':'normal'}"></p-column>
               <p-column field="subjectId" header="科目" [style]="{'text-align':'center','white-space':'normal'}"></p-column>

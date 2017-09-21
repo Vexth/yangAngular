@@ -33,6 +33,8 @@ export class KmgfhComponent implements OnInit{
   // 分页
   rows: number;
   pageLinks: number;
+  pageNum: number = 1;
+  pageSize: number = 10;
 
   text: string;
 
@@ -59,12 +61,18 @@ export class KmgfhComponent implements OnInit{
     return arr;
   }
 
+  paginate(event){
+    this.pageSize = event.rows;
+    this.pageNum = event.page + 1;
+    this.search();
+  }
+
   // 获取数据填充表格
   crList(){
     let list = {
       name: this.name,
-      pageNum: 1,
-      pageSize: 20000
+      pageNum: this.pageNum,
+      pageSize: this.pageSize
     }
     this.GetList.crList(list).then(res => {
       this.rows = res.pageSize;
@@ -96,7 +104,7 @@ export class KmgfhComponent implements OnInit{
       postvalue.commonId = itme.id;
       this.PostService.crUpdateCourse(postvalue).then(res => {
         this.crList();
-        this.msgs.push({severity:'info', summary:'成功提示', detail:'保存成功'});
+        this.msgs = [{severity:'info', summary:'成功提示', detail:'保存成功'}];
       })
     })
   }

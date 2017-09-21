@@ -60,6 +60,8 @@ export class CygzlComponent implements OnInit {
     }
     bindpage(name: number): void {
         this.GetList.workloadFindList(this.emptyList).then(res => {
+            this.dataListCode = [];
+            Auxiliary.prototype.emptyMessage();
             if (res.checkList != undefined) {
                 this.dataList = res.checkList;
                 this.rows = res.pageSize;
@@ -69,21 +71,28 @@ export class CygzlComponent implements OnInit {
             }
         })
     }
+
     ngOnInit() {
         this.zh = {
             firstDayOfWeek: 0,
             dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
             dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-            dayNamesMin: ["日","一","二","三","四","五","六"],
-            monthNames: [ "一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月" ],
-            monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+            dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"],
+            monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             today: 'Today',
             clear: 'Clear'
         };
         this.emptyList.statu = +this.statu;
         this.bindpage(0);
-        this.GetList.findNodeOfZzb().then(res => this.findNodeOfZzbList = res);
-        this.GetList.findUserList().then(res => this.findUserList = res);
+        this.GetList.findNodeOfZzb().then(res => {
+            this.findNodeOfZzbList = [];
+            this.findNodeOfZzbList = Auxiliary.prototype.publicList(res, 'nodeName');
+        })
+        this.GetList.findUserList().then(res => {
+            this.findUserList = [];
+            this.findUserList = Auxiliary.prototype.publicList(res, 'name');
+        })
         this.GetList.findProductDoc().then(res => this.filesTree = res);
         Auxiliary.prototype.ControlHeight();
     }
@@ -95,10 +104,14 @@ export class CygzlComponent implements OnInit {
         d = d < 10 ? ('0' + d) : d;
         return y + '-' + m + '-' + d;
     }
-    paginate(event){
+    paginate(event) {
         this.emptyList.pageSize = event.rows;
         this.emptyList.pageNum = event.page + 1;
         this.bindpage(0);
+    }
+
+    onNodeExpand(event: any): void {
+        event.originalEvent.stopPropagation();
     }
 
     // 查询
@@ -116,13 +129,26 @@ export class CygzlComponent implements OnInit {
     onFocus() {
         this.hide = 1;
     }
+    onHide() {
+        this.hide = 0;
+    }
     nodeSelect(event): void {
         this.filesTreeId = event.node.label;
         this.emptyList.documentId = event.node.id;
         this.hide = 0;
     }
 
-    dellList(item){
+    dellList(item) {
         console.log(item)
+    }
+
+    // 重置
+    resetting() {
+        this.findNodeOfZzbId = null;
+        this.findUserListId = null;
+        this.filesTreeId = null;
+        this.emptyList.stime = null;
+        this.emptyList.etime = null;
+        this.statu = '-1';
     }
 }

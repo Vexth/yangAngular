@@ -33,6 +33,11 @@ export class cpwhgjaddComponent implements OnInit {
   public cpwhAddGJ=new EventEmitter<string>();
 
   public emitCpwhGJadd(event):void {
+    if(!this.CPWHgjfl) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:"请输入稿件名称"}];
+      return;
+    }
     let postData = {
       nameList:[],pid:""
     }
@@ -47,16 +52,14 @@ export class cpwhgjaddComponent implements OnInit {
       this.cpwhGJHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:'新增稿件成功'}];
-
     })
-    
   }
 
   public cpwhGJShow(data):void {
     this.childModal.show();
     console.log(data);
     this.name = data.name;
-    this.pid = data.document.documentId;
+    this.pid = data.data.documentId;
   }
 
   public cpwhGJHide():void {

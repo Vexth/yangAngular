@@ -165,6 +165,7 @@ export class TreeviewComponent implements OnInit {
   //   },
   // ];
 
+  xmName: string;
   constructor(
     @Inject(GetList) getList: GetList,
     private router: Router,
@@ -174,15 +175,13 @@ export class TreeviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.GetList.GetAuthlist().then(res => {
-    //   this.names = res.authList
-    // })
-
     var key = sessionStorage.getItem("key");
     var vexth = sessionStorage.getItem("vexth");
+    var keyName = sessionStorage.getItem("keyName");
     if (key !== null) {
       this.styleName1 = '';
       this.styleName2 = 'vexth';
+      this.xmName = keyName;
       this.names = JSON.parse(vexth).authList;
       this.check = this.treemodule + this.treeitem;
     }
@@ -204,6 +203,8 @@ export class TreeviewComponent implements OnInit {
     this.service.signin(formValue.username, formValue.password).then(auth => {
       if (auth.status == 200) {
         auth = auth.json();
+        this.xmName = auth.data.name;
+        sessionStorage.setItem("keyName", auth.data.name);
         this.msgs = [];
         this.msgs = [{ severity: 'info', summary: '成功', detail: '成功' }];
         this.router.navigate(['/business/A1']).then(() => {

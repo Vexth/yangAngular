@@ -42,10 +42,10 @@ export class cpwhpladdComponent implements OnInit {
       return;
     }
     let postData = {nameList:[],pid:""}
-    for(let k = 0; k < +this.quantity; k++){
+    for(let k = 1; k < +this.quantity; k++){
       postData.nameList.push(k+this.typeName);
     }
-    postData.pid = this.data.document.documentId;
+    postData.pid = this.data.data.documentId;
     this.PostService.cpwhGJAdd(postData).catch(res=>{
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];

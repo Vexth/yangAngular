@@ -1,6 +1,3 @@
-<!-- <div class="wrapper">
-    <app-top></app-top>
-    <app-treeview treemodule="M4" treeitem="V3" ></app-treeview> -->
     <div class="content-wrapper">
       <app-navigation Showtitle="工作量管理模块" Subtitle="工作量模板维护" Web="站点"
       Module="工作量管理模块" Page="工作量模板维护" ></app-navigation>
@@ -63,8 +60,7 @@
                   </tr>
                 </table>
               </div>
-              <!-- 表格 -->
-              <p-dataTable [value]="formDataList" [(selection)]="selected" [headerCheckboxToggleAllPages]="true">
+              <p-dataTable [value]="formDataList" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" emptyMessage="暂无数据">
                 <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
                 <p-column field="code" header="编号" [style]="{'width':'100px','text-align':'center'}"></p-column>
                 <p-column field="name" header="名称" [style]="{'width':'300px','text-align':'center'}"></p-column>
@@ -88,7 +84,3 @@
         </p-confirmDialog>
       </section>
     </div>
-    <!-- <app-footer></app-footer>
-  </div> -->
-  
-  

@@ -32,16 +32,11 @@
               </table>
             </div>
             <!-- 表格 -->
-            <!-- [itemFormatter]="itemFormatter" -->
-            <!-- <div class="well well-lg"> -->
-                <p-dataTable [value]="fromDataList" [(selection)]="selected" selectionMode="single"
-                [headerCheckboxToggleAllPages]="true"  selectionMode="checkbox">
+                <p-dataTable [value]="fromDataList" [(selection)]="selected" [headerCheckboxToggleAllPages]="true"  selectionMode="checkbox" emptyMessage="暂无数据">
                   <p-column [style]="{'width':'30px'}" selectionMode="multiple"></p-column>    
                   <p-column field="id" header="角色ID" [style]="{'text-align':'center'}"></p-column>
                   <p-column field="name" header="角色名称" [style]="{'text-align':'center'}"></p-column>
                 </p-dataTable>
-                <!-- <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator> -->
-            <!-- </div> -->
           </div>
         </div>
       </div>

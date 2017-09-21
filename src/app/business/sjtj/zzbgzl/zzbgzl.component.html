@@ -1,75 +1,70 @@
-<!-- <div class="wrapper">
-    <app-top></app-top>
-    <app-treeview treemodule="sjtj" treeitem="zzbgzl" ></app-treeview> -->
-    <div class="content-wrapper">
-        <app-navigation Showtitle="工作量管理" Subtitle="工作量统计" Web="工作量管理系统" Module="数据统计" Page="工作量统计"></app-navigation>
-    
-        <section class="content" id="content">
-            <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
-    
-            <div class="row">
-                <div class="col-xs-2">
-                    <label class="control-label">期间：</label>
-                    <div class="controls">
-                        <p-calendar [locale]="zh" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="bearDate" 
-                        dateFormat="yy-mm" [maxDate]="maxDate" ></p-calendar>
-                    </div>
+<div class="content-wrapper">
+    <app-navigation Showtitle="工作量管理" Subtitle="制作部工作量" Web="工作量管理系统" Module="数据统计" Page="制作部工作量"></app-navigation>
+
+    <section class="content" id="content">
+        <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
+
+        <div class="row">
+            <div class="col-xs-2">
+                <label class="control-label">期间：</label>
+                <div class="controls">
+                    <p-calendar [locale]="zh" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="bearDate" dateFormat="yy-mm"
+                        [maxDate]="maxDate"></p-calendar>
                 </div>
-                <div class="col-xs-2">
-                    <label class="control-label">人员：</label>
-                    <div class="controls">
-                        <select [(ngModel)]="findUserListId">
-                            <option value="">-- 请选择 --</option>
-                            <option *ngFor="let item of findUserList" value="{{item.name}}">{{item.name}}</option>
-                        </select>
-                    </div>
+            </div>
+            <div class="col-xs-2">
+                <label class="control-label">人员：</label>
+                <div class="controls">
+                    <p-dropdown [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'150px', 'text-align': 'center'}" filter="filter"
+                        placeholder="输入搜索" [ngModelOptions]="{standalone: true}">
+                    </p-dropdown>
                 </div>
-    
-                <div class="col-xs-3">
-                    <label class="control-label">等级：</label>
-                    <div class="controls">
-                        <select [(ngModel)]="collectionId">
+            </div>
+
+            <div class="col-xs-3">
+                <label class="control-label">等级：</label>
+                <div class="controls">
+                    <select [(ngModel)]="collectionId">
                             <option selected="selected" value="-1">-- 请选择 --</option>
                             <option *ngFor="let item of collectionList" value="{{item.id}}">{{item.job_name}}</option>
                         </select>
-                    </div>
-                    <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
                 </div>
+                <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
+                <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="resetting()">重置</button>
             </div>
-    
-            <div style="_height:100%;min-height:100%;">
-                <div class="tab"></div>
-                <p-dataTable [responsive]="true" 
-                    [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
-                    <p-headerColumnGroup>
-                        <p-row>
-                            <p-column header="期间" rowspan="3"></p-column>
-                            <p-column header="工号" rowspan="3"></p-column>
-                            <p-column header="技能等级" rowspan="3"></p-column>
-                            <p-column header="姓名" rowspan="3"></p-column>
-                        </p-row>
-                        <p-row>
-                            <p-column header="工作量" colspan="3"></p-column>
-                            
-                        </p-row>
-                        <p-row>
-                            <p-column header="等级"></p-column>
-                            <p-column header="超额"></p-column>
-                            <p-column header="合计"></p-column>
-                        </p-row>
-                    </p-headerColumnGroup>
-    
-                    <p-column field="pay_year_month" header="期间"></p-column>
-                    <p-column field="emp_no" header="工号"></p-column>
-                    <p-column field="job_name" header="技能等级"></p-column>
-                    <p-column field="name" header="姓名"></p-column>
-                    <p-column field="job_workload" header="等级"></p-column>
-                    <p-column field="above_workload" header="超额"></p-column>
-                    <p-column field="sum_workload" header="合计"></p-column>
-                </p-dataTable>
-                <p-paginator rows="{{rows}}" totalRecords="{{pageLinks}}" (onPageChange)="paginate($event)" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
-            </div>
-        </section>
-    </div>
-    <!-- <app-footer></app-footer>
-</div> -->
+        </div>
+
+        <div style="_height:100%;min-height:100%;">
+            <div class="tab"></div>
+            <p-dataTable [responsive]="true" [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" emptyMessage="暂无数据"
+                [style]="{'text-align':'center'}">
+                <p-headerColumnGroup>
+                    <p-row>
+                        <p-column header="期间" rowspan="3"></p-column>
+                        <p-column header="工号" rowspan="3"></p-column>
+                        <p-column header="技能等级" rowspan="3"></p-column>
+                        <p-column header="姓名" rowspan="3"></p-column>
+                    </p-row>
+                    <p-row>
+                        <p-column header="工作量" colspan="3"></p-column>
+
+                    </p-row>
+                    <p-row>
+                        <p-column header="等级"></p-column>
+                        <p-column header="超额"></p-column>
+                        <p-column header="合计"></p-column>
+                    </p-row>
+                </p-headerColumnGroup>
+
+                <p-column field="pay_year_month" header="期间"></p-column>
+                <p-column field="emp_no" header="工号"></p-column>
+                <p-column field="job_name" header="技能等级"></p-column>
+                <p-column field="name" header="姓名"></p-column>
+                <p-column field="job_workload" header="等级"></p-column>
+                <p-column field="above_workload" header="超额"></p-column>
+                <p-column field="sum_workload" header="合计"></p-column>
+            </p-dataTable>
+            <p-paginator rows="{{rows}}" totalRecords="{{pageLinks}}" (onPageChange)="paginate($event)" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
+        </div>
+    </section>
+</div>

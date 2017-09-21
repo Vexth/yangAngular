@@ -59,7 +59,6 @@ export class JsszComponent implements OnInit{
 
   // 新增
   add(type):void {
-    // console.log(type);
     let flxe = [];
     flxe = [{
       type: type,
@@ -79,9 +78,9 @@ export class JsszComponent implements OnInit{
   public edit(): void {
     let flex = this.dataListCode;
     if(flex.length === 0) {
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请选择你要修改的数据'});
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择你要修改的数据'}];
     } else if(flex.length > 1){
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请选择一条数据进行修改'});
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择一条数据进行修改'}];
     } else {
       this.confirmationService.confirm({
         message: '确定要修改此记录吗?',
@@ -89,7 +88,6 @@ export class JsszComponent implements OnInit{
         icon: 'fa fa-question-circle',
         accept: () => {
           this.jsszopen.showChildModal(flex);
-            // this.msgs = [{severity:'info', summary:'成功', detail:'修改成功'}];
         },
         reject: () => {
             this.msgs = [{severity:'info', summary:'取消', detail:'取消成功'}];
@@ -103,7 +101,7 @@ export class JsszComponent implements OnInit{
     let flex = this.dataListCode;
     let checkboxId:number[] = [];
     if(flex === undefined) {
-      this.msgs.push({severity:'error', summary:'错误提示', detail:'请选择你要删除的数据'});
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择你要删除的数据'}];
     } else {
       this.confirmationService.confirm({
         message: '确定要删除此记录吗?',

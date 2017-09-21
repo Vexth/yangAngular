@@ -72,7 +72,7 @@ export class mbwhaddComponent implements OnInit {
   @Output()
   public mbwhChange=new EventEmitter<string>();
 
-  public emitmbwhAdd(event):void {
+  public emitmbwhAdd():void {
     let postWork = [];
     this.nodeList.forEach((x,i) => {
       let onceData = {};

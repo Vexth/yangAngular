@@ -28,7 +28,7 @@
                     <td style="text-align:right;"><label style="margin-bottom:0px;">流程节点：</label></td>
                     <td>
                       <div class="jtyjy-search-text">
-                        <input type="text" [(ngModel)]="name" class="form-control ng-pristine ng-valid ng-touched" placeholder="稿件名称...">
+                        <input type="text" [(ngModel)]="name" class="form-control ng-pristine ng-valid ng-touched" placeholder="流程节点...">
                       </div>
                     </td>
                     <td style="text-align:right;"><label style="margin-bottom:0px;">状态：</label></td>
@@ -56,7 +56,7 @@
                   </tr>
                 </table>
               </div>
-                  <p-dataTable [value]="P['nodeList']" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" selectionMode="single">
+                  <p-dataTable [value]="P['nodeList']" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" selectionMode="single" emptyMessage="暂无数据">
                       <p-column field="number" header="编号" [style]="{'width':'80px','text-align':'center'}"></p-column>
                       <p-column field="name" header="流程节点" [style]="{'width':'150px','text-align':'center'}"></p-column>
                       <p-column field="isLockedName" header="状态" [style]="{'width':'150px','text-align':'center'}"></p-column>

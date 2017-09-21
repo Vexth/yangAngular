@@ -28,11 +28,11 @@ export class JdwhComponent implements OnInit {
   selected: any = {};//表格选中数据
   msgs: Message[] = [];
   ngOnInit() {
+    this.P['nodeList'] = this.nodeList;
     Auxiliary.prototype.ControlHeight();
     this.getFormDataList();
   }
   constructor(private confirmationService: ConfirmationService,@Inject(GetList) getList: GetList) {
-    this.P['nodeList'] = this.nodeList;
     this.GetList = getList;
   }
 

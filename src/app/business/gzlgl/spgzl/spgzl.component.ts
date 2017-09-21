@@ -11,7 +11,7 @@ import { Header, Footer, TreeNode, Message, MenuItem, ConfirmationService } from
 // 弹窗
 import { ModalformComponent } from '../../../common/component/modalform/modalform.component';
 import { SpgzlopenComponent } from './spgzlopen/spgzlopen.component';
-// 获取页面高度
+// 公共方法
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
 // import { ZtreeComponent } from '../../../public/ztree/ztree.component';
@@ -53,7 +53,7 @@ export class SpgzlComponent implements OnInit,OnDestroy {
   findUserListId: string = '';
   findUserList: any[];
   // statu 计算状态
-  statu: string = '-1';
+  statu: string = '0';
   // findProductDoc	产品稿件树
   filesTree: TreeNode[];
   selectedFile: TreeNode;
@@ -91,6 +91,10 @@ export class SpgzlComponent implements OnInit,OnDestroy {
     })
   }
 
+  onNodeExpand(event: any):void {
+    event.originalEvent.stopPropagation();
+  }
+
   ngOnInit() {
     this.zh = {
       firstDayOfWeek: 0,
@@ -107,8 +111,14 @@ export class SpgzlComponent implements OnInit,OnDestroy {
     })
     this.emptyList.statu = +this.statu;
     this.bindpage(0);
-    this.GetList.findNodeOfZzb().then(res => this.findNodeOfZzbList = res);
-    this.GetList.findUserList().then(res => this.findUserList = res);
+    this.GetList.findNodeOfZzb().then(res => {
+      this.findNodeOfZzbList = [];
+      this.findNodeOfZzbList = Auxiliary.prototype.publicList(res, 'nodeName');
+    })
+    this.GetList.findUserList().then(res => {
+      this.findUserList = [];
+      this.findUserList = Auxiliary.prototype.publicList(res, 'name');
+    })
     this.GetList.findProductDoc().then(res => this.filesTree = res);
     Auxiliary.prototype.ControlHeight();
   }
@@ -158,27 +168,32 @@ export class SpgzlComponent implements OnInit,OnDestroy {
     let ids, teleit, checkList;
     let newData = this.dataListCode;
     if (newData == undefined) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择你要'+ obj +'的数据！' });
+      this.msgs = [];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择你要'+ obj +'的数据！' }];
       return ;
     } else if (newData.length == 0) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择你要'+ obj +'的数据！' });
+      this.msgs = [];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择你要'+ obj +'的数据！' }];
       return ;
     } else {
       let arr = [];
       for (let i = 0; i < newData.length; i++) {
         if (obj == '审核') {
           if (newData[i].check_statu != 0) {
-            this.msgs.push({ severity: 'error', summary: '错误提示', detail: '只有未审核的数据才能被审核！' });
+            this.msgs = [];
+            this.msgs = [{ severity: 'error', summary: '错误提示', detail: '只有未审核的数据才能被审核！' }];
             return ;
           }
         } else if (obj == '退回') {
           if (newData[i].check_statu != 1) {
-            this.msgs.push({ severity: 'error', summary: '错误提示', detail: '只有已审核的数据才能被退回！' });
+            this.msgs = [];
+            this.msgs = [{ severity: 'error', summary: '错误提示', detail: '只有已审核的数据才能被退回！' }];
             return ;
           }
         } else if (obj == '删除') {
           if (newData[i].check_statu != 0) {
-            this.msgs.push({ severity: 'error', summary: '错误提示', detail: '只有未审核的数据才能被删除！' });
+            this.msgs = [];
+            this.msgs = [{ severity: 'error', summary: '错误提示', detail: '只有未审核的数据才能被删除！' }];
             return ;
           }
         }
@@ -195,12 +210,13 @@ export class SpgzlComponent implements OnInit,OnDestroy {
             ids: ids
           };
           this.PostService.checkBackDel(typeData).then(res => {
+            this.msgs = [];
             this.msgs = [{severity:'info', summary:'成功', detail: obj + '成功'}];
             this.query();
           });
         },
         reject: () => {
-          this.msgs = [{ severity: 'info', summary: '取消', detail: '取消成功' }];
+          this.msgs = [];
         }
       });
       this.dataListCode = [];
@@ -233,13 +249,17 @@ export class SpgzlComponent implements OnInit,OnDestroy {
   public edit(): void {
     let flex = this.dataListCode;
     if (flex === undefined) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择你要调整的数据' });
+      this.msgs = [];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择你要调整的数据' }];
     } else if (flex.length === 0) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择你要调整的数据' });
+      this.msgs = [];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择你要调整的数据' }];
     } else if (flex.length > 1) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择一条数据进行调整' });
+      this.msgs = [];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择一条数据进行调整' }];
     } else if(flex[0].check_statu != 0){
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择未审核的数据进行调整' });
+      this.msgs = [];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择未审核的数据进行调整' }];
     } else {
       this.confirmationService.confirm({
         message: '确定要调整此记录吗?',
@@ -250,9 +270,19 @@ export class SpgzlComponent implements OnInit,OnDestroy {
           // this.msgs = [{severity:'info', summary:'成功', detail:'调整成功'}];
         },
         reject: () => {
-          this.msgs = [{ severity: 'info', summary: '取消', detail: '取消成功' }];
+          this.msgs = [];
         }
       });
     }
+  }
+
+  // 重置
+  resetting () {
+    this.findNodeOfZzbId = null;
+    this.findUserListId = null;
+    this.filesTreeId = null;
+    this.emptyList.stime = null;
+    this.emptyList.etime = null;
+    this.statu = '-1';
   }
 }

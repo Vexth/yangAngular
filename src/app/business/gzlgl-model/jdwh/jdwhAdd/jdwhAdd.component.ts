@@ -62,15 +62,15 @@ export class jdwhaddComponent implements OnInit {
       addData.isLocked = true;
     }
     addData.statement = this.statement;
-    this.PostService.jdwhAdd(addData).catch(res => {
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res => {
+    this.PostService.jdwhAdd(addData).then(res => {
       this.jdwhAddData.emit("jdwhAddData");
       this.jdwhaddHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"新增流程节点成功"}];
+    }).catch(res => {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
     });
   }
 }

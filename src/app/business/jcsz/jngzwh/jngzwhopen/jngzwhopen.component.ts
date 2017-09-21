@@ -58,7 +58,7 @@ export class JngzwhopenComponent implements OnInit {
 
 
   public showChildModal(dataItem: any): void {
-    console.log(dataItem)
+    // console.log(dataItem)
     if (dataItem[0].id == null) {
       this.ShowType = '新增';
       this.IsAdd = true;
@@ -77,9 +77,7 @@ export class JngzwhopenComponent implements OnInit {
   }
 
   public onSubmit(formValue: any): void {
-    console.log(this.jobIncome);
-    console.log(this.jobName);
-    console.log(this.jobWorkload);
+    this.msgs = [];
     let List = {
       jobIncome: null,
       jobWorkload: null,

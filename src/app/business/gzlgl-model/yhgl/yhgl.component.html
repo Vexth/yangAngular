@@ -1,7 +1,4 @@
-<!-- <div class="wrapper">
-  <app-top></app-top>
-  <app-treeview treemodule="M4" treeitem="V10" ></app-treeview> -->
-  <div class="content-wrapper">
+<div class="content-wrapper">
     <app-navigation Showtitle="工作量管理模块" Subtitle="用户管理" Web="站点"
     Module="工作量管理模块" Page="用户管理" ></app-navigation>
     <section class="content" id="content">
@@ -58,11 +55,7 @@
                 </tr>
               </table>
             </div>
-            <!-- 表格 -->
-            <!-- [itemFormatter]="itemFormatter" -->
-            <!-- <div class="well well-lg"> -->
-                <p-dataTable [value]="formDataList" [(selection)]="selected" selectionMode="single" [headerCheckboxToggleAllPages]="true">
-                    <!-- <p-header>Checkbox Multiple Selection with Paging</p-header> -->
+                <p-dataTable [value]="formDataList" [(selection)]="selected" selectionMode="single" [headerCheckboxToggleAllPages]="true" emptyMessage="暂无数据">
                     <p-column field="empNo" header="工号" [style]="{'width':'100px','text-align':'center'}"></p-column>
                     <p-column field="name" header="姓名" [style]="{'width':'100px','text-align':'center'}"></p-column>
                     <p-column field="departmentStr" header="部门" [style]="{'text-align':'center'}"></p-column>
@@ -70,7 +63,6 @@
                     <p-column field="roleStr" header="角色列表" [style]="{'text-align':'center'}"></p-column>
                 </p-dataTable>
                 <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
-            <!-- </div> -->
           </div>
         </div>
       </div>
@@ -85,6 +77,3 @@
       </p-confirmDialog>
     </section>
   </div>
-  <!-- <app-footer></app-footer>
-</div> -->
-

@@ -17,7 +17,7 @@
                     <div class="controls">
                         <input [(ngModel)]="filesTreeId" (click)="$event.stopPropagation();onFocus()" style="width: 90%;" placeholder="请选择稿件名称" type="text" value="" />
                         <p-tree class="pTree" *ngIf="hide != 0"  [style]="{'width':'100%','max-height': '400px','overflow': 'auto'}" [value]="filesTree" selectionMode="single" [(selection)]="selectedFile"
-                            (onNodeSelect)="nodeSelect($event)">
+                            (onNodeSelect)="nodeSelect($event)" (onNodeExpand)="onNodeExpand($event)" (onNodeCollapse)="onNodeExpand($event)">
                         </p-tree>
                     </div>
                 </div>
@@ -27,33 +27,27 @@
                 <div class="col-xs-2">
                     <label class="control-label">流程节点：</label>
                     <div class="controls">
-                        <!-- <input [(ngModel)]="text" type="text" placeholder="请输入节点名称"> -->
-                        <select [(ngModel)]="findNodeOfZzbId">
-                            <option value="">-- 请选择 --</option>
-                            <option *ngFor="let item of findNodeOfZzbList" value="{{item.nodeId}}">{{item.nodeName}}</option>
-                        </select>
+                        <p-dropdown [options]="findNodeOfZzbList" [(ngModel)]="findNodeOfZzbId" [style]="{'width':'150px', 'text-align': 'center'}" filter="filter" placeholder="输入搜索" [ngModelOptions]="{standalone: true}">
+                        </p-dropdown>
                     </div>
                 </div>
                 <div class="col-xs-2">
                     <label class="control-label">人员：</label>
                     <div class="controls">
-                        <!-- <input [(ngModel)]="text" type="text" placeholder="请输入人员名称"> -->
-                        <select [(ngModel)]="findUserListId">
-                            <option value="">-- 请选择 --</option>
-                            <option *ngFor="let item of findUserList" value="{{item.id}}">{{item.name}}</option>
-                        </select>
+                        <p-dropdown [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'150px', 'text-align': 'center'}" filter="filter" placeholder="输入搜索" [ngModelOptions]="{standalone: true}">
+                        </p-dropdown>
                     </div>
                 </div>
                 <div class="col-xs-2">
                     <label class="control-label">接收日期：</label>
                     <div class="controls">
-                        <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="emptyList.stime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
+                        <p-calendar [locale]="zh" dateFormat="yy-mm-dd" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="emptyList.stime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
                     </div>
                 </div>
                 <div class="col-xs-2">
                     <label class="control-label">结束时间：</label>
                     <div class="controls">
-                        <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="结束时间" [(ngModel)]="emptyList.etime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
+                        <p-calendar [locale]="zh" dateFormat="yy-mm-dd" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="结束时间" [(ngModel)]="emptyList.etime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
                     </div>
                 </div>
                 <div class="col-xs-3">
@@ -67,6 +61,8 @@
                         </select>
                     </div>
                     <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
+                    <button style="margin-left: 5px;" type="button" class="btn btn-success" (click)="resetting()">重置</button>
+                    
                 </div>
             </div>
     
@@ -81,12 +77,12 @@
     
             <div style="_height:100%;min-height:100%;">
                 <div class="tab"></div>
-                <p-dataTable [responsive]="true" 
+                <p-dataTable [responsive]="true" emptyMessage="暂无数据"
                     [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
                     <p-headerColumnGroup>
                         <p-row>
                             <p-column [style]="{'width':'35px'}" selectionMode="multiple" rowspan="3"></p-column>
-                            <p-column [style]="{'width':'300px'}" header="稿件名称" rowspan="3"></p-column>
+                            <p-column [style]="{'width':'200px'}" header="稿件名称" rowspan="3"></p-column>
                             <p-column [style]="{'width':'100px'}" header="流程节点" rowspan="3"></p-column>
                             <p-column [style]="{'width':'90px'}" header="接收时间" rowspan="3"></p-column>
                             <p-column [style]="{'width':'90px'}" header="结束时间" rowspan="3"></p-column>

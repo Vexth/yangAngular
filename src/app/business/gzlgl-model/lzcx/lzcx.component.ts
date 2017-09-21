@@ -32,7 +32,6 @@ export class LzcxComponent implements OnInit {
   rows:any = 10;//分页
   selected: any = [];//表格选中数据
 
-  cars:any[];
 
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
@@ -42,7 +41,6 @@ export class LzcxComponent implements OnInit {
       return;
     }).then(res => {
       this.optsList = res;
-      console.log(this.optsList);
     });
     this.getTableList();
   }
@@ -63,17 +61,15 @@ export class LzcxComponent implements OnInit {
     optsData.endDate = this.endDate?this.getFormetDate(this.endDate):"";
     optsData.pageNum = this.pageNum?this.pageNum:"";
     optsData.pageSize = this.pageSize?this.pageSize:"";
-    console.log(optsData);
     this.GetList.lzcxDataList(optsData).catch(res => {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
       return;
     }).then(res => {
-      this.tableList = res;
+      this.tableList = res.list;
       this.pageSize = res.pageSize;
       this.pageNum = res.pageNum;
-      this.total = res.totalCount;
-      console.log(res);
+      this.total = res.total;
     });
   }
   paginate(event) {
@@ -83,14 +79,11 @@ export class LzcxComponent implements OnInit {
   }
   //格式化日期
   getFormetDate(time:any) {
-    // const formatDate = ( time: any ) => {
-      const Dates = new Date( time );
-      const year: number = Dates.getFullYear();
-      const month: any = ( Dates.getMonth() + 1 ) < 10 ? '0' + ( Dates.getMonth() + 1 ) : ( Dates.getMonth() + 1 );
-      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
-      console.log(year + '-' + month + '-' + day);
-      return year + '-' + month + '-' + day;
-    // };
+    const Dates = new Date( time );
+    const year: number = Dates.getFullYear();
+    const month: any = ( Dates.getMonth() + 1 ) < 10 ? '0' + ( Dates.getMonth() + 1 ) : ( Dates.getMonth() + 1 );
+    const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+    return year + '-' + month + '-' + day;
   }
   // ===========================
   // 搜索
@@ -121,9 +114,6 @@ export class LzcxComponent implements OnInit {
   cancel() {
     this.isadSearch = 0;
   }
-  // Date.prototype.toLocaleString = function() {
-  //   return this.getFullYear() + "/" + (this.getMonth() + 1) + "/" + this.getDate() + "/ " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
-  // };
   //删除
   msgs: Message[] = [];
   delete() {
@@ -157,5 +147,4 @@ export class LzcxComponent implements OnInit {
       }
   });
   }
-  
 }

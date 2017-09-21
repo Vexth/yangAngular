@@ -22,7 +22,6 @@ export class FwrygzComponent implements OnInit {
   private PostService: PostService;
   pageNews: number[] = [];
   zh: any;
-  // @ViewChild('spgzlopen') public spgzlopen: SpgzlopenComponent;
 
   // 获取表格数据
   dataList: any[];
@@ -62,6 +61,7 @@ export class FwrygzComponent implements OnInit {
   bindpage (name: number): void {
 
     this.GetList.tongjiWaiList(this.emptyList).then(res => {
+      this.dataListCode = [];
       if (res.checkList != undefined) {
         this.dataList = res.checkList;
         this.rows = res.pageSize;
@@ -116,7 +116,9 @@ export class FwrygzComponent implements OnInit {
   // 查询
   query () {
     this.dataListCode = [];
-    this.emptyList.name = this.findUserListId;
+    // this.emptyList.name = this.findUserListId;
+    // this.emptyList.name = this.findUserListId['id'];
+    this.emptyList.name = this.findUserListId['id'] == undefined ? '' : this.findUserListId['id'];
     this.emptyList.bearDate = this.bearDate == null ? this.formatDate(new Date()) : this.formatDate(this.bearDate)
     this.bindpage(0);
   }
@@ -124,7 +126,7 @@ export class FwrygzComponent implements OnInit {
   // 计算
   tongjiWaiWages () {
     if (this.bearDate == null) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择期间' });
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择期间' }];
     } else {
       this.confirmationService.confirm({
         message: '确定要计算吗?',
@@ -137,7 +139,7 @@ export class FwrygzComponent implements OnInit {
               this.msgs = [{severity:'info', summary:'成功', detail:'计算成功'}];
               this.query();
             } else {
-              this.msgs.push({ severity: 'error', summary: '错误提示', detail: res.msg });
+              this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
             }
           })
         },
@@ -151,7 +153,7 @@ export class FwrygzComponent implements OnInit {
   // 完结
   lockWaiWages () {
     if (this.bearDate == null) {
-      this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请选择期间' });
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择期间' }];
     } else {
       this.confirmationService.confirm({
         message: '完结后不允许再对数据进行修改，确定要完结吗?',
@@ -164,7 +166,7 @@ export class FwrygzComponent implements OnInit {
               this.msgs = [{severity:'info', summary:'成功', detail:res.msg}];
               this.query();
             } else {
-              this.msgs.push({ severity: 'error', summary: '错误提示', detail: res.msg });
+              this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
             }
           })
         },

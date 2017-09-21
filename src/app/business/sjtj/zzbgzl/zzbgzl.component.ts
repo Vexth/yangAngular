@@ -22,8 +22,6 @@ export class ZzbgzlComponent implements OnInit {
   private PostService: PostService;
   pageNews: number[] = [];
   zh: any;
-  // @ViewChild('spgzlopen') public spgzlopen: SpgzlopenComponent;
-
   // 获取表格数据
   dataList: any[];
   dataListCode: any[];
@@ -63,6 +61,7 @@ export class ZzbgzlComponent implements OnInit {
   bindpage (name: number): void {
 
     this.GetList.wagesList(this.emptyList).then(res => {
+      this.dataListCode = [];
       if (res.checkList != undefined) {
         this.dataList = res.checkList;
         this.rows = res.pageSize;
@@ -97,7 +96,10 @@ export class ZzbgzlComponent implements OnInit {
     
     this.GetList.joblvList(-1).then(res => this.collectionList = res.joblvList);
     this.bindpage(0);
-    this.GetList.findUserList().then(res => this.findUserList = res);
+    this.GetList.findUserList().then(res => {
+      this.findUserList = [];
+      this.findUserList = Auxiliary.prototype.publicList(res, 'name');
+    });
     Auxiliary.prototype.ControlHeight();
   }
 
@@ -121,9 +123,17 @@ export class ZzbgzlComponent implements OnInit {
   query () {
     this.dataListCode = [];
     this.emptyList.level = +this.collectionId;
-    this.emptyList.name = this.findUserListId;
+    // this.emptyList.name = this.findUserListId;
+    this.emptyList.name = this.findUserListId['emp_no'] == undefined ? '' : this.findUserListId['emp_no'];
     this.emptyList.bearDate = this.bearDate == null ? this.formatDate(new Date()) : this.formatDate(this.bearDate)
     this.bindpage(0);
+  }
+
+  // 重置
+  resetting () {
+    this.bearDate = null;
+    this.findUserListId = null;
+    this.collectionId = '-1';
   }
 
 }

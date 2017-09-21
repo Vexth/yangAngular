@@ -204,22 +204,6 @@ export class PostService extends BaseService {
     let url = `${ConstantsList.HOSTUser1}api/count/productworkload?${pageStr}`;
     return this.publicPostServe(postvalue, url, 'tjgzl');
   }
-  //流程节点维护新增
-  jdwhAdd(postvalue: any): Promise<any | BackCode> {
-    let url = `${ConstantsList.HOSTUser1}api/node`;
-    return this.publicPostServe(postvalue, url, 'jdwhAdd');
-  }
-  //流程节点修改
-  jdwhBj(putvalue: any): Promise<any | BackCode> {
-    let url = `${ConstantsList.HOSTUser1}api/node/242`;
-    return this.publicPutServe(putvalue, url, 'jdwhBj');
-  }
-
-  //设置产品工作量--设置
-  szgzlSet(postvalue: any): Promise<any | BackCode> {
-    let url = `${ConstantsList.HOSTUser1}api/product/setworkload`;
-    return this.publicPostServe(postvalue, url, 'szgzlSet');
-  }
   //设置产品工作量--保存设置
   szgzlPlSetSave(postvalue: any): Promise<any | BackCode> {
     let url = `${ConstantsList.HOSTUser1}api/product/settemplate`;
@@ -229,6 +213,43 @@ export class PostService extends BaseService {
   mbwhDelete(postvalue: any): Promise<any | BackCode> {
     let url = `${ConstantsList.HOSTUser1}api/worktemplate/batch_delete`;
     return this.publicPostServe(postvalue, url, 'mbwhDelete');
+  }
+
+  //流程节点维护新增
+  jdwhAdd(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/node`;
+    // return this.publicPostServe(postvalue, url, 'jdwhAdd');
+    let body = postvalue;
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(url, body, options).toPromise().
+      then((res) => { return res.json();})
+  }
+  //流程节点修改
+  jdwhBj(putvalue: any,nodeId): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/node/${nodeId}`;
+    // return this.publicPutServe(putvalue, url, 'jdwhBj');
+    let body = putvalue;
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.put(url, body, options).toPromise().
+      then((res) => { return res.json();})
+  }
+
+  //设置产品工作量--设置
+  szgzlSet(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/product/setworkload`;
+    // return this.publicPostServe(postvalue, url, 'szgzlSet');
+    let body = postvalue;
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(url, body, options).toPromise().
+      then((res) => { return res.json();})
+  }
+  //产品维护保存修改
+  cpwhSaveEdit(postvalue: any,documentId,docName): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/product/document/${documentId}/setname?docName=${docName}`;
+    return this.publicPostServe(postvalue, url, 'cpwhSaveEdit');
   }
 
 }

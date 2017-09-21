@@ -71,7 +71,7 @@ export class szgzlplComponent implements OnInit {
   @Output()
   public saveChangeModel=new EventEmitter<string>();
 
-  public emitszgzlPl(event):void {
+  public emitszgzlPl():void {
     if(!this.modelId) {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择工作量模板"}];

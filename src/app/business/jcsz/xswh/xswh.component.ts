@@ -96,10 +96,10 @@ export class XswhComponent implements OnInit{
       if(res.code === 0){
         this.msgs = [];
         this.ColToggler(this.username);
-        this.msgs.push({severity:'info', summary:'成功提示', detail:'保存成功'});
+        this.msgs = [{severity:'info', summary:'成功提示', detail:'保存成功'}];
       } else {
         this.msgs = [];
-        this.msgs.push({severity:'error', summary:'错误提示', detail:res.msg});
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       }
     }).then(res => {this.newRatio = null;});
   }
