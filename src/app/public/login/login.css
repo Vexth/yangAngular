@@ -1,0 +1,270 @@
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  font-size: 12px;
+}
+　　:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  font-size: 12px;
+}
+　　::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  font-size: 12px;
+}
+　　:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  font-size: 12px;
+}
+
+body {
+  overflow-x: auto;
+}
+
+.jty-login-top {
+  height: 93px;
+  width: 100%;
+  /*min-width: 1220px;*/
+  background-color: #fff;
+  max-width: 945px;
+  margin: 0 auto;
+
+}
+
+.jty-logo {
+  margin: 0 auto;
+ /* width: 1220px;*/
+}
+
+.jty-logo img {
+  vertical-align: middle;
+  margin-top: 24px;
+}
+
+.jty-logo span {
+  font-size: 23px;
+  color: #000;
+}
+
+.jty-login-center {
+  width: 100%;
+  /*min-width: 1220px;*/
+  background-color: #0183E1;
+  position: absolute;
+  overflow: hidden;
+  top: 93px;
+  bottom: 100px;
+}
+
+.login-animate-desc {
+  width: 550px;
+  height: 300px;
+  margin-left: 700px;
+  position: absolute;
+  margin-top: 100px;
+
+}
+
+.login-animate-desc .login-desc1,
+.login-animate-desc .login-desc2 {
+  color: #3CA2EC;
+  font-size: 40px;
+  font-weight: bold;
+  letter-spacing: 4px;
+}
+
+.login-animate-desc .login-desc2 {
+  margin-left: 50px;
+}
+
+.login-animate-desc .login-desc3 {
+  color: #3CA2EC;
+  margin-left: 38px;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.login-desc2 .desc2-hx {
+  font-size: 20px;
+  width: 40px;
+  float: left;
+  margin-top: 16px;
+  margin-right: 10px;
+  letter-spacing: 0px;
+}
+
+.login-center-5 {
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+
+.login-wrap {
+  max-width: 1050px;
+  margin-right: auto;
+  margin-left: auto;
+  height: 100%;
+  position: relative;
+}
+
+.login-form {
+  display: table;
+  width: 294px;
+  height: 310px;
+  background-color: #FFFFFF;
+  border-bottom: 2px solid red;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 18px;
+  padding-bottom: 40px;
+  position: relative;
+  top: 50%;
+  margin-top: -169px;
+  float: left;
+  margin-left: 107px;
+}
+
+.login-error {
+  background: #fef2f2;
+  padding: 4px;
+  margin-bottom: 5px;
+  line-height: 30px;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+  color: #0183E1;
+  margin-bottom: 20px;
+}
+
+.login-input-group {
+  overflow: hidden;
+}
+
+.login-input-group input {
+  border: 1px solid #ddd;
+  float: left;
+  border-radius: 3px;
+  width: 100%;
+  height: 35px;
+  overflow: hidden;
+  padding-left: 40px;
+  margin-bottom: 12px;
+}
+
+.login-input-group input::-webkit-input-placeholder {
+  color: #6f7278 !important;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.login-user {
+  /* background: url(../img/login_user.png) no-repeat; */
+}
+
+.login-password {
+  /* background: url(../img/login_pas.png) no-repeat; */
+}
+
+.login-code {
+  /* background: url(../img/login_code.png) no-repeat; */
+}
+
+.login-code-img {
+  position: absolute;
+  right: 21px;
+}
+
+.login-code-img span {
+  line-height: 35px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.login-button {
+  border-radius: 3px;
+  width: 100%;
+  height: 36px;
+  background-color: #CF271E;
+  margin-top: 36px;
+  text-align: center;
+  cursor: pointer;
+  letter-spacing: 4px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.login-button:hover, .login-button:focus, .login-button.focus {
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.jty-login-footer {
+  width: 100%;
+  /*min-width: 1220px;*/
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  overflow: hidden;
+  height: 100px;
+}
+
+.footer-content {
+  padding-top: 10px;
+  overflow: hidden;
+  /*min-width: 1220px;*/
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.footer-item {
+  display: inline-block;
+}
+
+.footer-item span {
+  margin-left: 5px;
+  margin-right: 5px;
+  color: #999;
+}
+
+.footer-item a {
+  color: #999;
+  font-size: 12px;
+}
+
+.footer-item a:hover {
+  color: #999;
+}
+
+.footer-copyRight {
+  font-family: Arial !important;
+  font-size: 10px;
+  color: #999;
+  text-align: center;
+}
+/**兼容其他显示器登录*/
+@media (max-width: 945px) {
+  .jtyjy-login-bg-v2 {
+      display: none!important;
+  }
+  .jty-login-top{
+      display: none!important;
+  }
+  .jty-login-footer{
+      display: none!important;
+  }
+
+  .jty-login-center {
+      top: 0px!important;
+      bottom: 0px!important;
+  }
+  .login-form{
+      float: none;
+      margin-left: auto!important;
+      margin-right: auto!important;
+  }
+}
+.sidebar{max-height: 700px;overflow: auto;} 

@@ -12,6 +12,7 @@ import { EventNameService } from '../../business/services/communication.service'
   styleUrls: [
     './treeview.component.css',
     '../login/login.component.css',
+    '../login/login.css',
     '../../../assets/plugins/iCheck/square/blue.css'
   ]
 })
@@ -52,6 +53,7 @@ export class TreeviewComponent implements OnInit {
   }
 
   onSubmit(formValue: any): void {
+    console.log(formValue)
     if(formValue.username == undefined){
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请填写用户名' });

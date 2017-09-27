@@ -154,7 +154,7 @@ export class JsszopenComponent implements OnInit {
     }
     List.id = this.P.id;
     List.type = +this.P.type;
-    List.nodeId = this.nodeId == this.P.nodeId ? this.nodeId : this.findNodeOfZzbListCode.nodeId;
+    List.nodeId = this.nodeId != null ? this.nodeId : this.findNodeOfZzbListCode.nodeId;
     List.isLp = Number(this.isLp);
     List.isHuat = Number(this.isHuat);
     List.isTiaot = Number(this.isTiaot);
@@ -163,6 +163,7 @@ export class JsszopenComponent implements OnInit {
     List.multiple = +this.multiple;
     List.unit = this.unit;
 
+    console.log(List)
     this.PostService.addUpdateNode(List).then(res => {
       if (res.code == 0) {
         this.change.emit();
