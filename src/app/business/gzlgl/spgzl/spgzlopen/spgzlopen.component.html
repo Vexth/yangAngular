@@ -19,7 +19,7 @@
                 <span class="empNo" style="margin-top: 0px;" *ngIf="ShowType == '调整'">{{gmtCreate | date:'yyyy-MM-dd' }}</span>
               </div>
               <div class="ui-g-4"><span>所追加人员</span>
-                <p-dropdown [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'150px', 'text-align': 'center'}" filter="filter" placeholder="输入搜索" [ngModelOptions]="{standalone: true}">
+                <p-dropdown *ngIf="ShowType == '追加'" [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'150px', 'text-align': 'center'}" filter="filter" placeholder="输入搜索" [ngModelOptions]="{standalone: true}">
                 </p-dropdown>
 
                 <span class="empNo" style="margin-top: 0px;" *ngIf="ShowType == '调整'">{{findUserListId}}</span>
@@ -39,7 +39,7 @@
                 <span>稿件</span>
                 <span *ngIf="ShowType == '调整'" class="empNo" style="width: 90%;">{{filesTreeId}}</span>
                 <div style="width: 90%;" *ngIf="ShowType == '追加'">
-                  <input [(ngModel)]="filesTreeId" (click)="$event.stopPropagation(); onFocus();" style="width: 90%;" placeholder="请选择稿件" type="text" value="" [ngModelOptions]="{standalone: true}"
+                  <input [(ngModel)]="filesTreeId" (click)="$event.stopPropagation(); onFocus($event);" style="width: 90%;" placeholder="请选择产品名称" type="text" value="" [ngModelOptions]="{standalone: true}"
                   />
                   <p-tree class="pTree" *ngIf="hide != 0" [style]="{'width':'100%','max-height': '400px','overflow': 'auto'}" [value]="filesTree"
                     selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeExpand)="onNodeExpand($event)" (onNodeCollapse)="onNodeExpand($event)">
@@ -85,37 +85,37 @@
               </div>
             </div>
             <div class="ui-g" *ngIf="calc == '0' && unit != undefined">
-              <div *ngIf="unit != '页'" class="ui-g-4 df">
+              <div *ngIf="ymlBoolean"  class="ui-g-4 df">
                 <span class="lh35">页码量</span>
                 <span>
                   <input [(ngModel)]="checkYemaCount" type="text" [ngModelOptions]="{standalone: true}" /> 页
                 </span>
               </div>
-              <div class="ui-g-4 df">
-                <span class="lh35">单位数</span>
+              <div *ngIf="dwlBoolean"  class="ui-g-4 df">
+                <span class="lh35">单位量</span>
                 <span>
                   <input [(ngModel)]="checkDanweiCount" type="text" [ngModelOptions]="{standalone: true}" /> {{unit}}
                 </span>
               </div>
-              <div class="ui-g-4 df">
+              <div *ngIf="xglBoolean" class="ui-g-4 df">
                 <span class="lh35">修改量</span>
                 <span>
                   <input [(ngModel)]="checkXgCount" type="text" [ngModelOptions]="{standalone: true}" /> %
                 </span>
               </div>
-              <div *ngIf="is_huat != false" class="ui-g-4 df">
+              <div *ngIf="huatBoolean" class="ui-g-4 df">
                 <span class="lh35">画图数</span>
                 <span>
                   <input [(ngModel)]="checkHtCount" type="text" [ngModelOptions]="{standalone: true}" /> 个
                 </span>
               </div>
-              <div *ngIf="is_tiaot != false" class="ui-g-4 df">
+              <div *ngIf="tiaotBoolean" class="ui-g-4 df">
                 <span class="lh35">调图数</span>
                 <span>
                   <input [(ngModel)]="checkTtCount" type="text" [ngModelOptions]="{standalone: true}" /> 个
                 </span>
               </div>
-              <div *ngIf="is_datika != false" class="ui-g-4 df">
+              <div *ngIf="datikaBoolean" class="ui-g-4 df">
                 <span class="lh35">答题卡数</span>
                 <span>
                   <input [(ngModel)]="checkDtkCount" type="text" [ngModelOptions]="{standalone: true}" /> 张

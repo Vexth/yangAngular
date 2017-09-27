@@ -30,10 +30,14 @@
 
 ul, li{list-style-type: none;margin: 0;padding: 0;}
 
+.tabClass ul{max-height: 388px; overflow: auto;}
+
+.tabClass div,
 .tabClass ul li{line-height: 30px;border-bottom: 1px solid #eee;width: 345px;}
 
-.tabClass ul li:nth-child(1){background: #eee;line-height: 40px;border-bottom: 0;}
+.tabClass div{background: #eee;line-height: 40px;border-bottom: 0;}
 
+.tabClass div span,
 .tabClass ul li span{font-size: 14px;padding: 5px 20px;width: 105px;display: inline-block;text-align: center;}
 
 .wj-flexgrid {max-height: 450px; max-width: 200%; overflow-y: hidden;}

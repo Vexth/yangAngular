@@ -22,7 +22,7 @@ export class yhgldeptComponent implements OnInit {
   msgs: Message[] = [];
   deptList:any = [];
   dept:any = [];
-  isDpet:any = [];
+  isDpet:string = "";
   id:string = "";
 
   constructor(@Inject(PostService) postService: PostService,@Inject(GetList) getList: GetList) {
@@ -35,17 +35,20 @@ export class yhgldeptComponent implements OnInit {
 
   public yhglDeptShow(data,deptData):void {
     this.childModal.show();
-    this.deptList = [];this.dept = [];this.isDpet = [];
-    console.log(deptData);
+    this.deptList = [];this.dept = [];this.isDpet = "";
+    // console.log(deptData);
     deptData.forEach((x,i) => {
       let p = {label:"",value:""};
       p.label = x.name;
       p.value = x.id;
       this.deptList.push(p);
     });
+    // this.deptList = deptData;
     this.dept = data.departmentIdArr;
-    this.isDpet.push(data.departId);
-    this.id = data.id
+    this.isDpet = data.departId;
+    this.id = data.id;
+    // console.log(this.deptList);
+    console.log(event);
   }
 
   public yhglDeptHide():void {
@@ -53,7 +56,7 @@ export class yhgldeptComponent implements OnInit {
     this.msgs = [];
     this.deptList = [];
     this.dept = [];
-    this.isDpet = [];
+    this.isDpet = "";
     this.id = "";
   }
   
@@ -73,6 +76,10 @@ export class yhgldeptComponent implements OnInit {
       this.msgs = [{severity:'success', summary:'成功提示', detail:"保存成功"}];
     });
   }
-  
-   
+
+  clickCheck(event) {
+    if(this.isDpet && event.value.indexOf(this.isDpet)===-1) {
+      this.dept.push(this.isDpet);
+    }
+  }
 }

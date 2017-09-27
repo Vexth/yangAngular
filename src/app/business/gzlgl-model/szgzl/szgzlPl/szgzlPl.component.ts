@@ -50,6 +50,8 @@ export class szgzlplComponent implements OnInit {
   }
 
   public szgzlplHide():void {
+    this.modelId = "";
+    // this.nodeList = [];
     this.childModal.hide();
   }
 
@@ -71,7 +73,7 @@ export class szgzlplComponent implements OnInit {
   @Output()
   public saveChangeModel=new EventEmitter<string>();
 
-  public emitszgzlPl():void {
+  public emitszgzlPl(event):void {
     if(!this.modelId) {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择工作量模板"}];

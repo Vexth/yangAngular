@@ -11,6 +11,8 @@ import { Header, Footer, TreeNode, Message, MenuItem, ConfirmationService } from
 // 获取页面高度
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
+import { InitIalize } from '../../services/doing';
+
 @Component({
   selector: 'app-khgzgl',
   templateUrl: './khgzgl.component.html',
@@ -63,6 +65,7 @@ export class KhgzglComponent implements OnInit {
 
     this.GetList.tongjiList(this.emptyList).then(res => {
       if (res.code) {
+        this.msgs = [];
         this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
         this.dataList = [];
         return;
@@ -130,8 +133,8 @@ export class KhgzglComponent implements OnInit {
     this.dataListCode = [];
     this.emptyList.level = +this.collectionId;
     // this.emptyList.name = this.findUserListId['id'];
-    this.emptyList.name = this.findUserListId['id'] == undefined ? '' : this.findUserListId['id'];
-    this.emptyList.bearDate = this.bearDate == null ? this.formatDate(new Date()) : this.formatDate(this.bearDate)
+    this.emptyList.name = this.findUserListId == '' ? '' : this.findUserListId['emp_no'];
+    this.emptyList.bearDate = this.bearDate == null ? this.formatDate(new Date()) : this.bearDate;
     this.bindpage(0);
   }
 
@@ -146,15 +149,21 @@ export class KhgzglComponent implements OnInit {
         header: '提示',
         icon: 'fa fa-question-circle',
         accept: () => {
-          let date = this.formatDate(this.bearDate);
+          // this.InitIalize.initialize();
+          InitIalize.prototype.initialize();
+          // let date = this.formatDate(this.bearDate);
+          let date = this.bearDate;
           this.GetList.tongjiWages(date).then(res => {
             if (res.code == 0) {
               this.msgs = [];
               this.msgs = [{ severity: 'info', summary: '成功', detail: '计算成功' }];
+              // this.InitIalize.endializ();
+              InitIalize.prototype.endializ();
               this.query();
             } else {
               this.msgs = [];
               this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
+              InitIalize.prototype.endializ();
             }
           })
         },
@@ -167,7 +176,7 @@ export class KhgzglComponent implements OnInit {
 
   // 完结
   lockWages() {
-    if (this.bearDate == null) {
+    if (this.bearDate == '') {
       this.msgs = [];
       this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择期间' }];
     } else {
@@ -176,15 +185,19 @@ export class KhgzglComponent implements OnInit {
         header: '提示',
         icon: 'fa fa-question-circle',
         accept: () => {
-          let date = this.formatDate(this.bearDate);
+          // let date = this.formatDate(this.bearDate);
+          InitIalize.prototype.initialize();
+          let date = this.bearDate;
           this.GetList.lockWages(date).then(res => {
             if (res.code == 0) {
               this.msgs = [];
               this.msgs = [{ severity: 'info', summary: '成功', detail: res.msg }];
+              InitIalize.prototype.endializ();
               this.query();
             } else {
               this.msgs = [];
               this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
+              InitIalize.prototype.endializ();
             }
           })
         },
@@ -200,14 +213,20 @@ export class KhgzglComponent implements OnInit {
   ShowElement(element, itme) {
     if (itme.statu == 1) {
       this.msgs = [];
-      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '已审核不能修改' }];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '已完结不能修改' }];
       return;
     }
     let oldhtml = element.target.innerHTML;
     let newobj = document.createElement('input');
     newobj.type = 'text';
     newobj.style.width = '100%';
-    newobj.maxLength = 5;
+    newobj.style.height = '32px';
+    newobj.onkeyup = function(){
+      newobj.value = newobj.value.replace(/[^\- \d.]/g,"");  //清除“数字”和“.”以外的字符     
+      newobj.value = newobj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+      newobj.value = newobj.value.replace(/\-{2,}/g,"-"); //只保留第一个- 清除多余的
+    }
+    // newobj.maxLength = 5;
     //为新增元素添加value值
     newobj.value = oldhtml;
     //为新增元素添加光标离开事件
@@ -244,8 +263,19 @@ export class KhgzglComponent implements OnInit {
   // 重置
   resetting() {
     this.bearDate = null;
-    this.findUserListId = null;
+    this.findUserListId = '';
     this.collectionId = '-1';
+    this.query();
+  }
+
+  // 导出
+  tongjiListExcel(event){
+    if (!this.bearDate) {
+      this.msgs = [];
+      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择日期' }];
+      return ;
+    }
+    event.target.href = `http://192.168.230.240:8888/api/tongji/tongjiListExcel?name=${this.findUserListId}&level=${this.collectionId}&bearDate=${this.bearDate}`
   }
 
 }

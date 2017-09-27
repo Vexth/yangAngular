@@ -111,7 +111,7 @@ export class KmgfhComponent implements OnInit{
 
   // 搜索
   search () {
-    this.name = this.text;
+    this.name = this.text == undefined ? '' : this.text;
     this.crList();
   }
 }

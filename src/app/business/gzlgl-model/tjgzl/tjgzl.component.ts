@@ -10,10 +10,11 @@ import { tjgzlcxComponent } from './tjgzlCx/tjgzlCx.component';
   styleUrls: ['./tjgzl.component.css'],
 })
 export class TjgzlComponent implements OnInit {
-  selected: any;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
   }
+  ishide:number = 0;
+  selected:any;
   total:any = 10;
   pageSize:any = 10;
   pageNum:any = 1;
@@ -23,13 +24,13 @@ export class TjgzlComponent implements OnInit {
       content:[]
     }
   };
-  getFromData() {
+  // getFromData() {
 
-  }
+  // }
   paginate(event){
     this.pageSize = event.rows;
     this.pageNum = event.page + 1;
-    this.getFromData();
+    // this.getFromData();
   }
   indexArr:any = [];
   public tzgzlCxChange(event):void{
@@ -43,12 +44,16 @@ export class TjgzlComponent implements OnInit {
       event.data.result['headerList'] = this.indexArr;
     });
     // console.log(event.data.result.dataPage.content);
-    event.data.result.dataPage.content.push(["1","2"]);
-    
     this.formData = event.data.result;
-
     console.log(this.formData);
-    this.getFromData();
+    if(this.formData) {
+      this.ishide = 1;
+    }else{
+      this.ishide = 0;
+    }
+    console.log(this.ishide);
+    // this.getFromData();
+    this.total = (+event.data.result.dataPage.totalPage)*(+event.data.result.dataPage.count);
   }
  //================
   //查询

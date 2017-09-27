@@ -9,19 +9,19 @@
                 <label class="control-label">期间：</label>
                 <div class="controls">
                     <p-calendar [locale]="zh" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="bearDate" dateFormat="yy-mm"
-                        [maxDate]="maxDate"></p-calendar>
+                        [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"></p-calendar>
                 </div>
             </div>
             <div class="col-xs-2">
                 <label class="control-label">人员：</label>
                 <div class="controls">
-                    <p-dropdown [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'150px', 'text-align': 'center'}" filter="filter"
+                    <p-dropdown [options]="findUserList" [(ngModel)]="findUserListId" [style]="{'width':'100px', 'text-align': 'center'}" filter="filter"
                         placeholder="输入搜索" [ngModelOptions]="{standalone: true}">
                     </p-dropdown>
                 </div>
             </div>
 
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                 <label class="control-label">等级：</label>
                 <div class="controls">
                     <select [(ngModel)]="collectionId">
@@ -29,6 +29,8 @@
                             <option *ngFor="let item of collectionList" value="{{item.id}}">{{item.job_name}}</option>
                         </select>
                 </div>
+            </div>
+            <div class="col-xs-2">
                 <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
                 <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="resetting()">重置</button>
             </div>

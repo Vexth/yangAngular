@@ -1,0 +1,65 @@
+
+    <div class="content-wrapper">
+        <app-navigation Showtitle="工作量管理" Subtitle="发外工作量" Web="工作量管理系统" Module="工作量管理" Page="发外工作量"></app-navigation>
+    
+        <section class="content" id="content">
+            <p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>
+            <!-- <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
+                <p-footer>
+                    <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
+                    <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
+                </p-footer>
+            </p-confirmDialog> -->
+            <div class="row">
+                <div class="col-xs-2">
+                    <label class="control-label">接收日期：</label>
+                    <div class="controls">
+                        <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="optsList.stime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <label class="control-label">结束时间：</label>
+                    <div class="controls">
+                        <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="结束时间" [(ngModel)]="optsList.etime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="control-label">计算状态：</label>
+                    <div class="controls">
+                        <select [(ngModel)]="optsList.statu">
+                            <option value="-1">--请选择--</option>
+                            <option value="0">未完结</option>
+                            <option value="1">已完结</option>
+                        </select>
+                    </div>
+                    <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
+                </div>
+            </div>
+            <!-- <div class="button-content">
+                <button type="button" class="btn btn-primary" (click)="dellList(dt.exportCSV())">导出</button>
+            </div> -->
+    
+            <div style="_height:100%;min-height:100%;">
+                <div class="tab"></div>
+                <p-dataTable [value]="formDataList" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" selectionMode="single" emptyMessage="暂无数据">
+                    <p-column field="workName" header="稿件名称" [style]="{'width':'400px'}"></p-column>
+                    <p-column field="nodeName" header="流程节点" [style]="{'text-align':'center'}"></p-column>
+                    <p-column field="userName" header="姓名"[style]="{'text-align':'center'}"></p-column>
+                    <p-column field="document" header="完成时间"[style]="{'text-align':'center'}">
+                        <ng-template let-node="rowData" pTemplate="body" >
+                            <span>{{node.gmt_create | date : 'yyyy-MM-dd' }}</span>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="count" header="数量"[style]="{'text-align':'center'}"></p-column>
+                    <p-column field="price" header="单价"[style]="{'text-align':'center'}"></p-column>
+                    <p-column field="money" header="总金额"[style]="{'text-align':'center'}"></p-column>
+                    <p-column field="document" header="状态"[style]="{'text-align':'center'}">
+                        <ng-template let-node="rowData" pTemplate="body" >
+                            <span>{{node.statu == 0 ? " 未完结" : "已完结"}}</span>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+                <p-paginator rows="{{optsList.pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
+            </div>
+        </section>
+    </div>

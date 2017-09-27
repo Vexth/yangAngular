@@ -22,7 +22,7 @@
                     </ng-template>
                 </p-column>
             </p-dataTable>
-            <p-paginator rows="{{rows}}" totalRecords="{{pageLinks}}" (onPageChange)="paginate($event)" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
+            <p-paginator [style]="{'width': '30%','text-align':'center'}" rows="{{rows}}" totalRecords="{{pageLinks}}" (onPageChange)="paginate($event)" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
         </div>
         <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
         <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>

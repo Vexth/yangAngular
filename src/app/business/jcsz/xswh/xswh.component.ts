@@ -55,9 +55,9 @@ export class XswhComponent implements OnInit{
   bindpage(itme, text) {
     let arr = [];
     for (let i = 0; i < itme.length; i++) {
-      let resList = {label: '', value: ''}
+      let resList = {label: '', value: null}
       resList.label = itme[i][text];
-      resList.value = itme[i];
+      resList.value = JSON.stringify(itme[i]);
       arr.push(resList);
     }
     return arr;
@@ -72,13 +72,22 @@ export class XswhComponent implements OnInit{
 
   // 新增
   add(){
-    let tabid = +this.username;
-    let typeid;
-    if(tabid === 1){
-      typeid = this.unit != undefined ? this.unit.id : '';
-    }
-    let addNew = { tabType: tabid, type: typeid, courseClassId: null, ratio: null, a: ''};
-    this.dataList.push(addNew);
+    this.confirmationService.confirm({
+      message: '确定是否新增数据?',
+      header: '提示',
+      icon: 'fa fa-question-circle',
+      accept: () => {
+        let tabid = +this.username;
+        let typeid;
+        if(tabid === 1){
+          typeid = this.unit != undefined ? this.unit.id : '';
+        }
+        let addNew = { tabType: tabid, type: typeid, courseClassId: null, ratio: null, a: ''};
+        this.dataList.unshift(addNew);
+      },
+      reject: () => {
+      }
+    });
   }
 
   // 保存
@@ -104,6 +113,10 @@ export class XswhComponent implements OnInit{
     }).then(res => {this.newRatio = null;});
   }
 
+  isString(str){ 
+    return (typeof str=='string') && str.constructor == String; 
+  } 
+
   // tab切换
   ColToggler(itme: any){
     this.username = '';
@@ -111,8 +124,13 @@ export class XswhComponent implements OnInit{
     this.findCourse = null;
     this.username = itme;
     let tabid = itme - 0;
-    let typeid;
-    (tabid !== 1) ? (typeid = '') : (typeid = this.unit.id);
+    let typeid, data;
+    if(this.isString(this.unit)){
+      data = JSON.parse(this.unit);
+    }
+
+    typeid = (tabid !== 1) ? '' : (data == undefined ? this.unit.id : data.id);
+    
     tabid === 5 
     ? this.GetList.findClass().then(res => this.findCourseList = this.bindpage(res, 'class_name')) // 年级
     : this.GetList.findCourse().then(res => this.findCourseList = this.bindpage(res, 'course_name')); // 学科
@@ -122,22 +140,21 @@ export class XswhComponent implements OnInit{
   // 下拉切换数据
   OnChange () {
     let tabid = +this.username;
-    let typeid = this.unit != undefined ? this.unit.id : '';
+    let typeid = this.unit == undefined ? '' : JSON.parse(this.unit).id;
     this.dataLiat(tabid, typeid);
   }
 
   // 表格数据
-  dataLiat(tabid, typeid){
+  dataLiat(tabId, typeId){
     this.dataList = [];
     this.dataListCode = [];
-    this.GetList.ratioList(tabid, typeid).then(res => this.dataList = res);
+    this.GetList.ratioList(tabId, typeId).then(res => this.dataList = res);
   }
 
   // 表格中下拉框选中的参数
-  findex (itme) {
-    // console.log(itme)
-    this.courseClassId = this.findCourse.id;
-    // this.courseClassId = itme.value.id;
+  findex (itme, event) {
+    event = JSON.parse(event);
+    this.courseClassId = event.id
     this.conserve(itme);
   }
 
@@ -151,6 +168,10 @@ export class XswhComponent implements OnInit{
     newobj.type = 'text';
     newobj.style.width = '80px';
     newobj.maxLength = 5;
+    newobj.onkeyup = function(){
+      newobj.value = newobj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符     
+      newobj.value = newobj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的     
+    }
     //为新增元素添加value值
     newobj.value = oldhtml;
     //为新增元素添加光标离开事件

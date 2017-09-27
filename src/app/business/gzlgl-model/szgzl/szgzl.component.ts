@@ -31,7 +31,7 @@ export class SzgzlComponent implements OnInit {
       ]
     }
   }
-  total:any = "10";
+  total:any = "";
   selected:any = {};
   indexDeptId:string="";
   ngOnInit() {
@@ -42,11 +42,18 @@ export class SzgzlComponent implements OnInit {
     this.PostService = postService;this.GetList = getList;
   }
   deptChange() {
+    this.total = "";
+    this.opts.page = "1";this.opts.size = "10";
     this.indexDeptId = this.opts.departId;
     this.getFormData();
   }
   //获取页面数据
   getFormData() {
+    if(!this.opts.departId){
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择部门"}];
+      return;
+    }
     this.GetList.szgzlDataList(this.opts).catch(res=>{
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
@@ -59,7 +66,10 @@ export class SzgzlComponent implements OnInit {
       });
       console.log(res);
       this.fromDataList = res;
-      this.total = (+res.pagelist.count)*(+res.pagelist.totalPage);
+      if(!this.total) {
+        this.total = (+res.pagelist.count)*(+res.pagelist.totalPage);
+      }
+     
     })
   }
   /**
@@ -89,11 +99,6 @@ export class SzgzlComponent implements OnInit {
   // ===========================
   // 搜索
   refresh() {
-    if(!this.opts.departId){
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择部门"}];
-      return;
-    }
     this.getFormData();
   }
   // 高级搜索
@@ -132,6 +137,11 @@ export class SzgzlComponent implements OnInit {
   //保存
   saveDataList:any = [];
   save() {
+    if(this.saveDataList.length === 0) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:"未修改任何项"}];
+      return;
+    }
     console.log(this.saveDataList);
     let postData = {
       dataList:this.saveDataList
@@ -212,5 +222,27 @@ export class SzgzlComponent implements OnInit {
     this.opts.size = 10;
     this.opts.page = event.page + 1;
     this.getFormData();
+  }
+  szgzlid:number = 0;
+  changeOptKind2:any = [];
+  changeKind1(){
+    console.log(this.opts.kindId1);
+    if(this.opts.kindId1){
+      this.szgzlid = 1;
+      this.getkindId2(this.opts.kindId1);
+    }else{
+      this.szgzlid = 0;
+      this.changeOptKind2 = [];
+    }
+  }
+  //获取kindId2List
+  getkindId2(data) {
+    this.GetList.getKindId2(data).catch(res=>{
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    }).then(res=>{
+      this.changeOptKind2 = res.optKind2;
+    });
   }
 }

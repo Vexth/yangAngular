@@ -30,8 +30,8 @@ export class JdsqsetComponent implements OnInit {
   roleList:any = [];
   nodeList:any = [];
   deptList:any = [];
-  dept:any = [];
-  role:any = [];
+  dept:any = "";
+  role:any = "";
   node:any = [];
 
   getRoleData() {
@@ -57,10 +57,12 @@ export class JdsqsetComponent implements OnInit {
       return;
     }).then(res=>{
       res.nodeList.forEach((x,i) => {
-        let p = {label:"",value:""};
-        p.label = x.name;
-        p.value = x.id;
-        this.nodeList.push(p);
+        if(x.isLocked !== true) {
+          let p = {label:"",value:""};
+          p.label = x.name;
+          p.value = x.id;
+          this.nodeList.push(p);
+        }
       });
     });
   }
@@ -97,16 +99,20 @@ export class JdsqsetComponent implements OnInit {
   }
   getDepart:any = {};
   public jdsqsetShow(data):void {
-    this.dept = [];this.role = [];
+    this.dept = "";this.role = "";
     this.getDepart = {};
-    this.getDepart = Object.assign({},data);
-    this.dept.push(this.getDepart.department.id);
-    this.role.push(this.getDepart.role.id);
+    
+    console.log(data);
+    if(data.id){
+      this.getDepart = Object.assign({},data);
+      this.dept=this.getDepart.department.id;
+      this.role=this.getDepart.role.id;
+      this.getChack();
+    }
     this.childModal.show();
     this.getRoleData();
     this.getNodeData();
     this.getDeptData();
-    this.getChack();
   }
 
   public jdsqsetHide():void {
@@ -122,14 +128,20 @@ export class JdsqsetComponent implements OnInit {
     let postData = {
       nodes:[]
     }
+    if(!this.node||!this.dept||!this.role) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:"请在每个框内至少选择一项"}];
+      return;
+    }
     postData.nodes = this.node;
-    this.PostService.jdsqSet(postData,this.dept[0],this.role[0]).catch(res=>{
+    this.PostService.jdsqSet(postData,this.dept,this.role).catch(res=>{
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       return;
     }).then(res=>{
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"流程节点设置成功"}];
+      this.jdsqSaveChange.emit();
       this.jdsqsetHide();
     })
   }

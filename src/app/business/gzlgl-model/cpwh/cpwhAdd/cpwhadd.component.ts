@@ -41,7 +41,19 @@ export class cpwhcpaddComponent implements OnInit {
   public cpwhcpaddShow(data):void {
     this.childModal.show();
     data.optKind1.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
-    data.optKind1.unshift({label:"--请选择--",optionName:"--请选择--",value:""});
+    if(data.optKind1[0].optionName!=="--请选择--") { data.optKind1.unshift({label:"--请选择--",optionName:"--请选择--",value:""});}
+    data.optSubject.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
+    if(data.optSubject[0].optionName!=="--请选择--") { data.optSubject.unshift({label:"--请选择--",optionName:"--请选择--",value:""});}
+    data.optEdition.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
+    if(data.optEdition[0].optionName!=="--请选择--") { data.optEdition.unshift({label:"--请选择--",optionName:"--请选择--",value:""});}
+    data.optModule.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
+    if(data.optModule[0].optionName!=="--请选择--") { data.optModule.unshift({label:"--请选择--",optionName:"--请选择--",value:""});}
+    data.optLocalEdition.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
+    if(data.optLocalEdition[0].optionName!=="--请选择--") { data.optLocalEdition.unshift({label:"--请选择--",optionName:"--请选择--",value:""});}
+    data.optUsageType.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
+    if(data.optUsageType[0].optionName!=="--请选择--") { data.optUsageType.unshift({label:"--请选择--",optionName:"--请选择--",value:""});}
+    data.optBatch.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
+    if(data.optBatch[0].optionName!=="--请选择--") { data.optBatch.unshift({label:"--请选择--",optionName:"--请选择--",value:""});}
     this.addList = data;
     for(let i = 0;i <　this.addList.optJie.length; i++) {this.addListV2.optJie[this.addList.optJie[i].optionId] = this.addList.optJie[i].optionName;}
     for(let i = 0;i <　this.addList.optKind1.length; i++) {this.addListV2.optKind1[this.addList.optKind1[i].optionId] = this.addList.optKind1[i].optionName;}
@@ -88,7 +100,7 @@ export class cpwhcpaddComponent implements OnInit {
   myFunction(element,key,index) {
     this.temporaryList.forEach((x,i) => {
       if(x.datakey === key) {
-        x[index] = element.path[0].value;
+        x[index] = element.value;
       }
     });
   }
@@ -99,6 +111,29 @@ export class cpwhcpaddComponent implements OnInit {
     nameArr[6] = this.addListV2.optLocalEdition[localEditionId];nameArr[7] = this.addListV2.optUsageType[usageId];nameArr[8] = this.addListV2.optBatch[batchId];
     nameStr = nameArr.join("");
     return nameStr;
+  }
+  changeOptKind2:any = [{label:"--请选择--",optionName:"--请选择--",value:""}];
+  cpwhAddid:number = 0;
+  changeKind1() {
+    if(this.post.kindId1){
+      this.cpwhAddid = 1;
+      this.getkindId2(this.post.kindId1);
+    }else{
+      this.cpwhAddid = 0;
+      this.changeOptKind2 = [{label:"--请选择--",optionName:"--请选择--",value:""}];
+    }
+  }
+  //获取kindId2List
+  getkindId2(data) {
+    this.GetList.getKindId2(data).catch(res=>{
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    }).then(res=>{
+      res.optKind2.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
+      res.optKind2.unshift({label:"--请选择--",optionName:"--请选择--",value:""});
+      this.changeOptKind2 = res.optKind2;
+    });
   }
 
   @Output()
@@ -111,7 +146,7 @@ export class cpwhcpaddComponent implements OnInit {
     }
     if(this.temporaryList.length === 0) {this.msgs=[];this.msgs=[{severity:'error', summary:'错误提示', detail:"请在下方表格中至少添加一条数据"}];return;}
     for(let i = 0; i < this.temporaryList.length; i++){
-      if(!this.temporaryList[i].editionId){this.msgs=[];this.msgs=[{severity:'error', summary:'错误提示', detail:"请选择表格中数据的版本"}];return;}
+      if(!this.temporaryList[i].editionId&&!this.temporaryList[i].moduleId&&!this.temporaryList[i].localEditionId&&!this.temporaryList[i].usageId&&!this.temporaryList[i].batchId){this.msgs=[];this.msgs=[{severity:'error', summary:'错误提示', detail:"请至少选择每行表格中的一列数据"}];return;}
       let temporaryData = {}; let pushData = {};
       temporaryData['editionId']=this.temporaryList[i].editionId;temporaryData['moduleId']=this.temporaryList[i].moduleId;
       temporaryData['localEditionId']=this.temporaryList[i].localEditionId;temporaryData['usageId']=this.temporaryList[i].usageId;
@@ -120,7 +155,6 @@ export class cpwhcpaddComponent implements OnInit {
       pushData = Object.assign(temporaryData,this.post);
       postData.productList.push(temporaryData);
     }
-    console.log(postData);
     this.PostService.cpwhAdd(postData).catch(res => {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];

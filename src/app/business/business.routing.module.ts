@@ -21,9 +21,12 @@ import { XswhComponent } from './jcsz/xswh/xswh.component';
 import { KmgfhComponent } from './jcsz/kmgfh/kmgfh.component';
 import { RyjndjComponent } from './jcsz/ryjndj/ryjndj.component';
 import { JngzwhComponent } from './jcsz/jngzwh/jngzwh.component';
+import { ZzbryfzComponent } from './jcsz/zzbryfz/zzbryfz.component';
 // 工作量管理（SpgzlComponent 审批工作量，CygzlComponent 查阅工作量）
 import { SpgzlComponent } from './gzlgl/spgzl/spgzl.component';
 import { CygzlComponent } from './gzlgl/cygzl/cygzl.component';
+//外发工作量
+import { FwgzlComponent } from './gzlgl/fwgzl/fwgzl.component';
 // 数据统计
 import { KhgzglComponent } from './sjtj/khgzgl/khgzgl.component';
 import { ZzbgzlComponent } from './sjtj/zzbgzl/zzbgzl.component';
@@ -145,6 +148,16 @@ const routes: Routes = [
     path: 'business/sjtj/fwrygz',
     // canActivate: [AuthGuardService],
     component: FwrygzComponent,
+  },
+  {
+    path: 'business/gzlgl/fwgzl',
+    // canActivate: [AuthGuardService],
+    component: FwgzlComponent,
+  },
+  {
+    path: 'business/jcsz/zzbryfz',
+    // canActivate: [AuthGuardService],
+    component: ZzbryfzComponent,
   }
   
 ];

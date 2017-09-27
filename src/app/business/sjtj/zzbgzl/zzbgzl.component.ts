@@ -124,7 +124,7 @@ export class ZzbgzlComponent implements OnInit {
     this.dataListCode = [];
     this.emptyList.level = +this.collectionId;
     // this.emptyList.name = this.findUserListId;
-    this.emptyList.name = this.findUserListId['emp_no'] == undefined ? '' : this.findUserListId['emp_no'];
+    this.emptyList.name = this.findUserListId == '' ? '' : this.findUserListId['emp_no'];
     this.emptyList.bearDate = this.bearDate == null ? this.formatDate(new Date()) : this.formatDate(this.bearDate)
     this.bindpage(0);
   }
@@ -132,8 +132,9 @@ export class ZzbgzlComponent implements OnInit {
   // 重置
   resetting () {
     this.bearDate = null;
-    this.findUserListId = null;
+    this.findUserListId = '';
     this.collectionId = '-1';
+    this.query();
   }
 
 }

@@ -15,8 +15,8 @@ export class YmsrComponent implements OnInit {
   private GetList: GetList;
   private PostService: PostService;
   msgs: Message[] = [];
+  selected:any;
   deptData:any;
-  selected: any;
   optsDataList:any = {
     departments:[],optBatch:[],optEdition:[],optGrade:[],optGroup:[],optJie:[],optKind1:[],
     optKind2:[],optLocalEdition:[],optModule:[],optNode:[],optSubject:[],optType:[],optUsageType:[]
@@ -26,6 +26,7 @@ export class YmsrComponent implements OnInit {
   optsData:any = {
     name:"",departId:"",kindId1:"",kindId2:"",typeId:"",jieId:"",gradeId:"",localEditionId:"",subjectId:"",editionId:"",moduleId:"",usageId:"",batchId:"",page:"1",size:"10"
   }
+  updataList:any = [];
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getDeptList();
@@ -64,7 +65,8 @@ export class YmsrComponent implements OnInit {
       })
       
       this.formDataList = res.pagelist.content;
-      this.optsData.size = res.pagelist.count?res.pagelist.count:10;
+      // this.optsData.size = res.pagelist.count?res.pagelist.count:10;
+      this.optsData.size = 10;
       this.optsData.page = res.pagelist.page;
       let indexTotal = (+res.pagelist.totalPage)*(+res.pagelist.count);
       if(indexTotal>0) {this.total = indexTotal;}else{this.total = 10;}
@@ -113,8 +115,12 @@ export class YmsrComponent implements OnInit {
     this.isadSearch = 0;
   }
   //保存
-  updataList:any = [];
   save() {
+    if(this.updataList.length === 0) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'没有修改任何项'}];
+      return;
+    }
     console.log(this.updataList);
     let pageList = {
       pageList:this.updataList
@@ -130,7 +136,7 @@ export class YmsrComponent implements OnInit {
     });
   }
   // 双击修改
-  ShowElement(element, selected) {
+  ShowElement(element,selected) {
     if(selected.children.length !== 0) {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"非子集稿件不能修改"}];
@@ -148,7 +154,7 @@ export class YmsrComponent implements OnInit {
     newobj.type = 'text';
     newobj.style.width = '80px';
     newobj.style.color = '#000';
-    newobj.maxLength = 5;
+    // newobj.maxLength = 5;
     //为新增元素添加value值
     newobj.value = oldhtml;
     //为新增元素添加光标离开事件
@@ -181,5 +187,27 @@ export class YmsrComponent implements OnInit {
     newobj.focus();
     //设置父节点的双击事件为空
     // newobj.parentNode.setAttribute("ondblclick", "");
-  } 
+  }
+  ymsrid:number = 0;
+  changeOptKind2:any = [];
+  changeKind1(){
+    console.log(this.optsData.kindId1);
+    if(this.optsData.kindId1){
+      this.ymsrid = 1;
+      this.getkindId2(this.optsData.kindId1);
+    }else{
+      this.ymsrid = 0;
+      this.changeOptKind2 = [];
+    }
+  }
+  //获取kindId2List
+  getkindId2(data) {
+    this.GetList.getKindId2(data).catch(res=>{
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    }).then(res=>{
+      this.changeOptKind2 = res.optKind2;
+    });
+  }
 }

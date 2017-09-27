@@ -30,8 +30,8 @@ export class JsszopenComponent implements OnInit {
   isDatika: boolean = false;
   isHouqi: boolean = false;
   multiple: string;
-  type;
-  nodeId;
+  type: number;
+  nodeId: number;
 
   private PostService: PostService;
 
@@ -117,6 +117,8 @@ export class JsszopenComponent implements OnInit {
 
       this.P.remarks = dataItem[0].remarks;
       this.P.delFlag = dataItem[0].delFlag;
+
+      this.nodeId = dataItem[0].nodeId;
     }
     this.childModal.show();
   }
@@ -152,7 +154,7 @@ export class JsszopenComponent implements OnInit {
     }
     List.id = this.P.id;
     List.type = +this.P.type;
-    List.nodeId = this.findNodeOfZzbListCode.nodeId;
+    List.nodeId = this.nodeId == this.P.nodeId ? this.nodeId : this.findNodeOfZzbListCode.nodeId;
     List.isLp = Number(this.isLp);
     List.isHuat = Number(this.isHuat);
     List.isTiaot = Number(this.isTiaot);
@@ -165,7 +167,10 @@ export class JsszopenComponent implements OnInit {
       if (res.code == 0) {
         this.change.emit();
         this.hideChildModal();
+        this.msgs = [];
+        this.msgs = [{severity:'success', summary:'成功提示', detail:"修改成功"}];
       } else {
+        this.msgs = [];
         this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       }
     });

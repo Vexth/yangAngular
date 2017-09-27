@@ -31,6 +31,7 @@ export class CpwhComponent implements OnInit {
     name:"",departId:"",kindId1:"",kindId2:"",typeId:"",jieId:"",gradeId:"",localEditionId:"",subjectId:"",editionId:"",moduleId:"",usageId:"",batchId:"",workloadType:"",page:"",size:""
   }
   addList:any = {}//新增模块条件集合
+  changeOptKind2:any = [];//OptKind2搜索条件单独拎出
 
   public dataList:any;//表格数据data
 
@@ -54,18 +55,32 @@ export class CpwhComponent implements OnInit {
   }
   id:number = 0;
   changeKind1(){
+    console.log(this.opts.kindId1);
     if(this.opts.kindId1){
       this.id = 1;
+      this.getkindId2(this.opts.kindId1);
     }else{
       this.id = 0;
-      this.opts.kindId2 = "";
+      this.changeOptKind2 = [];
     }
+  }
+  //获取kindId2List
+  getkindId2(data) {
+    this.GetList.getKindId2(data).catch(res=>{
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    }).then(res=>{
+      this.changeOptKind2 = res.optKind2;
+    });
   }
   
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.clearOpts();
-    this.GetList.cpwhadd().then(res => this.optsList = res);
+    this.GetList.cpwhadd().then(res =>{
+      this.optsList = res;
+    });
     this.getAddList();
   }
 
@@ -120,6 +135,7 @@ export class CpwhComponent implements OnInit {
   // 搜索
   refresh() {
     this.getDataList();
+    this.isadSearch = 0;
     // console.log(this.optsList);
   }
   // 高级搜索
@@ -184,7 +200,7 @@ export class CpwhComponent implements OnInit {
   delete() {
     if(this.checkList.length == 0) {
       this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择要删除的项'}];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请勾选要删除的项'}];
       return;
     }
     let postData = {
@@ -215,7 +231,7 @@ export class CpwhComponent implements OnInit {
   print() {
     if(this.checkList.length == 0) {
       this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择要打印的项'}];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:'请勾选要打印的项'}];
       return;
     }
     let hashStr = this.checkList.join('&id=');
@@ -230,42 +246,50 @@ export class CpwhComponent implements OnInit {
 
   // 双击修改
   ShowElement(element,selected) {
-    if(selected.children.length !== 0 || !selected.data.docName) {
+    console.log(selected.docName);
+    if(!selected.parent) {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"非子集稿件不能修改"}];
       return;
     }
-    let indexDocId = selected.data.documentId;
+    // let indexDocId = selected.data.documentId;
     let pushData = {
       docId:"",pageNum:""
     }
     // let postData = {};
     // console.log(element)
     // let oldhtml = element.target.innerHTML;
-    let oldhtml = selected.data.docName;
+    let oldhtml = selected.docName;
+    let saveNameStr = selected.data.jieId+selected.data.kindId2+selected.data.subjectId+selected.data.editionId;
+    console.log(saveNameStr);
+
     //创建新的input元素
     let newobj = document.createElement('input');
     //为新增元素添加类型
     newobj.type = 'text';
     newobj.style.width = '100%';
     newobj.style.color = '#000';
-    newobj.maxLength = 5;
+    // newobj.maxLength = 5;
     //为新增元素添加value值
     newobj.value = oldhtml;
     //为新增元素添加光标离开事件
     newobj.addEventListener('blur', () => {
       //当触发时判断新增元素值是否为空，为空则不修改，并返回原有值 
-      // element.target.innerHTML = newobj.value == oldhtml ? oldhtml : newobj.value;
-      this.PostService.cpwhSaveEdit({},selected.documentId,newobj.value).catch(res=>{
-        this.clearOpts();
-        this.msgs = [];
-        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-        return;
-      }).then(res=>{
-        this.clearOpts();
-        this.msgs = [];
-        this.msgs = [{severity:'success', summary:'成功提示', detail:"稿件名称修改保存成功"}];
-      })
+      element.target.innerHTML = newobj.value == oldhtml ? selected.data.name : saveNameStr+newobj.value;
+      selected.docName = newobj.value == oldhtml ? selected.docName : newobj.value;
+      console.log(selected.docName);
+      if(oldhtml !== newobj.value) {
+        this.PostService.cpwhSaveEdit({},selected.documentId,newobj.value).catch(res=>{
+          // this.clearOpts();
+          this.msgs = [];
+          this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+          return;
+        }).then(res=>{
+          // this.clearOpts();
+          this.msgs = [];
+          this.msgs = [{severity:'success', summary:'成功提示', detail:"稿件名称修改保存成功"}];
+        })
+      }
       //当触发时设置父节点的双击事件为ShowElement
       // element.target.setAttribute("ondblclick", "ShowElement(this);");
     });

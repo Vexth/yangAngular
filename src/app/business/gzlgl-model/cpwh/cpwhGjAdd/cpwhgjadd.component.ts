@@ -33,7 +33,7 @@ export class cpwhgjaddComponent implements OnInit {
   public cpwhAddGJ=new EventEmitter<string>();
 
   public emitCpwhGJadd(event):void {
-    if(!this.CPWHgjfl) {
+    if(!this.CPWHgjfl || this.CPWHgjfl.trim().length === 0) {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请输入稿件名称"}];
       return;

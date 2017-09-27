@@ -1,6 +1,3 @@
-<!-- <div class="wrapper">
-    <app-top></app-top>
-    <app-treeview treemodule="jcsz" treeitem="xswh" ></app-treeview> -->
 <div class="content-wrapper">
     <app-navigation Showtitle="基础设置" Subtitle="系数维护" Web="工作量管理" Module="基础设置" Page="系数维护"></app-navigation>
 
@@ -24,18 +21,19 @@
             </div>
 
             <div class="tabClass">
+                <div>
+                    <span><b>序号</b></span>
+                    <span><b *ngIf="username != '5'">科目</b><b *ngIf="username == '5'">年级</b></span><span><b>系数</b></span>
+                </div>
                 <ul>
-                    <li>
-                        <span><b>序号</b></span>
-                        <span><b *ngIf="username !== '5'">科目</b><b *ngIf="username === '5'">年级</b></span><span><b>系数</b></span>
-                    </li>
                     <li *ngFor="let list of dataList; let i = index;">
                         <span>{{i+1}}</span>
                         <span>
-                            <p *ngIf="list.a == undefined">{{list.cname}}</p>
-                            <p-dropdown *ngIf="list.a == ''" [style]="{'width': '80px','text-align': 'center', 'margin-left': '-10px'}" [options]="findCourseList"
-                            (onChange)="findex(list)" placeholder="请选择" [(ngModel)]="findCourse" [ngModelOptions]="{standalone: true}">
-                            </p-dropdown>
+                            <a *ngIf="list.a != ''">{{list.cname}}</a>
+                            <select style="height: 30px;" *ngIf="list.a == ''" (change)="findex(list, $event.target.value)">
+                                <option value="">-- 请选择 --</option>
+                                <option *ngFor="let listText of findCourseList; let i = index;" value="{{listText.value}}">{{listText.label}}</option>
+                            </select>
                         </span>
                         <span (dblclick)="ShowElement($event, list)">{{ list.ratio != null ? list.ratio : '双击填写' }}</span>
                     </li>
@@ -44,5 +42,3 @@
         </div>
     </section>
 </div>
-<!-- <app-footer></app-footer>
-</div> -->

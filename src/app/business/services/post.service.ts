@@ -252,4 +252,20 @@ export class PostService extends BaseService {
     return this.publicPostServe(postvalue, url, 'cpwhSaveEdit');
   }
 
+  //流转查询删除
+  lzcxDelete(postvalue: any): Promise<any | BackCode> {
+    let url = `${ConstantsList.HOSTUser1}api/document/log/batch_delete`;
+    let body = postvalue;
+    let headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(url, body, options).toPromise().
+      then((res) => { return res.json();})
+  }
+
+  // 四分配部门组修改方法 /api/userpost/updateUserPost  post请求--userId就是列表的id值，postId就是下拉框id值，leader 0排版员 1组长或领导{"userId":130,"postId":2,"leader":0}
+  updateUserPost(postvalue: any) {
+    const url = `${ConstantsList.HOSTUser1}api/userpost/updateUserPost`;
+    return this.publicPostServe(postvalue, url, 'updateUserPost');
+  }
+
 }

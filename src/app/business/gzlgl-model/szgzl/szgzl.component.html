@@ -69,7 +69,7 @@
                               <td>
                                   <label>产品I类：</label>
                                   <div style="display:inline-block;">
-                                    <select class="form-control cpwhSelOpt" [(ngModel)]="opts.kindId1" (ngModelChange)="opts.kindId1=$event;" name="kindId1">
+                                    <select class="form-control cpwhSelOpt" [(ngModel)]="opts.kindId1" (ngModelChange)="opts.kindId1=$event;changeKind1()" name="kindId1">
                                       <option value="">--请选择--</option>
                                       <option [value]="c.optionId" *ngFor="let c of optsDataList.optKind1">{{c.optionName}}</option>
                                     </select>
@@ -78,9 +78,9 @@
                             <td>
                                 <label>产品II类：</label>
                                 <div style="display:inline-block;">
-                                    <select class="form-control cpwhSelOpt" [(ngModel)]="opts.kindId2" (ngModelChange)="opts.kindId2=$event;" name="kindId2">
+                                    <select class="form-control cpwhSelOpt" [(ngModel)]="opts.kindId2" (ngModelChange)="opts.kindId2=$event;" name="kindId2" [disabled]="szgzlid==1?false:true">
                                         <option value="">--请选择--</option>
-                                        <option [value]="c.optionId" *ngFor="let c of optsDataList.optKind2">{{c.optionName}}</option>
+                                        <option [value]="c.optionId" *ngFor="let c of changeOptKind2">{{c.optionName}}</option>
                                     </select>
                                 </div>
                             </td>

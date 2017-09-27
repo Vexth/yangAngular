@@ -79,15 +79,18 @@
                                     </select>
                                 </div>
                             </td>
-                            <td colspan="2">
+                            <td >
                               <label style="margin-left:42px;">接收时间：</label>
                               <div style="display:inline-block;margin: 5px 0;">
-                                  <p-calendar [(ngModel)]="beginDate" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100" placeholder="开始时间"></p-calendar>
+                                  <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [(ngModel)]="beginDate" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100" placeholder="开始时间"></p-calendar>
                                   <span style="margin-left:35px"></span>
                               </div>
-                              --
-                              <div style="display:inline-block;">
-                                  <p-calendar [(ngModel)]="endDate" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100" placeholder="结束时间"></p-calendar>
+                            </td>
+                            <td>
+                              
+                              <label style="width:20px;text-align:center;">到</label>
+                              <div style="display:inline-block;margin: 5px 0 5px 20px;">
+                                  <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [(ngModel)]="endDate" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true" yearRange="1900:2100" placeholder="结束时间"></p-calendar>
                                   <span style="margin-left:35px"></span>
                               </div>
                             </td>
@@ -113,14 +116,22 @@
               </div>
                   <p-dataTable [value]="tableList" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" emptyMessage="暂无数据">
                       <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
-                      <p-column field="id" header="序号" [style]="{'text-align':'center'}"></p-column>
-                      <p-column field="documentName" header="稿件名称" [style]="{'text-align':'center'}"></p-column>
-                      <p-column field="nodename" header="流程节点" [style]="{'text-align':'center'}"></p-column>
-                      <p-column field="username" header="人员" [style]="{'text-align':'center'}"></p-column>
-                      <p-column field="departmentName" header="所属部门／中心" [style]="{'text-align':'center'}"></p-column>
-                      <p-column field="workload" header="工作量(天)" [style]="{'text-align':'center'}"></p-column>
-                      <p-column field="color" header="接收时间" [style]="{'text-align':'center'}"></p-column>
-                      <p-column field="year" header="结束时间" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="id" header="序号" [style]="{'text-align':'center','width':'50px'}"></p-column>
+                      <p-column field="documentName" header="稿件名称" [style]="{'width':'250px'}"></p-column>
+                      <p-column field="nodename" header="流程节点" [style]="{'text-align':'center','width':'100px'}"></p-column>
+                      <p-column field="username" header="人员" [style]="{'text-align':'center','width':'85px'}"></p-column>
+                      <p-column field="departmentName" header="稿件所属部门／中心" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="workload" header="工作量(天)" [style]="{'text-align':'center','width':'85px'}"></p-column>
+                      <p-column field="document" header="接收时间" [style]="{'text-align':'center'}">
+                        <ng-template let-node="rowData" pTemplate="body" >
+                          <span>{{node.gmtCreate | date : 'yyyy-MM-dd HH:mm:ss' }}</span>
+                        </ng-template>
+                      </p-column>
+                      <p-column field="document" header="结束时间" [style]="{'text-align':'center'}">
+                        <ng-template let-node="rowData" pTemplate="body" >
+                          <span>{{node.gmtOver | date : 'yyyy-MM-dd HH:mm:ss' }}</span>
+                        </ng-template>
+                      </p-column>
                   </p-dataTable>
                   <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
             </div>

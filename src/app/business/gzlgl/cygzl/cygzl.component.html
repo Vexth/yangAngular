@@ -3,17 +3,11 @@
 
     <section class="content" id="content">
         <p-growl [style]="{'top': '60px'}" [(value)]="msgs" [life]="3000"></p-growl>
-        <!-- <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
-                <p-footer>
-                    <button type="button" pButton icon="fa-close" label="否" (click)="cd.reject()"></button>
-                    <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>
-                </p-footer>
-            </p-confirmDialog> -->
         <div class="row">
             <div class="col-xs-6">
                 <label class="control-label">稿件名称：</label>
                 <div class="controls">
-                    <input [(ngModel)]="filesTreeId" (click)="$event.stopPropagation(); onFocus();" style="width: 90%;" placeholder="请选择稿件名称"
+                    <input [(ngModel)]="filesTreeId" (click)="$event.stopPropagation(); onFocus($event);" style="width: 90%;" placeholder="请选择产品名称"
                         type="text" value="" />
                     <p-tree class="pTree" *ngIf="hide != 0" [style]="{'width':'100%','max-height': '400px','overflow': 'auto'}" [value]="filesTree"
                         selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeExpand)="onNodeExpand($event)"
@@ -53,7 +47,7 @@
                         [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
                 </div>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                 <label class="control-label">计算状态：</label>
                 <div class="controls">
                     <select [(ngModel)]="statu">
@@ -63,18 +57,20 @@
                             <option value="2">已完结</option>
                         </select>
                 </div>
+            </div>
+            <div class="col-xs-2">
                 <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
-                <button style="margin-left: 5px;" type="button" class="btn btn-success" (click)="resetting()">重置</button>
+                <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="resetting()">重置</button>
             </div>
         </div>
-        <div class="button-content">
+        <!-- <div class="button-content">
             <button type="button" class="btn btn-primary" (click)="dellList(dt.exportCSV())">导出</button>
-        </div>
+        </div> -->
 
         <div style="_height:100%;min-height:100%;">
             <div class="tab"></div>
-            <p-dataTable #dt [responsive]="true" [rows]="10" [paginator]="true" [pageLinks]="20" [rowsPerPageOptions]="[5,10,20]" [value]="dataList"
-                [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true" [style]="{'text-align':'center'}">
+            <p-dataTable #dt [responsive]="true" [value]="dataList" [(selection)]="dataListCode" [headerCheckboxToggleAllPages]="true"
+                [style]="{'text-align':'center'}">
                 <p-headerColumnGroup>
                     <p-row>
                         <p-column [style]="{'width':'35px'}" selectionMode="multiple" rowspan="3"></p-column>
@@ -104,7 +100,11 @@
                 </p-headerColumnGroup>
 
                 <p-column selectionMode="multiple"></p-column>
-                <p-column field="workName" header="稿件名称"></p-column>
+                <p-column field="workName" header="稿件名称">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <p style="text-align: left;">{{ car[col.field] }}</p>
+                    </ng-template>
+                </p-column>
                 <p-column field="nodeName" header="流程节点"></p-column>
                 <p-column field="stime" header="开始时间">
                     <ng-template let-col let-car="rowData" pTemplate="body">
@@ -142,6 +142,7 @@
                     </ng-template>
                 </p-column>
             </p-dataTable>
+            <p-paginator rows="{{emptyList.pageSize}}" totalRecords="{{pageLinks}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
         </div>
     </section>
 </div>

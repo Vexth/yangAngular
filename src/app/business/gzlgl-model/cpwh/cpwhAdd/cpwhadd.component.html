@@ -1,6 +1,6 @@
 <div class="modal fade" bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" 
 role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title pull-left">新增产品</h4>
@@ -10,8 +10,7 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         </div>
         <div class="modal-body">
           <div class="row">
-            
-              <table>
+            <table>
                   <colgroup>
                     <col width="90"/>
                     <col width="200"/>
@@ -57,7 +56,7 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <option value="">-请选择-</option>
                         <option [value]="c.optionId" *ngFor="let c of addList.optKind1">{{c.optionName}}</option>
                       </select> -->
-                      <p-dropdown [options]="addList.optKind1" [(ngModel)]="post.kindId1"  filter="filter" [ngModelOptions]="{standalone: true}" 
+                      <p-dropdown [options]="addList.optKind1" [(ngModel)]="post.kindId1" (ngModelChange)="post.kindId1=$event;changeKind1()" filter="filter" [ngModelOptions]="{standalone: true}" 
                       [style]="{'width':'100%'}" filterBy="optionName">
                         <ng-template let-c pTemplate="item">
                             <div class="ui-helper-clearfix" >
@@ -68,19 +67,35 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                     </td>
                     <td class="cpwhaddLabel"><label>产品II类：</label></td>
                     <td>
-                      <select class="form-control" [(ngModel)]="post.kindId2" name="optKind2Id">
-                        <option value="">--请选择--</option>
-                        <option [value]="c.optionId" *ngFor="let c of addList.optKind2">{{c.optionName}}</option>
-                      </select>
+                      <!-- <select class="form-control" [(ngModel)]="post.kindId2" name="optKind2Id" [disabled]="cpwhAddid==1?false:true">
+                        <option value="">-请选择-</option>
+                        <option [value]="c.optionId" *ngFor="let c of changeOptKind2">{{c.optionName}}</option>
+                      </select> -->
+                      <p-dropdown [options]="changeOptKind2" [(ngModel)]="post.kindId2" (ngModelChange)="post.kindId2=$event;" filter="filter" [ngModelOptions]="{standalone: true}" 
+                      [style]="{'width':'100%'}" filterBy="optionName" [disabled]="cpwhAddid==1?false:true">
+                        <ng-template let-c pTemplate="item">
+                            <div class="ui-helper-clearfix" >
+                                <div style="font-size:14px;text-align:center;margin-top:4px;text-indent:0;">{{c.optionName}}</div>
+                            </div>
+                        </ng-template>
+                      </p-dropdown>
                     </td>
                   </tr>
-                  <tr>
+                  <tr style="height:44px">
                     <td class="cpwhaddLabel"><label>科目：</label></td>
                     <td>
-                      <select class="form-control" [(ngModel)]="post.subjectId" name="optSubjectId">
-                        <option value="">--请选择--</option>
+                      <!-- <select class="form-control" [(ngModel)]="post.subjectId" name="optSubjectId">
+                        <option value="">-请选择-</option>
                         <option [value]="c.optionId" *ngFor="let c of addList.optSubject">{{c.optionName}}</option>
-                      </select>
+                      </select> -->
+                      <p-dropdown [options]="addList.optSubject" [(ngModel)]="post.subjectId" (ngModelChange)="post.subjectId=$event;" filter="filter" [ngModelOptions]="{standalone: true}" 
+                      [style]="{'width':'100%'}" filterBy="optionName">
+                        <ng-template let-c pTemplate="item">
+                            <div class="ui-helper-clearfix" >
+                                <div style="font-size:14px;text-align:center;margin-top:4px;text-indent:0;">{{c.optionName}}</div>
+                            </div>
+                        </ng-template>
+                      </p-dropdown>
                     </td>
                     <td class="cpwhaddLabel" colspan="2"><label>是否按页码计算工作量：</label></td>
                     <td>
@@ -108,48 +123,83 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             
           </div>
           <div style="margin-top:10px;"></div>
-          <p-dataTable [value]="tableList" [(selection)]="selectedTab" [style]="{'text-align':'center'}">
+          <p-dataTable [value]="tableList" [(selection)]="selectedTab" [style]="{'text-align':'center'}" emptyMessage="暂无数据">
             <p-column [style]="{'width':'20px'}" selectionMode="multiple"></p-column>
             <!-- <p-column field="keyId" header="主键" [style]="{'width':'0px';}"></p-column> -->
             <!-- [(ngModel)]="tab.editionId" -->
             <p-column field="editionId" header="版本" [style]="{'width':'80px'}">
               <ng-template let-col let-node="rowData" pTemplate="body" let-in="rowIndex">
-                  <select pInputText style="color: #000;width:100%;" name="optEdition" (change)="myFunction($event,node.datakey,'editionId')">
+                  <!-- <select pInputText style="color: #000;width:100%;" name="optEdition" (change)="myFunction($event,node.datakey,'editionId')">
                       <option value="">-请选择-</option>
                       <option [value]="c.optionId" *ngFor="let c of addList.optEdition">{{c.optionName}}</option>
-                    </select>
+                    </select> -->
+                <p-dropdown [options]="addList.optEdition" filter="filter" [style]="{'width':'100%'}" filterBy="optionName" (onChange)="myFunction($event,node.datakey,'editionId')">
+                  <ng-template let-c pTemplate="item">
+                    <div class="ui-helper-clearfix" >
+                      <div style="font-size:14px;text-align:center;margin-top:4px;text-indent:0;">{{c.optionName}}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
               </ng-template>
             </p-column>
             <p-column field="moduleId" header="模块" [style]="{'width':'80px'}">
               <ng-template let-col let-node="rowData" pTemplate="body">
-                <select pInputText style="color: #000;width:100%;" name="optModuleId" (change)="myFunction($event,node.datakey,'moduleId')">
+                <!-- <select pInputText style="color: #000;width:100%;" name="optModuleId" (change)="myFunction($event,node.datakey,'moduleId')">
                   <option value="">-请选择-</option>
                   <option [value]="c.optionId" *ngFor="let c of addList.optModule">{{c.optionName}}</option>
-                </select>
+                </select> -->
+                <p-dropdown [options]="addList.optModule" filter="filter" [style]="{'width':'100%'}" filterBy="optionName" (onChange)="myFunction($event,node.datakey,'moduleId')">
+                  <ng-template let-c pTemplate="item">
+                    <div class="ui-helper-clearfix" >
+                      <div style="font-size:14px;text-align:center;margin-top:4px;text-indent:0;">{{c.optionName}}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
               </ng-template>
             </p-column>
             <p-column field="localEditionId" header="地方版" [style]="{'width':'80px'}">
               <ng-template let-col let-node="rowData" pTemplate="body">
-                <select pInputText style="color: #000;width:100%;" name="optLocalEditionId" (change)="myFunction($event,node.datakey,'localEditionId')">
+                <!-- <select pInputText style="color: #000;width:100%;" name="optLocalEditionId" (change)="myFunction($event,node.datakey,'localEditionId')">
                   <option value="">-请选择-</option>
                   <option [value]="c.optionId" *ngFor="let c of addList.optLocalEdition">{{c.optionName}}</option>
-                </select>
+                </select> -->
+                <p-dropdown [options]="addList.optLocalEdition" filter="filter" [style]="{'width':'100%'}" filterBy="optionName" (onChange)="myFunction($event,node.datakey,'localEditionId')">
+                  <ng-template let-c pTemplate="item">
+                    <div class="ui-helper-clearfix" >
+                      <div style="font-size:14px;text-align:center;margin-top:4px;text-indent:0;">{{c.optionName}}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
               </ng-template>
             </p-column>
             <p-column field="usageId" header="使用类型" [style]="{'width':'80px'}">
               <ng-template let-col let-node="rowData" pTemplate="body">
-                <select pInputText style="color: #000;width:100%;" name="optUsageTypeId" (change)="myFunction($event,node.datakey,'usageId')">
+                <!-- <select pInputText style="color: #000;width:100%;" name="optUsageTypeId" (change)="myFunction($event,node.datakey,'usageId')">
                   <option value="">-请选择-</option>
                   <option [value]="c.optionId" *ngFor="let c of addList.optUsageType">{{c.optionName}}</option>
-                </select>
+                </select> -->
+                <p-dropdown [options]="addList.optUsageType" filter="filter" [style]="{'width':'100%'}" filterBy="optionName" (onChange)="myFunction($event,node.datakey,'usageId')">
+                  <ng-template let-c pTemplate="item">
+                    <div class="ui-helper-clearfix" >
+                      <div style="font-size:14px;text-align:center;margin-top:4px;text-indent:0;">{{c.optionName}}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
               </ng-template>
             </p-column>
             <p-column field="batchId" header="批次" [style]="{'width':'80px'}">
               <ng-template let-col let-node="rowData" pTemplate="body">
-                <select pInputText style="color: #000;width:100%;" name="optBatchId" (change)="myFunction($event,node.datakey,'batchId')">
+                <!-- <select pInputText style="color: #000;width:100%;" name="optBatchId" (change)="myFunction($event,node.datakey,'batchId')">
                   <option value="">-请选择-</option>
                   <option [value]="c.optionId" *ngFor="let c of addList.optBatch">{{c.optionName}}</option>
-                </select>
+                </select> -->
+                <p-dropdown [options]="addList.optBatch" filter="filter" [style]="{'width':'100%'}" filterBy="optionName" (onChange)="myFunction($event,node.datakey,'batchId')">
+                  <ng-template let-c pTemplate="item">
+                    <div class="ui-helper-clearfix" >
+                      <div style="font-size:14px;text-align:center;margin-top:4px;text-indent:0;">{{c.optionName}}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
               </ng-template>
             </p-column>
           </p-dataTable>

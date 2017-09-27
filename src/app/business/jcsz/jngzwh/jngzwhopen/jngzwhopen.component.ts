@@ -84,16 +84,19 @@ export class JngzwhopenComponent implements OnInit {
       jobName: ''
     };
     if(!this.jobIncome){
+      this.msgs = [];
       this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入等级工资'});
       return ;
     }
 
     if(!this.jobName){
+      this.msgs = [];
       this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入等级名称'});
       return ;
     }
 
     if(!this.jobWorkload){
+      this.msgs = [];
       this.msgs.push({severity:'error', summary:'错误提示', detail:'请输入等级工作量'});
       return ;
     }
@@ -105,7 +108,10 @@ export class JngzwhopenComponent implements OnInit {
       if (res.code == 0) {
         this.change.emit();
         this.hideChildModal();
+        this.msgs = [];
+        this.msgs = [{severity:'success', summary:'成功提示', detail:"新增成功"}];
       } else {
+        this.msgs = [];
         this.msgs.push({severity:'error', summary:'错误提示', detail:res.msg});
       }
     })

@@ -44,11 +44,14 @@ export class CygzlComponent implements OnInit {
     // statu 计算状态
     statu: string = '-1';
     // findProductDoc	产品稿件树
+    treeTest: TreeNode[]; // 复制一份数据
     filesTree: TreeNode[];
     selectedFile: TreeNode;
     filesTreeId: string;
     // 下拉树显示隐藏
     hide: number = 0;
+
+    // aaa: string;
     constructor(
         @Inject(GetList) getList: GetList,
         @Inject('title') private titleService,
@@ -61,8 +64,12 @@ export class CygzlComponent implements OnInit {
     bindpage(name: number): void {
         this.GetList.workloadFindList(this.emptyList).then(res => {
             this.dataListCode = [];
-            Auxiliary.prototype.emptyMessage();
             if (res.checkList != undefined) {
+                res.checkList.map(res => {
+                    if(res.check_statu == 0){
+                        res.check_calc_workload = '--';
+                    }
+                })
                 this.dataList = res.checkList;
                 this.rows = res.pageSize;
                 this.pageLinks = res.totalCount;
@@ -93,7 +100,10 @@ export class CygzlComponent implements OnInit {
             this.findUserList = [];
             this.findUserList = Auxiliary.prototype.publicList(res, 'name');
         })
-        this.GetList.findProductDoc().then(res => this.filesTree = res);
+        this.GetList.findProductDoc().then(res => {
+            this.filesTree = res;
+            this.treeTest = res;
+        });
         Auxiliary.prototype.ControlHeight();
     }
     formatDate(date) {
@@ -117,8 +127,8 @@ export class CygzlComponent implements OnInit {
     // 查询
     query() {
         this.dataListCode = [];
-        this.emptyList.nodeId = this.findNodeOfZzbId;
-        this.emptyList.uId = this.findUserListId;
+        this.emptyList.nodeId = this.findNodeOfZzbId == '' ? '' : this.findNodeOfZzbId['nodeId'];
+        this.emptyList.uId = this.findUserListId == '' ? '' : this.findUserListId['emp_no'];
         this.emptyList.statu = +this.statu;
         this.emptyList.stime = this.emptyList.stime == '' ? '' : this.formatDate(this.emptyList.stime);
         this.emptyList.etime = this.emptyList.etime == '' ? '' : this.formatDate(this.emptyList.etime);
@@ -126,7 +136,51 @@ export class CygzlComponent implements OnInit {
         this.bindpage(0);
     }
 
-    onFocus() {
+    onFocus(event) {
+        var This = this;
+        var cpLock = false;
+        var tree = This.filesTree;
+        var treeArr;
+        event.target.addEventListener('compositionstart', function(){
+            cpLock = true;
+        })
+        event.target.addEventListener('compositionend', function(){
+            cpLock = false;
+            if (!cpLock) {
+                if (event.target.value != '') {
+                    treeArr = [];
+                    for(var i = 0; i < tree.length; i++){
+                        if(tree[i].data.indexOf(event.target.value) > -1){
+                            treeArr.push(tree[i]);
+                        }
+                    }
+                    This.filesTree = treeArr;
+                } else {
+                    This.filesTree = This.treeTest;
+                }
+            }
+        })
+        event.target.addEventListener('input', function(){
+            if (!cpLock) {
+                if (event.target.value != '') {
+                    treeArr = [];
+                    for(var i = 0; i < tree.length; i++){
+                        if(tree[i].data.indexOf(event.target.value) > -1){
+                            treeArr.push(tree[i]);
+                            console.log(tree[i])
+                        }
+                    }
+                    This.filesTree = treeArr;
+                } else {
+                    This.filesTree = This.treeTest;
+                }
+            }
+        });
+        event.target.addEventListener('propertychange', () => {
+            console.log(this.filesTree)
+            console.log(event.target.value)
+        })
+
         this.hide = 1;
     }
     onHide() {
@@ -138,17 +192,15 @@ export class CygzlComponent implements OnInit {
         this.hide = 0;
     }
 
-    dellList(item) {
-        console.log(item)
-    }
-
     // 重置
     resetting() {
-        this.findNodeOfZzbId = null;
-        this.findUserListId = null;
+        this.findNodeOfZzbId = '';
+        this.findUserListId = '';
         this.filesTreeId = null;
-        this.emptyList.stime = null;
-        this.emptyList.etime = null;
+        this.emptyList.stime = '';
+        this.emptyList.etime = '';
         this.statu = '-1';
+        this.query();
     }
+
 }

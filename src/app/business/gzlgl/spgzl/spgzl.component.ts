@@ -14,8 +14,6 @@ import { SpgzlopenComponent } from './spgzlopen/spgzlopen.component';
 // 公共方法
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
-// import { ZtreeComponent } from '../../../public/ztree/ztree.component';
-
 @Component({
   selector: 'app-spgzl',
   templateUrl: './spgzl.component.html',
@@ -55,6 +53,7 @@ export class SpgzlComponent implements OnInit,OnDestroy {
   // statu 计算状态
   statu: string = '0';
   // findProductDoc	产品稿件树
+  treeTest: TreeNode[];
   filesTree: TreeNode[];
   selectedFile: TreeNode;
   filesTreeId: string;
@@ -119,7 +118,10 @@ export class SpgzlComponent implements OnInit,OnDestroy {
       this.findUserList = [];
       this.findUserList = Auxiliary.prototype.publicList(res, 'name');
     })
-    this.GetList.findProductDoc().then(res => this.filesTree = res);
+    this.GetList.findProductDoc().then(res => {
+      this.filesTree = res;
+      this.treeTest = res;
+    });
     Auxiliary.prototype.ControlHeight();
   }
   ngOnDestroy(){
@@ -143,8 +145,8 @@ export class SpgzlComponent implements OnInit,OnDestroy {
   // 查询
   query () {
     this.dataListCode = [];
-    this.emptyList.nodeId = this.findNodeOfZzbId;
-    this.emptyList.uId = this.findUserListId;
+    this.emptyList.nodeId = this.findNodeOfZzbId == '' ? '' : this.findNodeOfZzbId['nodeId'];
+    this.emptyList.uId = this.findUserListId == '' ? '' : this.findUserListId['emp_no'];
     this.emptyList.statu = +this.statu;
     this.emptyList.stime = this.emptyList.stime == '' ? '' : this.formatDate(this.emptyList.stime);
     this.emptyList.etime = this.emptyList.etime == '' ? '' : this.formatDate(this.emptyList.etime);
@@ -152,7 +154,51 @@ export class SpgzlComponent implements OnInit,OnDestroy {
     this.bindpage(0);
   }
 
-  onFocus(){
+  onFocus(event){
+    var This = this;
+    var cpLock = false;
+    var tree = This.filesTree;
+    var treeArr;
+    event.target.addEventListener('compositionstart', function(){
+        cpLock = true;
+    })
+    event.target.addEventListener('compositionend', function(){
+        cpLock = false;
+        if (!cpLock) {
+            if (event.target.value != '') {
+                treeArr = [];
+                for(var i = 0; i < tree.length; i++){
+                    if(tree[i].data.indexOf(event.target.value) > -1){
+                        treeArr.push(tree[i]);
+                    }
+                }
+                This.filesTree = treeArr;
+            } else {
+                This.filesTree = This.treeTest;
+            }
+        }
+    })
+    event.target.addEventListener('input', function(){
+        if (!cpLock) {
+            if (event.target.value != '') {
+                treeArr = [];
+                for(var i = 0; i < tree.length; i++){
+                    if(tree[i].data.indexOf(event.target.value) > -1){
+                        treeArr.push(tree[i]);
+                        console.log(tree[i])
+                    }
+                }
+                This.filesTree = treeArr;
+            } else {
+                This.filesTree = This.treeTest;
+            }
+        }
+    });
+    event.target.addEventListener('propertychange', () => {
+        console.log(this.filesTree)
+        console.log(event.target.value)
+    })
+
     this.hide = 1;
   }
   onHide(){
@@ -278,11 +324,12 @@ export class SpgzlComponent implements OnInit,OnDestroy {
 
   // 重置
   resetting () {
-    this.findNodeOfZzbId = null;
-    this.findUserListId = null;
+    this.findNodeOfZzbId = '';
+    this.findUserListId = '';
     this.filesTreeId = null;
-    this.emptyList.stime = null;
-    this.emptyList.etime = null;
+    this.emptyList.stime = '';
+    this.emptyList.etime = '';
     this.statu = '-1';
+    this.query();
   }
 }

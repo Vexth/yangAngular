@@ -17,7 +17,6 @@ import { GetList } from '../../services/getlist';
 })
 export class JdwhComponent implements OnInit {
   P:JdwhList = new JdwhList();
-  nodeList: any;
   private GetList: GetList;
 
   pageSize:any = 10;
@@ -28,7 +27,6 @@ export class JdwhComponent implements OnInit {
   selected: any = {};//表格选中数据
   msgs: Message[] = [];
   ngOnInit() {
-    this.P['nodeList'] = this.nodeList;
     Auxiliary.prototype.ControlHeight();
     this.getFormDataList();
   }

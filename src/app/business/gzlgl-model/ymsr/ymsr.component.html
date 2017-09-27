@@ -36,7 +36,7 @@
                   <td style="text-align:right;"><label style="margin-bottom:0px;">产品名称：</label></td>
                   <td>
                     <div class="jtyjy-search-text">
-                      <input type="text" class="form-control ng-pristine ng-valid ng-touched" [(ngModel)]="optsData.name" placeholder="稿件名称...">
+                      <input type="text" class="form-control ng-pristine ng-valid ng-touched" [(ngModel)]="optsData.name" placeholder="产品名称...">
                     </div>
                   </td>
                   <td title="搜索">
@@ -67,7 +67,7 @@
                             <td>
                                 <label>产品I类：</label>
                                 <div style="display:inline-block;">
-                                  <select class="form-control cpwhSelOpt" [(ngModel)]="optsData.kindId1" (ngModelChange)="optsData.kindId1=$event;" name="kindId1">
+                                  <select class="form-control cpwhSelOpt" [(ngModel)]="optsData.kindId1" (ngModelChange)="optsData.kindId1=$event;changeKind1()" name="kindId1">
                                     <option value="">--请选择--</option>
                                     <option [value]="c.optionId" *ngFor="let c of optsDataList.optKind1">{{c.optionName}}</option>
                                   </select>
@@ -76,9 +76,9 @@
                           <td>
                               <label>产品II类：</label>
                               <div style="display:inline-block;">
-                                  <select class="form-control cpwhSelOpt" [(ngModel)]="optsData.kindId2" (ngModelChange)="optsData.kindId2=$event;" name="kindId2">
+                                  <select class="form-control cpwhSelOpt" [(ngModel)]="optsData.kindId2" (ngModelChange)="optsData.kindId2=$event;" name="kindId2" [disabled]="ymsrid==1?false:true">
                                       <option value="">--请选择--</option>
-                                      <option [value]="c.optionId" *ngFor="let c of optsDataList.optKind2">{{c.optionName}}</option>
+                                      <option [value]="c.optionId" *ngFor="let c of changeOptKind2">{{c.optionName}}</option>
                                   </select>
                               </div>
                           </td>
@@ -190,10 +190,10 @@
             
             <p-treeTable [value]="formDataList" selectionMode="single" [(selection)]="selected">
               <p-column field="name" header="产品名称"></p-column>
-              <p-column field="departName" header="所属部门" [style]="{'text-align':'center'}"></p-column>
-              <p-column field="pageNumber" header="定稿页码数" [style]="{'text-align':'center'}">
+              <p-column field="departName" header="所属部门" [style]="{'text-align':'center','width':'350px'}"></p-column>
+              <p-column field="pageNumber" header="定稿页码数" [style]="{'text-align':'center','width':'250px'}">
                 <ng-template let-node="rowData" pTemplate="body">
-                  <div (dblclick)="ShowElement($event, selected)">{{node.data.pageNumber===0?"未设置":node.data.pageNumber}}</div>
+                  <div (dblclick)="ShowElement($event,selected)">{{node.data.pageNumber===0?"未设置":node.data.pageNumber}}</div>
                 </ng-template>
               </p-column>
             </p-treeTable>

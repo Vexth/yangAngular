@@ -31,7 +31,7 @@ export class cpwhpladdComponent implements OnInit {
   public cpwhAddPL=new EventEmitter<string>();
 
   public emitCpwhPLadd(event):void {
-    if(!this.quantity){
+    if(!this.quantity || +this.quantity===0){
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请输入稿件数量"}];
       return;
@@ -42,7 +42,7 @@ export class cpwhpladdComponent implements OnInit {
       return;
     }
     let postData = {nameList:[],pid:""}
-    for(let k = 1; k < +this.quantity; k++){
+    for(let k = 1; k < +this.quantity+1; k++){
       postData.nameList.push(k+this.typeName);
     }
     postData.pid = this.data.data.documentId;

@@ -14,7 +14,7 @@
                 <label class="control-label">期间：</label>
                 <div class="controls">
                     <p-calendar [locale]="zh" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="接收时间" [(ngModel)]="bearDate" dateFormat="yy-mm"
-                        [maxDate]="maxDate"></p-calendar>
+                        [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dataType="string"></p-calendar>
                 </div>
             </div>
             <div class="col-xs-2">
@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                 <label class="control-label">技能等级：</label>
                 <div class="controls">
                     <select [(ngModel)]="collectionId">
@@ -34,15 +34,17 @@
                         <option *ngFor="let item of collectionList" value="{{item.id}}">{{item.job_name}}</option>
                     </select>
                 </div>
+            </div>
+            <div class="col-xs-2">
                 <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="query()">查询</button>
-                <button style="margin-left: 5px;" type="button" class="btn btn-success" (click)="resetting()">重置</button>
+                <button style="margin-left: 10px;" type="button" class="btn btn-success" (click)="resetting()">重置</button>
             </div>
         </div>
 
         <div class="button-content">
             <button type="button" class="btn btn-success" (click)="tongjiWages()">计算</button>
             <button type="button" class="btn btn-danger" (click)="lockWages()">完结</button>
-            <button type="button" class="btn btn-primary">导出</button>
+            <a type="button" class="btn btn-primary" (click)="tongjiListExcel($event)">导出</a>
         </div>
 
         <div style="_height:100%;min-height:100%;">
@@ -59,6 +61,7 @@
                     <p-row>
                         <p-column header="工作量" colspan="3"></p-column>
                         <p-column header="工资" colspan="4"></p-column>
+                        <p-column header="实际工资" rowspan="3"></p-column>
                         <p-column header="状态" rowspan="3"></p-column>
                     </p-row>
                     <p-row>
@@ -89,10 +92,11 @@
                 <p-column field="above_money" header="超额工资"></p-column>
                 <p-column field="inner_money" header="内部发外工资" [editable]="true">
                     <ng-template let-col let-car="rowData" pTemplate="editor">
-                        <span style="display: block;" (dblclick)="ShowElement($event, car);">{{ car[col.field] }}</span>
+                        <div style="height: 32px;line-height: 32px;" (dblclick)="ShowElement($event, car);">{{ car[col.field] }}</div>
                     </ng-template>
                 </p-column>
                 <p-column field="sum_money" header="合计"></p-column>
+                <p-column field="real_money" header="实际工资"></p-column>
                 <p-column field="statu" header="状态">
                     <ng-template let-col let-car="rowData" pTemplate="body">
                         <div *ngIf="car[col.field] == 0">未完结</div>

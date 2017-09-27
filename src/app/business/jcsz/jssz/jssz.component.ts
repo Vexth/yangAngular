@@ -78,8 +78,10 @@ export class JsszComponent implements OnInit{
   public edit(): void {
     let flex = this.dataListCode;
     if(flex.length === 0) {
+      this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择你要修改的数据'}];
     } else if(flex.length > 1){
+      this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择一条数据进行修改'}];
     } else {
       this.confirmationService.confirm({
@@ -90,7 +92,7 @@ export class JsszComponent implements OnInit{
           this.jsszopen.showChildModal(flex);
         },
         reject: () => {
-            this.msgs = [{severity:'info', summary:'取消', detail:'取消成功'}];
+            // this.msgs = [{severity:'info', summary:'取消', detail:'取消成功'}];
         }
       });
     }
@@ -101,6 +103,7 @@ export class JsszComponent implements OnInit{
     let flex = this.dataListCode;
     let checkboxId:number[] = [];
     if(flex === undefined) {
+      this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:'请选择你要删除的数据'}];
     } else {
       this.confirmationService.confirm({
@@ -114,12 +117,13 @@ export class JsszComponent implements OnInit{
           });
           let velId = { ids: checkboxId.join(",")};
           this.PostService.batchDelete(velId).then(res => {
+            this.msgs = [];
             this.onRenovate(this.username);
             this.msgs = [{severity:'info', summary:'成功', detail:'删除成功'}]
           })
         },
         reject: () => {
-          this.msgs = [{severity:'info', summary:'取消', detail:'取消成功'}];
+          // this.msgs = [{severity:'info', summary:'取消', detail:'取消成功'}];
         }
       });
     }

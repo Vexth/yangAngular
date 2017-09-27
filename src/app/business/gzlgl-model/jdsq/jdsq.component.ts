@@ -17,12 +17,12 @@ export class JdsqComponent implements OnInit {
 
   deptList:any;
   optsList:any = {
-    departmentId:"",role:"",node:"",pageNum:"1",pageSize:"10"
+    departmentId:"",role:"",node:"",pageNum:"",pageSize:""
   }
   formDataList:any;
-  selected:any = [];
+  selected:any = {};
   msgs: Message[] = [];
-  total:string = "1";
+  total:any;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getDept();
@@ -51,7 +51,7 @@ export class JdsqComponent implements OnInit {
     }).then(res=>{
       this.optsList.pageNum = res.pageNum;
       this.optsList.pageSize = res.pageSize;
-      this.total = res.totalCount;
+      this.total = res.total;
       this.formDataList = res.list;
       console.log(res);
     });
@@ -78,7 +78,7 @@ export class JdsqComponent implements OnInit {
   //设置
   set() {
     console.log(this.selected);
-    this.jdsqSet.jdsqsetShow(this.selected);
+    this.jdsqSet.jdsqsetShow(this.selected || {});
   }
   public jdsqSaveSet():void{
     console.log("刷新");

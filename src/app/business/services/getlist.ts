@@ -7,6 +7,8 @@ import { CpwhList, findCourse, findTab, PageBackList, findType_M1V1, PageBackCon
 import ConstantsList from '../../common/constants/config';
 import { BackCode } from '../../module/business/formdata';
 import { BaseService } from '../../common/services/base.service';
+
+import { InitIalize } from './doing';
 'use strict';
 
 @Injectable()
@@ -205,7 +207,10 @@ export class GetList extends BaseService {
   public tongjiWages(name: any) {
     const url = `${ConstantsList.HOSTUser1}api/tongji/tongjiWages?bearDate=${name}`;
     // 在get请求中使用fetch方法 --- 对于由后台返回结果与提示结果的方法可以使用
-    return fetch(url).then(res => res.json())
+    return fetch(url).then(res => {
+      console.log()
+      return res.json()
+    })
   }
   // 完结（锁定）方法路径： /api/tongji/lockWages?bearDate=2017-08
   public lockWages(name: any) {
@@ -218,6 +223,7 @@ export class GetList extends BaseService {
     const url = `${ConstantsList.HOSTUser1}api/tongji/wagesList?${nameNode}`;
     return this.publicGetServe(url, 'wagesList');
   }
+  
   // 发外人员工资列表方法（必带年月日期—按月份）方法路径：/api/wai/ tongjiWaiList?name=& bearDate=2017-08
   public tongjiWaiList(name: any) {
     const nameNode = this.formatParams(name);
@@ -234,13 +240,7 @@ export class GetList extends BaseService {
     const url = `${ConstantsList.HOSTUser1}api/wai/lockWaiWages?bearDate=${name}`;
     return fetch(url).then(res => res.json());
   }
-
-
-  //流转查询删除
-  public lzcxDelete(id) {
-    const url = `${ConstantsList.HOSTUser1}api/document/log/batch_delete?${id}`;
-    return this.publicGetServe(url, 'lzcxDelete');
-  }
+  
   //流程节点维护页面表格数据
   public jdwhDataList(data) {
     const list = this.formatParams(data);
@@ -354,4 +354,38 @@ export class GetList extends BaseService {
     const url = `${ConstantsList.HOSTUser1}api/node/242?${list}`;
     return this.publicGetServe(url, 'jdwhDataList');
   }
+
+  //根据kindId1获取kindId2
+  public getKindId2(data) {
+    const url = `${ConstantsList.HOSTUser1}api/option/kind2/${data}`;
+    return this.publicGetServe(url, 'getKindId2');
+  }
+
+   //外发工作量
+   public wfgzlDataList(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/wai/waiDetailList?${list}`;
+    return this.publicGetServe(url, 'wfgzlDataList');
+  }
+
+  // 一下拉部门组/api/userpost/findPost
+  public userpostFindPost() {
+    const url = `${ConstantsList.HOSTUser1}api/userpost/findPost`;
+    return this.publicGetServe(url, 'userpostFindPost');
+  }
+  // 二下拉排版员或领导/api/userpost/findType   
+  public userpostFindType() {
+    const url = `${ConstantsList.HOSTUser1}api/userpost/findType`;
+    return this.publicGetServe(url, 'userpostFindType');
+  }
+  // 三分页列表 /api/userpost/list?pageNum=1&pageSize=10&name=&postid=-1(全部)
+  public userpostList(data) {
+    const list = this.formatParams(data);
+    const url = `${ConstantsList.HOSTUser1}api/userpost/list?${list}`;
+    return this.publicGetServe(url, 'userpostList');
+  }
+
+  // 导出：1. 考核工资管理(日期必传值) /api/tongji/tongjiListExcel?name=&level=-1&bearDate=2017-09 
+
+  // 导出：2. 发外工资管理(日期必传值) /api/wai/tongjiWaiListExcel?name=&bearDate=2017-09
 }

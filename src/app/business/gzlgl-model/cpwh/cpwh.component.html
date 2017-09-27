@@ -92,7 +92,7 @@
                               <div style="display:inline-block;">
                                 <select class="form-control cpwhSelOpt" [(ngModel)]="opts.kindId2" name="optKind2Id" [disabled]="id==1?false:true">
                                   <option value="">--请选择--</option>
-                                  <option [value]="c.optionId" *ngFor="let c of optsList.optKind2">{{c.optionName}}</option>
+                                  <option [value]="c.optionId" *ngFor="let c of changeOptKind2">{{c.optionName}}</option>
                                 </select>
                               </div>
                           </td>
@@ -225,7 +225,7 @@
                   <span class="fa fa-qrcode qrcodeSize" (click)="goQrcode(node.data.documentId,node.data.name)"></span>
                 </ng-template>
               </p-column>
-              <p-column field="name" header="产品名称" [style]="{'width':'250px','text-align':'center','white-space':'normal'}">
+              <p-column field="name" header="产品名称" [style]="{'width':'250px','white-space':'normal'}">
                 <ng-template let-node="rowData" pTemplate="body">
                   <span (dblclick)="ShowElement($event,selected)">{{node.name}}</span>
                 </ng-template>

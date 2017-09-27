@@ -5,6 +5,7 @@ import { Auxiliary } from '../../../common/constants/auxiliary';
 import { Message,ConfirmationService} from 'primeng/primeng';//右上角提示框组件，删除对话框
 
 import { GetList } from '../../services/getlist';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-lzcx',
@@ -13,8 +14,9 @@ import { GetList } from '../../services/getlist';
 })
 export class LzcxComponent implements OnInit {
   private GetList: GetList;
-  
-  es: any;
+  private PostService: PostService;
+  zh: any;
+  msgs: Message[] = [];
   invalidDates: Array<Date>;
   pageNum:any = 1;//当前页
   pageSize:any = 10;//每页条数
@@ -42,10 +44,20 @@ export class LzcxComponent implements OnInit {
     }).then(res => {
       this.optsList = res;
     });
+    this.zh = {
+      firstDayOfWeek: 0,
+      dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+      dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      dayNamesMin: ["日","一","二","三","四","五","六"],
+      monthNames: [ "一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月" ],
+      monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+      today: 'Today',
+      clear: 'Clear'
+    };
     this.getTableList();
   }
-  constructor(@Inject(GetList) getList: GetList,private confirmationService: ConfirmationService) {
-    this.GetList = getList;
+  constructor(@Inject(GetList) getList: GetList,@Inject(PostService) postService: PostService,private confirmationService: ConfirmationService) {
+    this.GetList = getList;this.PostService = postService;
   }
 
   //获取表格数据
@@ -85,6 +97,7 @@ export class LzcxComponent implements OnInit {
     const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
     return year + '-' + month + '-' + day;
   }
+
   // ===========================
   // 搜索
   refresh() {
@@ -115,7 +128,7 @@ export class LzcxComponent implements OnInit {
     this.isadSearch = 0;
   }
   //删除
-  msgs: Message[] = [];
+  
   delete() {
     if(this.selected.length == 0) {
       this.msgs = [];
@@ -131,16 +144,15 @@ export class LzcxComponent implements OnInit {
         for(let i = 0; i < this.selected.length; i++){
           deleteList.push(this.selected[i].id);
         }
-        this.GetList.lzcxDataList(deleteList).catch(res => {
+        console.log(deleteList);
+        this.PostService.lzcxDelete(deleteList).then(res => {
+          this.getTableList();
+          this.msgs = [{severity:'success', summary:'成功提示', detail:'删除成功'}];
+        }).catch(res => {
           this.msgs = [];
           this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
           return;
-        }).then(res => {
-          if(res.code == 0) {
-            this.getTableList();
-            this.msgs = [{severity:'success', summary:'成功提示', detail:'删除成功'}];
-          }
-        })
+        });
       },
       reject: () => {
           // this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];

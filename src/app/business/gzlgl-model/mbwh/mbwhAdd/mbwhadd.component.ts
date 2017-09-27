@@ -23,7 +23,7 @@ export class mbwhaddComponent implements OnInit {
   optDepartmentList:any = [];
   optTypeList:any = [];
   postData:any = {
-    departmentId:"",isBaned:"",isPagenum:"",name:"",statement:"",type:"",workloads:""
+    departmentId:"",isBaned:"false",isPagenum:"",name:"",statement:"",type:"",workloads:""
   }
   isadSearch:number = 1;
   nodeList:any = [];
@@ -63,7 +63,7 @@ export class mbwhaddComponent implements OnInit {
   public mbwhaddHide():void {
     this.childModal.hide();
     this.postData = {
-      departmentId:"",isBaned:"",isPagenum:"",name:"",statement:"",type:"",workloads:[]
+      departmentId:"",isBaned:"false",isPagenum:"",name:"",statement:"",type:"",workloads:[]
     }
     this.nodeList = [];
     this.isadSearch = 1;
@@ -72,7 +72,7 @@ export class mbwhaddComponent implements OnInit {
   @Output()
   public mbwhChange=new EventEmitter<string>();
 
-  public emitmbwhAdd():void {
+  public emitmbwhAdd(event):void {
     let postWork = [];
     this.nodeList.forEach((x,i) => {
       let onceData = {};

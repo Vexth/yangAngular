@@ -33,7 +33,7 @@ export class tjgzlcxComponent implements OnInit {
 
   fzsx:string = '';
   fzsxList:any = [];
-
+  zh: any;
   kindId1:string = "";
   kindId2:string = "";
   jieId:string = "";
@@ -57,6 +57,16 @@ export class tjgzlcxComponent implements OnInit {
   optsList:any = []//搜索集合
   ngOnInit() {
     this.GetList.tjgzlOptsList().then(res => this.optsList = res);
+    this.zh = {
+      firstDayOfWeek: 0,
+      dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+      dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      dayNamesMin: ["日","一","二","三","四","五","六"],
+      monthNames: [ "一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月" ],
+      monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+      today: 'Today',
+      clear: 'Clear'
+    };
   }
   getFormetDate(time:any) {
     const Dates = new Date( time );
@@ -70,21 +80,22 @@ export class tjgzlcxComponent implements OnInit {
   @Output()
   public tzgzlCx=new EventEmitter<string>();
 
-  public refresh():void {
+  public refresh(event):void {
     console.log("查询");
     if(this.dateFrom) {this.P.dateFrom = this.getFormetDate(this.dateFrom);}else{this.P.dateFrom = "";}
     if(this.dateTo) {this.P.dateTo = this.getFormetDate(this.dateTo);}else{this.P.dateTo = "";}
     console.log(this.P);
-    this.PostService.tjgzl(this.P,"page=1&size=10").catch(res=> {
+    this.PostService.tjgzl(this.P,"page=1&size=9999").catch(res=> {
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       return;
     }).then(res=>{
-      this.tzgzlCx.emit(res);
       this.tjgzlCxHide();
+      this.tzgzlCx.emit(res);
     });
   }
   clearOpts() {
+    this.tjgzlid = 0;
     this.P.kindId1 = "";this.P.kindId2 = "";this.P.jieId = "";this.P.gradeId = "";this.P.localEditionId= "";this.P.editionId = "";this.P.moduleId = "";this.P.batchId = "";
     this.P.usageId = "";this.P.typeId = "";this.P.subjectId = "";this.P.productName = "";this.P.userName = "";this.P.nodeId = "";this.P.groupList = [];
     this.fzsxList = [];this.fzsx = "";this.dateFrom = null;this.dateTo = null;this.P.groupList = [];this.P.dateFrom = "";this.P.dateTo = "";
@@ -93,6 +104,7 @@ export class tjgzlcxComponent implements OnInit {
 
   public tjgzlCxShow():void {
     this.childModal.show();
+    
   }
 
   public tjgzlCxHide():void {
@@ -226,5 +238,27 @@ export class tjgzlcxComponent implements OnInit {
       });
       this.fzsx = this.fzsxList.join(",");
     }
+  }
+  tjgzlid:number = 0;
+  changeOptKind2:any = [];
+  changeKind1(){
+    console.log(this.P.kindId1);
+    if(this.P.kindId1){
+      this.tjgzlid = 1;
+      this.getkindId2(this.P.kindId1);
+    }else{
+      this.tjgzlid = 0;
+      this.changeOptKind2 = [];
+    }
+  }
+  //获取kindId2List
+  getkindId2(data) {
+    this.GetList.getKindId2(data).catch(res=>{
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    }).then(res=>{
+      this.changeOptKind2 = res.optKind2;
+    });
   }
 }

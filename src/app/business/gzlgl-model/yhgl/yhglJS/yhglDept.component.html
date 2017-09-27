@@ -12,7 +12,12 @@
           <div class="ui-g-12 boxCursor">
               <!-- [(ngDisabled)]="isDpet" -->
             <p-listbox [options]="deptList" [(ngModel)]="dept" multiple="multiple" checkbox="checkbox"
-            [ngModelOptions]="{standalone: true}" filter="filter" [style]="{'width':'100%','height':'448px'}"></p-listbox>
+              [ngModelOptions]="{standalone: true}" filter="filter" [style]="{'width':'100%','height':'448px'}"
+              (onChange)="clickCheck($event)">
+              <!-- <ng-template let-node let-i="index" pTemplate="item">
+                <span>{{i}} - {{node.name}}</span>
+              </ng-template> -->
+            </p-listbox>
           </div>
         </div>
       </div>
@@ -23,3 +28,4 @@
     </div>
   </div>
 </div>
+<p-growl [style]="{'top': '60px','z-index': '2000'}" [(value)]="msgs"></p-growl>

@@ -20,6 +20,8 @@
                 </table>
               </div>
                   <p-dataTable [value]="formData.dataPage.content" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" selectionMode="single" emptyMessage="暂无数据">
+                    <p-column field="ym" header="页码" [style]="{'text-align':'center'}" [hidden]="ishide==0?false:true"></p-column>
+                    <p-column field="gzl" header="工作量" [style]="{'text-align':'center'}" [hidden]="ishide==0?false:true"></p-column>
                     <p-column field="id" header="{{x.name}}" *ngFor="let x of formData.headerList;let i = index;" [style]="{'text-align':'center'}">
                       <ng-template let-node="rowData" pTemplate="body" let-k="rowIndex">
                         <span>{{formData.dataPage.content[k][i]}}</span>
@@ -31,6 +33,7 @@
           </div>
         </div>
         <tjgzl-cx #tjgzlCx (tzgzlCx)="tzgzlCxChange($event)"></tjgzl-cx>
+        <!-- <p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl> -->
         <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd>
             <p-footer>
                 <button type="button" pButton icon="fa-check" label="是" (click)="cd.accept()"></button>

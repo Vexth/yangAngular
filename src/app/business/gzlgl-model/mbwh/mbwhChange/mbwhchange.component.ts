@@ -66,7 +66,7 @@ export class mbwhchangeComponent implements OnInit {
   @Output()
   public mbwhEdit=new EventEmitter<string>();
 
-  public emitmbwhEdit():void {
+  public emitmbwhEdit(event):void {
     console.log(this.postData);
     this.postData.workloads = this.postData.nodeworkloads;
     this.PostService.mbwhEdit(this.postData,this.dataId).catch(res=>{

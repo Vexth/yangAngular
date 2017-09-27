@@ -21,6 +21,7 @@ export class YhglComponent implements OnInit {
   total:any = 10;
   pageSize:any = 10;
   pageNum:any = 1;
+  selected:any = {};
   @ViewChild('yhglJS') public yhglJS:yhgljsComponent;
   @ViewChild('yhglDept') public yhglDept:yhgldeptComponent;
   ngOnInit() {
@@ -46,6 +47,7 @@ export class YhglComponent implements OnInit {
   formDataList: any = [];
   //获取页面表格数据
   getFormData() {
+    this.selected = {};
     let postData = {
       pageNum:this.pageNum,pageSize:this.pageSize,nameOrId:this.nameOrId,treeSign:this.deptData
     }
@@ -90,11 +92,11 @@ export class YhglComponent implements OnInit {
   }
   // 重置
   clearOpts() {
+    this.selected = {};
     this.deptData = "";
     this.nameOrId = "";
     this.getFormData();
   }
-  selected:any = {};
   role() {
     console.log(this.selected);
     if(!this.selected.id) {

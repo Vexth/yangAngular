@@ -28,6 +28,7 @@ export class SpgzlopenComponent implements OnInit {
   findNodeOfZzbList: SelectItem[];
   findNodeOfZzbListCode: any;
   // findProductDoc	产品稿件树
+  treeTest: TreeNode[];
   filesTree: TreeNode[];
   selectedFile: TreeNode;
   filesTreeId: string;
@@ -72,6 +73,15 @@ export class SpgzlopenComponent implements OnInit {
   // 记录id
   id: number;
 
+  // 判断显示隐藏
+  xglBoolean: boolean;
+  ymlBoolean: boolean;
+  huatBoolean: boolean;
+  tiaotBoolean: boolean;
+  datikaBoolean: boolean;
+  houqiBoolean: boolean;
+  dwlBoolean: boolean;
+
   private PostService: PostService;
 
   private GetList: GetList;
@@ -88,7 +98,7 @@ export class SpgzlopenComponent implements OnInit {
     this.ShowType = '编辑';
   }
 
-  onNodeExpand(event: any):void {
+  onNodeExpand(event: any): void {
     event.originalEvent.stopPropagation();
   }
 
@@ -97,13 +107,16 @@ export class SpgzlopenComponent implements OnInit {
       firstDayOfWeek: 0,
       dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
       dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      dayNamesMin: ["日","一","二","三","四","五","六"],
-      monthNames: [ "一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月" ],
-      monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+      dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"],
+      monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+      monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       today: 'Today',
       clear: 'Clear'
     };
-    this.GetList.getProductDoc().then(res => this.filesTree = res)
+    this.GetList.getProductDoc().then(res => {
+      this.filesTree = res;
+      this.treeTest = res;
+    })
     this.GetList.findNodeOfZzb().then(res => {
       this.findNodeOfZzbList = [];
       this.findNodeOfZzbList = Auxiliary.prototype.publicList(res, 'nodeName');
@@ -149,8 +162,95 @@ export class SpgzlopenComponent implements OnInit {
     this.onChange();
   }
 
-  onFocus() {
+  onFocus(event) {
+    var This = this;
+    var cpLock = false;
+    var tree = This.filesTree;
+    var treeArr;
+    event.target.addEventListener('compositionstart', function(){
+        cpLock = true;
+    })
+    event.target.addEventListener('compositionend', function(){
+        cpLock = false;
+        if (!cpLock) {
+            if (event.target.value != '') {
+                treeArr = [];
+                for(var i = 0; i < tree.length; i++){
+                    if(tree[i].data.indexOf(event.target.value) > -1){
+                        treeArr.push(tree[i]);
+                    }
+                }
+                This.filesTree = treeArr;
+            } else {
+                This.filesTree = This.treeTest;
+            }
+        }
+    })
+    event.target.addEventListener('input', function(){
+        if (!cpLock) {
+            if (event.target.value != '') {
+                treeArr = [];
+                for(var i = 0; i < tree.length; i++){
+                    if(tree[i].data.indexOf(event.target.value) > -1){
+                        treeArr.push(tree[i]);
+                        console.log(tree[i])
+                    }
+                }
+                This.filesTree = treeArr;
+            } else {
+                This.filesTree = This.treeTest;
+            }
+        }
+    });
+    event.target.addEventListener('propertychange', () => {
+        console.log(this.filesTree)
+        console.log(event.target.value)
+    })
+
     this.hide = 1;
+  }
+
+  zzDocument(documentId: number, nodeId: number): void {
+    this.xglBoolean = false;
+    this.ymlBoolean = false;
+    this.huatBoolean = false;
+    this.tiaotBoolean = false;
+    this.datikaBoolean = false;
+    this.houqiBoolean = false;
+    this.dwlBoolean = false;
+    this.GetList.zzdocument(documentId, nodeId).then(res => {
+      if(res == undefined){
+        this.msgs = [];
+        this.msgs = [{ severity: 'error', summary: '错误提示', detail: '该节点未设置计算公式' }];
+        return;
+      }
+      if (res['is_lp'] != false) {
+        this.xglBoolean = true;
+        if (res.unit == '页') {
+          this.dwlBoolean = true;
+        } else {
+          this.dwlBoolean = true;
+          this.ymlBoolean = true;
+        }
+      }
+
+      if (res['is_huat'] != false) {
+        this.huatBoolean = true;
+      }
+      if (res['is_tiaot'] != false) {
+        this.tiaotBoolean = true;
+      }
+      if (res['is_datika'] != false) {
+        this.datikaBoolean = true;
+      }
+
+      if (res['is_houqi'] != false) {
+        this.dwlBoolean = true;
+      }
+
+
+      this.unit = res.unit;
+    })
   }
   onChange() {
     if (this.documentId == undefined) {
@@ -160,16 +260,11 @@ export class SpgzlopenComponent implements OnInit {
       return;
     }
     this.nodeId = this.findNodeOfZzbListCode.nodeId;
-    this.GetList.zzdocument(this.documentId, this.nodeId).then(res => {
-      this.unit = res.unit;
-      this.is_huat = res.is_huat;
-      this.is_tiaot = res.is_tiaot;
-      this.is_datika = res.is_datika;
-    })
+    this.zzDocument(this.documentId, this.nodeId);
   }
 
   // 计算
-  workloadCalc () {
+  workloadCalc() {
     let list = {
       documentId: this.documentId,
       nodeId: this.nodeId,
@@ -269,6 +364,7 @@ export class SpgzlopenComponent implements OnInit {
       this.checkYemaCount = dataItem[0].check_yema_count
       this.userId = dataItem[0].user_id
       this.id = dataItem[0].id
+      this.zzDocument(this.documentId, this.nodeId);
     }
     this.childModal.show();
   }
@@ -278,11 +374,11 @@ export class SpgzlopenComponent implements OnInit {
   }
 
   public onSubmit(formValue: any): void {
-    if (!this.checkCalcWorkload || this.checkCalcWorkload.toString() == '') {
-      this.msgs = [];
-      this.msgs = [{ severity: 'error', summary: '错误提示', detail: '工作量不能为空' }];
-      return;
-    }
+    // if (!this.checkCalcWorkload || this.checkCalcWorkload.toString() == '') {
+    //   this.msgs = [];
+    //   this.msgs = [{ severity: 'error', summary: '错误提示', detail: '工作量不能为空' }];
+    //   return;
+    // }
     if (this.ShowType == '追加') {
       if (!this.gmtCreate) {
         this.msgs = [];
@@ -329,6 +425,8 @@ export class SpgzlopenComponent implements OnInit {
         if (res.code == 0) {
           this.change.emit();
           this.hideChildModal();
+          this.msgs = [];
+          this.msgs = [{ severity:'info', summary:'成功', detail: '成功' }];
         } else {
           this.msgs = [];
           this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];
@@ -354,6 +452,8 @@ export class SpgzlopenComponent implements OnInit {
         if (res.code == 0) {
           this.change.emit();
           this.hideChildModal();
+          this.msgs = [];
+          this.msgs = [{ severity:'info', summary:'成功', detail: '成功' }];
         } else {
           this.msgs = [];
           this.msgs = [{ severity: 'error', summary: '错误提示', detail: res.msg }];

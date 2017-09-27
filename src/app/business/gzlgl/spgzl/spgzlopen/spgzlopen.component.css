@@ -42,7 +42,7 @@ span {
 .width120{width: 120px;}
 .ui-g .empNo,
 input {
-    width: 100px;
+    min-width: 100px;
     display: inline-block;
     padding: 6px 12px;
     font-size: 14px;

@@ -51,6 +51,8 @@ import { RyjndjComponent } from './jcsz/ryjndj/ryjndj.component';
 import { JngzwhComponent } from './jcsz/jngzwh/jngzwh.component';
 import { JngzwhopenComponent } from './jcsz/jngzwh/jngzwhopen/jngzwhopen.component';
 
+import { ZzbryfzComponent } from './jcsz/zzbryfz/zzbryfz.component';
+
 // 工作量管理（SpgzlComponent审批工作量）
 // SpgzlComponent 审批工作量
 import { SpgzlComponent } from './gzlgl/spgzl/spgzl.component';
@@ -107,6 +109,11 @@ import { jsfpwarComponent } from './gzlgl-model/jsfp/jsfpAdd/jsfpWar.component';
 import { YhglComponent } from './gzlgl-model/yhgl/yhgl.component';
 import { yhgljsComponent } from './gzlgl-model/yhgl/yhglJS/yhglJS.component';
 import { yhgldeptComponent } from './gzlgl-model/yhgl/yhglJS/yhglDept.component';
+
+//外发工作量
+import { FwgzlComponent } from './gzlgl/fwgzl/fwgzl.component';
+
+import { EventNameService } from '../business/services/communication.service';
 
 @NgModule({
   entryComponents: [
@@ -194,8 +201,10 @@ import { yhgldeptComponent } from './gzlgl-model/yhgl/yhglJS/yhglDept.component'
     yhgldeptComponent,
     yhgljsComponent,
     mbwhchangeComponent,
-    cpwhqrcodeComponent
+    cpwhqrcodeComponent,
+    FwgzlComponent,
+    ZzbryfzComponent
   ],
-  providers: [PostService,GetList,NodeService,ConfirmationService]
+  providers: [PostService, GetList, NodeService, ConfirmationService, EventNameService]
 })
 export class BusinessModule { }
