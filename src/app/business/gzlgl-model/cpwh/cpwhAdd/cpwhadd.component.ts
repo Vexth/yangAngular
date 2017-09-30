@@ -20,7 +20,7 @@ export class cpwhcpaddComponent implements OnInit {
   private GetList: GetList;private PostService: PostService;
   msgs: Message[] = [];
   post:any = {
-    departId:"",typeId:"",jieId:"",gradeId:"",kindId1:"",kindId2:"",subjectId:"",workloadType:""
+    departId:"",typeId:"",jieId:"",gradeId:"",kindId1:"",kindId2:"",subjectId:"",workloadType:"",depType:""
   };
   cpAddTjhs:string = "";//添加行数
   addList:any = {};
@@ -68,7 +68,7 @@ export class cpwhcpaddComponent implements OnInit {
   public cpwhcpaddHide():void {
     this.childModal.hide();
     this.tableList = [];this.datakey = 0;this.cpAddTjhs = "";this.temporaryList = [];this.selectedTab = [];
-    this.post = {departId:"",typeId:"",jieId:"",gradeId:"",kindId1:"",kindId2:"",subjectId:"",workloadType:""};
+    this.post = {departId:"",typeId:"",jieId:"",gradeId:"",kindId1:"",kindId2:"",subjectId:"",workloadType:"",depType:""};
     this.addListV2 = {optJie:[],optKind1:[],optGrade:[],optModule:[],optSubject:[],optEdition:[],optLocalEdition:[],optUsageType:[],optBatch:[]};
   }
   delete() {

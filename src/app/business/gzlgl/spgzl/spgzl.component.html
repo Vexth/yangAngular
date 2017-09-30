@@ -74,11 +74,12 @@
         </div>
 
         <div class="button-content">
-            <button type="button" class="btn btn-success" (click)="review($event)">审核</button>
+            <button *ngFor="let item of btnFn" type="button" class="btn {{item.btn}}" (click)="clickFn(item.name)">{{item.name}}</button>
+            <!-- <button type="button" class="btn btn-success" (click)="review($event)">审核</button>
             <button type="button" class="btn btn-success" (click)="add()">追加</button>
             <button type="button" class="btn btn-primary" (click)="edit()">调整</button>
             <button type="button" class="btn btn-danger" (click)="dellList($event)">删除</button>
-            <button type="button" class="btn btn-danger" (click)="retreat($event)">退回</button>
+            <button type="button" class="btn btn-danger" (click)="retreat($event)">退回</button> -->
             <!-- <button type="button" class="btn btn-primary">导出</button> -->
         </div>
 

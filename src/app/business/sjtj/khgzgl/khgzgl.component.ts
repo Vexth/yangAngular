@@ -12,6 +12,7 @@ import { Header, Footer, TreeNode, Message, MenuItem, ConfirmationService } from
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
 import { InitIalize } from '../../services/doing';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-khgzgl',
@@ -49,11 +50,13 @@ export class KhgzglComponent implements OnInit {
   bearDate: string;
 
   maxDate: Date;
+  btnFn: any;
 
   constructor(
     @Inject(GetList) getList: GetList,
     @Inject('title') private titleService,
     private confirmationService: ConfirmationService,
+    private _activatedRoute: ActivatedRoute,
     @Inject(PostService) postService: PostService
   ) {
     this.GetList = getList;
@@ -109,6 +112,10 @@ export class KhgzglComponent implements OnInit {
       this.findUserList = [];
       this.findUserList = Auxiliary.prototype.publicList(res, 'name');
     });
+
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
     Auxiliary.prototype.ControlHeight();
   }
 
@@ -149,7 +156,6 @@ export class KhgzglComponent implements OnInit {
         header: '提示',
         icon: 'fa fa-question-circle',
         accept: () => {
-          // this.InitIalize.initialize();
           InitIalize.prototype.initialize();
           // let date = this.formatDate(this.bearDate);
           let date = this.bearDate;
@@ -157,7 +163,6 @@ export class KhgzglComponent implements OnInit {
             if (res.code == 0) {
               this.msgs = [];
               this.msgs = [{ severity: 'info', summary: '成功', detail: '计算成功' }];
-              // this.InitIalize.endializ();
               InitIalize.prototype.endializ();
               this.query();
             } else {
@@ -269,13 +274,25 @@ export class KhgzglComponent implements OnInit {
   }
 
   // 导出
-  tongjiListExcel(event){
+  tongjiListExcel(){
     if (!this.bearDate) {
       this.msgs = [];
       this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择日期' }];
       return ;
     }
-    event.target.href = `http://192.168.230.240:8888/api/tongji/tongjiListExcel?name=${this.findUserListId}&level=${this.collectionId}&bearDate=${this.bearDate}`
+    let url = `http://192.168.230.240:8888/api/tongji/tongjiListExcel?name=${this.findUserListId}&level=${this.collectionId}&bearDate=${this.bearDate}`;
+    window.open(url)
+    // var a = document.createElement('a');
+    // a.href = `http://192.168.230.240:8888/api/tongji/tongjiListExcel?name=${this.findUserListId}&level=${this.collectionId}&bearDate=${this.bearDate}`;
+    // a.click();
   }
-
+  clickFn(event){
+    if (event == '计算') {
+      this.tongjiWages()
+    } else if (event == '完结') {
+      this.lockWages()
+    } else if (event == '导出') {
+      this.tongjiListExcel();
+    }
+  }
 }

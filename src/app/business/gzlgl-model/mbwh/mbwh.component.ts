@@ -9,6 +9,8 @@ import { mbwhchangeComponent } from './mbwhChange/mbwhchange.component';
 import { GetList } from '../../services/getlist';
 import { mbwhDataListV1 } from '../../../module/business/getlist';
 import { PostService } from '../../services/post.service';
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-mbwh',
   templateUrl: './mbwh.component.html',
@@ -22,7 +24,7 @@ export class MbwhComponent implements OnInit {
   optsData:any = {
     pageSize:10,pageNum:1,name:"",isBaned:""
   }
-  total:any = 10;
+  total:any = "";
   selected:any = [];
   createoption:any = {
     nodeList:[],optDepartment:[],optType:[]
@@ -30,12 +32,21 @@ export class MbwhComponent implements OnInit {
   // select(data: mbwhDataListV1){
   //   console.log(data);
   // }
+  btnFn: any;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getFormData();
     this.getChildOptionData();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
-  constructor(private confirmationService: ConfirmationService,@Inject(GetList) getList: GetList,@Inject(PostService) postService: PostService) {
+  constructor(
+    private _activatedRoute: ActivatedRoute,
+    private confirmationService: ConfirmationService,
+    @Inject(GetList) getList: GetList,
+    @Inject(PostService) postService: PostService
+  ) {
     this.GetList = getList;this.PostService = postService;
   }
   
@@ -47,13 +58,15 @@ export class MbwhComponent implements OnInit {
       return;
     }).then(res=>{
       res.list.forEach((x,i) => {
-        // x["isBanedName"]
-        x.isBaned == true?x["isBanedName"]="锁定":x["isBanedName"]="未锁定";
-        x.isPagenum == true?x["isPagenumName"]="是":x["isPagenumName"]="否";
+        x["isBanedName"] = x.isBaned == true ? "锁定": "未锁定";
+        x["isPagenumName"] = x.isPagenum == true ? "是" : "否";
       });
       this.optsData.pageSize = res.pageSize;
       this.optsData.pageNum = res.pageNum;
-      this.total = res.totalCount;
+      // this.total = res.totalCount;
+      if(!this.total) {
+        this.total = (+res.pageSize)*(+res.totalPages);
+      }
       this.formDataList = res.list;
     })
   }
@@ -138,5 +151,15 @@ export class MbwhComponent implements OnInit {
     console.log("修改");
     this.getFormData();
     this.selected = [];
+  }
+
+  clickFn(event){
+    if (event == '新增') {
+      this.add()
+    } else if (event == '修改') {
+      this.change()
+    } else if (event == '删除') {
+      this.delete()
+    }
   }
 }

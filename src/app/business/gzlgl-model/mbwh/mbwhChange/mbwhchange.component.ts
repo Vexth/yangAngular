@@ -67,7 +67,11 @@ export class mbwhchangeComponent implements OnInit {
   public mbwhEdit=new EventEmitter<string>();
 
   public emitmbwhEdit(event):void {
-    console.log(this.postData);
+    if(this.postData.name.trim().length === 0||!this.postData.type) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:"带‘*’号为必填项，请填写完整后再提交"}];
+      return;
+    }
     this.postData.workloads = this.postData.nodeworkloads;
     this.PostService.mbwhEdit(this.postData,this.dataId).catch(res=>{
       this.msgs = [];

@@ -21,11 +21,13 @@ export class FwgzlComponent implements OnInit {
     selected: any = {};
     formDataList: any =[];
     total:string = "1";
+    depList:any = [];
     optsList:any = {
-        statu:"-1",stime:"",etime:"", pageNum:1, pageSize:10
+        statu:"-1",stime:"",etime:"",depType:"-1", pageNum:1, pageSize:10
     }
     ngOnInit() {
         Auxiliary.prototype.ControlHeight();
+        this.getDepList();
         this.zh = {
             firstDayOfWeek: 0,
             dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
@@ -40,6 +42,17 @@ export class FwgzlComponent implements OnInit {
     }
     constructor(@Inject(GetList) getList: GetList,@Inject(PostService) postService: PostService,private confirmationService: ConfirmationService) {
         this.GetList = getList;this.PostService = postService;
+    }
+    //获取事业群
+    getDepList() {
+        this.GetList.fwgzlGetdeptList().catch(res=>{
+            this.msgs = [];
+            this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+            return;
+        }).then(res=>{
+            this.depList = res.list;
+            console.log(res);
+        });
     }
     getFromData() {
         if(this.optsList.stime) {this.optsList.stime = this.getFormetDate(this.optsList.stime)};

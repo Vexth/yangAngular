@@ -74,6 +74,9 @@
     width: 88.6%;
 }
 
+.btn{margin-left: 5px}
+.btn:nth-child(1) {margin-left: 0px}
+
 /* .row {
     margin-right: 0;
     margin-left: 0;

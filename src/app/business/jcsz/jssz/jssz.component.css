@@ -28,3 +28,6 @@
 .ui-datatable .ui-datatable-data tr td{text-align: center}
 
 .ui-growl{top: 70px;}
+
+.btn{margin-left: 5px}
+.btn:nth-child(1) {margin-left: 0px}

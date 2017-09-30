@@ -98,3 +98,6 @@
   .qrcodeSize{
     font-size: 20px;
   }
+
+  .btn-group{margin-left: 5px}
+  .btn-group:nth-child(1) {margin-left: 0px}

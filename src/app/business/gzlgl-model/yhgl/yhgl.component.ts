@@ -6,6 +6,8 @@ import { yhgljsComponent } from './yhglJS/yhglJS.component';
 import { yhgldeptComponent } from './yhglJS/yhglDept.component';
 
 import { GetList } from '../../services/getlist';
+import { ActivatedRoute } from "@angular/router";
+import { InitIalize } from "../../services/doing";
 
 @Component({
   selector: 'app-yhgl',
@@ -18,18 +20,22 @@ export class YhglComponent implements OnInit {
   deptList:any = [];
   deptData:any = "";
   nameOrId:any = "";
-  total:any = 10;
-  pageSize:any = 10;
+  // total:any = 10;
+  pageSize:any = 99999;
   pageNum:any = 1;
   selected:any = {};
+  btnFn: any;
   @ViewChild('yhglJS') public yhglJS:yhgljsComponent;
   @ViewChild('yhglDept') public yhglDept:yhgldeptComponent;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getDept();
     this.getFormData();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
-  constructor(private confirmationService: ConfirmationService,@Inject(GetList) getList: GetList) {
+  constructor(private confirmationService: ConfirmationService,private _activatedRoute: ActivatedRoute,@Inject(GetList) getList: GetList) {
     this.GetList = getList;
   }
 
@@ -51,9 +57,12 @@ export class YhglComponent implements OnInit {
     let postData = {
       pageNum:this.pageNum,pageSize:this.pageSize,nameOrId:this.nameOrId,treeSign:this.deptData
     }
+
+    InitIalize.prototype.initialize();
     this.GetList.yhglGetFromData(postData).catch(res=>{
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
+      InitIalize.prototype.endializ();
       return;
     }).then(res=>{
       res.list.forEach((x,i) => {
@@ -71,11 +80,12 @@ export class YhglComponent implements OnInit {
         x["roleStr"] = roleArr.join(",");
         x["roleIdArr"] = roleIdArr;
       });
-      this.pageSize = res.pageSize;
-      this.pageNum = res.pageNum;
-      this.total = (+res.totalPages)*(+res.pageSize);
+      // this.pageSize = res.pageSize;
+      // this.pageNum = res.pageNum;
+      // this.total = (+res.totalPages)*(+res.pageSize);
       this.formDataList = [];
       this.formDataList = res.list;
+      InitIalize.prototype.endializ();
     });
   }
   paginate(event){
@@ -122,5 +132,13 @@ export class YhglComponent implements OnInit {
   public saveDeptChange():void{
     console.log("刷新");
     this.clearOpts();
+  }
+
+  clickFn(event){
+    if (event == '角色分配') {
+      this.role()
+    } else if (event == '部门授权') {
+      this.dept()
+    }
   }
 }

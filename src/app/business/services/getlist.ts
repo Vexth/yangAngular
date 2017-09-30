@@ -384,6 +384,11 @@ export class GetList extends BaseService {
     const url = `${ConstantsList.HOSTUser1}api/userpost/list?${list}`;
     return this.publicGetServe(url, 'userpostList');
   }
+  // 发外工作量管理获取事业群
+  public fwgzlGetdeptList() {
+    const url = `${ConstantsList.HOSTUser1}api/nodetemplate/getDepTypeList`;
+    return this.publicGetServe(url, 'fwgzlGetdeptList');
+  }
 
   // 导出：1. 考核工资管理(日期必传值) /api/tongji/tongjiListExcel?name=&level=-1&bearDate=2017-09 
 

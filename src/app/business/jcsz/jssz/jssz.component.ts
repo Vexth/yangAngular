@@ -11,6 +11,7 @@ import { ModalformComponent } from '../../../common/component/modalform/modalfor
 import { JsszopenComponent } from './jsszopen/jsszopen.component';
 // 获取页面高度
 import { Auxiliary } from '../../../common/constants/auxiliary';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-jssz',
@@ -34,10 +35,13 @@ export class JsszComponent implements OnInit{
 
   username: string = '201';
 
+  btnFn: any;
+
   constructor(
     @Inject(GetList) getList: GetList, 
     @Inject('title') private titleService, 
     private confirmationService: ConfirmationService,
+    private _activatedRoute: ActivatedRoute,
     @Inject(PostService) postService: PostService
   ) {
     this.GetList = getList;
@@ -55,13 +59,16 @@ export class JsszComponent implements OnInit{
   ngOnInit() {
     this.GetList.GetListFindType().then(res => this.ListFindType = res);
     Auxiliary.prototype.ControlHeight();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
 
   // 新增
-  add(type):void {
+  add():void {
     let flxe = [];
     flxe = [{
-      type: type,
+      type: +this.username,
       nodeId: '',
       isLp: false,
       isHuat: false,
@@ -135,5 +142,15 @@ export class JsszComponent implements OnInit{
     this.dataList = [];
     this.dataListCode = [];
     this.GetList.GetListPageBy_M1V1(itme).then(res => this.dataList = res)
+  }
+
+  clickFn(event){
+    if (event == '新增') {
+      this.add()
+    } else if (event == '修改') {
+      this.edit()
+    } else if (event == '删除') {
+      this.dellList()
+    }
   }
 }

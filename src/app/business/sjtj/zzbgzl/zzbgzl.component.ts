@@ -33,6 +33,7 @@ export class ZzbgzlComponent implements OnInit {
     name: '',
     level: -1,
     bearDate: this.formatDate(new Date()),
+    uId: -1,
     pageNum: 1,
     pageSize: 10
   };
@@ -125,6 +126,7 @@ export class ZzbgzlComponent implements OnInit {
     this.emptyList.level = +this.collectionId;
     // this.emptyList.name = this.findUserListId;
     this.emptyList.name = this.findUserListId == '' ? '' : this.findUserListId['emp_no'];
+    this.emptyList.uId = this.findUserListId == '' ? -1 : this.findUserListId['id'];
     this.emptyList.bearDate = this.bearDate == null ? this.formatDate(new Date()) : this.formatDate(this.bearDate)
     this.bindpage(0);
   }

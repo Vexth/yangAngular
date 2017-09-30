@@ -5,6 +5,8 @@ import { Message,ConfirmationService} from 'primeng/primeng';//右上角提示�
 
 import { GetList } from '../../services/getlist';
 import { PostService } from '../../services/post.service';
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-ymsr',
   templateUrl: './ymsr.component.html',
@@ -17,6 +19,7 @@ export class YmsrComponent implements OnInit {
   msgs: Message[] = [];
   selected:any;
   deptData:any;
+  btnFn: any;
   optsDataList:any = {
     departments:[],optBatch:[],optEdition:[],optGrade:[],optGroup:[],optJie:[],optKind1:[],
     optKind2:[],optLocalEdition:[],optModule:[],optNode:[],optSubject:[],optType:[],optUsageType:[]
@@ -31,8 +34,16 @@ export class YmsrComponent implements OnInit {
     Auxiliary.prototype.ControlHeight();
     this.getDeptList();
     this.getFormData();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
-  constructor(private confirmationService: ConfirmationService,@Inject(GetList) getList: GetList,@Inject(PostService) postService: PostService) {
+  constructor(
+    private confirmationService: ConfirmationService,
+    @Inject(GetList) getList: GetList,
+    private _activatedRoute: ActivatedRoute,
+    @Inject(PostService) postService: PostService
+  ) {
     this.GetList = getList;this.PostService = postService;
   }
   clearOptData() {
@@ -209,5 +220,11 @@ export class YmsrComponent implements OnInit {
     }).then(res=>{
       this.changeOptKind2 = res.optKind2;
     });
+  }
+
+  clickFn(event){
+    if (event == '保存') {
+      this.save()
+    }
   }
 }

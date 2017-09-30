@@ -18,11 +18,14 @@
                 </colgroup>
                 <tr>
                   <td>
-                    <div class="btn-group">
+                    <!-- <div class="btn-group">
                       <button type="button" class="btn btn-info dropdown-toggle" (click)="role()">角色分配</button>
                     </div>
                     <div class="btn-group">
                       <button type="button" class="btn btn-success dropdown-toggle" (click)="dept()">部门授权</button>
+                    </div> -->
+                    <div class="btn-group" *ngFor="let item of btnFn" >
+                      <button type="button" class="btn {{item.btn}} dropdown-toggle" (click)="clickFn(item.name)">{{item.name}}</button>
                     </div>
                   </td>
                   <td style="text-align:right;"><label style="margin-bottom:0px;">姓名/工号：</label></td>
@@ -55,14 +58,15 @@
                 </tr>
               </table>
             </div>
-                <p-dataTable [value]="formDataList" [(selection)]="selected" selectionMode="single" [headerCheckboxToggleAllPages]="true" emptyMessage="暂无数据">
-                    <p-column field="empNo" header="工号" [style]="{'width':'100px','text-align':'center'}"></p-column>
-                    <p-column field="name" header="姓名" [style]="{'width':'100px','text-align':'center'}"></p-column>
-                    <p-column field="departmentStr" header="部门" [style]="{'text-align':'center'}"></p-column>
-                    <p-column field="dutyName" header="岗位" [style]="{'width':'200px','text-align':'center'}"></p-column>
-                    <p-column field="roleStr" header="角色列表" [style]="{'text-align':'center'}"></p-column>
-                </p-dataTable>
-                <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
+            <p-dataTable [value]="formDataList" [(selection)]="selected" selectionMode="single" [headerCheckboxToggleAllPages]="true" 
+            emptyMessage="暂无数据" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
+                <p-column field="empNo" header="工号" [style]="{'width':'100px','text-align':'center'}"></p-column>
+                <p-column field="name" header="姓名" [style]="{'width':'100px','text-align':'center'}"></p-column>
+                <p-column field="departmentStr" header="部门" [style]="{'text-align':'center'}"></p-column>
+                <p-column field="dutyName" header="岗位" [style]="{'width':'200px','text-align':'center'}"></p-column>
+                <p-column field="roleStr" header="角色列表" [style]="{'text-align':'center'}"></p-column>
+            </p-dataTable>
+                <!-- <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator> -->
           </div>
         </div>
       </div>

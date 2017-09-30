@@ -82,6 +82,13 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                     </td>
                   </tr>
                   <tr style="height:44px">
+                    <td class="cpwhaddLabel"><label>所属事业群：</label></td>
+                    <td>
+                      <select class="form-control" [(ngModel)]="post.depType" name="optDepTypeId">
+                        <option value="">--请选择--</option>
+                        <option [value]="c.optionId" *ngFor="let c of addList.optDepType">{{c.optionName}}</option>
+                      </select>
+                    </td>
                     <td class="cpwhaddLabel"><label>科目：</label></td>
                     <td>
                       <!-- <select class="form-control" [(ngModel)]="post.subjectId" name="optSubjectId">
@@ -97,8 +104,7 @@ role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         </ng-template>
                       </p-dropdown>
                     </td>
-                    <td class="cpwhaddLabel" colspan="2"><label>是否按页码计算工作量：</label></td>
-                    <td>
+                    <td style="text-align:center;" colspan="2"><label>是否按页码计算工作量：</label>
                       <span><input type="radio" value="1" name="is" [(ngModel)]="post.workloadType"></span>
                       是
                       <span><input type="radio" value="0" name="is" [(ngModel)]="post.workloadType" ></span>

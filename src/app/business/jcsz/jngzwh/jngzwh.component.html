@@ -18,9 +18,10 @@
             <button type="button" class="btn btn-success btn-cx" (click)="query()">查询</button>
         </div>
         <div class="button-content">
-            <button type="button" class="btn btn-success" (click)="add($event)">新增</button>
+            <button *ngFor="let item of btnFn" type="button" class="btn {{item.btn}}" (click)="clickFn(item.name)">{{item.name}}</button>
+            <!-- <button type="button" class="btn btn-success" (click)="add()">新增</button>
             <button type="button" class="btn btn-primary" (click)="batchOpen($event)">启用</button>
-            <button type="button" class="btn btn-danger" (click)="batchClose($event)">禁用</button>
+            <button type="button" class="btn btn-danger" (click)="batchClose($event)">禁用</button> -->
         </div>
 
         <div style="_height:100%;min-height:100%;">

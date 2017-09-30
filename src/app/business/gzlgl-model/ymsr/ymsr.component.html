@@ -20,8 +20,11 @@
                 </colgroup>
                 <tr>
                   <td>
-                    <div class="btn-group">
+                    <!-- <div class="btn-group">
                       <button type="button" class="btn btn-info dropdown-toggle" (click)="save()">保存</button>
+                    </div> -->
+                    <div class="btn-group" *ngFor="let item of btnFn" >
+                      <button type="button" class="btn {{item.btn}} dropdown-toggle" (click)="clickFn(item.name)">{{item.name}}</button>
                     </div>
                   </td>
                   <td style="text-align:right;"><label style="margin-bottom:0px;">所属部门：</label></td>

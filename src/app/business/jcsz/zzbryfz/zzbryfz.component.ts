@@ -77,7 +77,6 @@ export class ZzbryfzComponent implements OnInit {
 
   // 获取数据填充表格
   jobList(){
-    this.dataList = [];
     let nameList = {
       postid: this.postid,
       name: this.name,
@@ -112,7 +111,6 @@ export class ZzbryfzComponent implements OnInit {
       if (res.code == 0) {
         this.msgs = [];
         this.msgs = [{severity:'info', summary:'成功提示', detail:'保存成功'}];
-        // this.jobList();
       } else {
         this.msgs = [];
         this.msgs = [{severity:'error', summary:'错误提示', detail:'保存失败'}];
@@ -124,22 +122,21 @@ export class ZzbryfzComponent implements OnInit {
     if(this.findCourseList.length == 0){
       return ;
     }
-    console.log(itme)
-    console.log(itme.leader)
-    // if(itme.)
     this.findCourseList.map(res => {
       if(res.label == itme.postName){
         this.postId = res['valueName']['id']
+        itme.postId = res['valueName']['id']
       }
     })
     this.postIdchangeId = itme.id;
-
-    if(!itme['leader'] && itme['leader'] != undefined){
+    if(itme.hasOwnProperty('leader')){
       this.leaderChangeId = itme.id;
       this.leader = itme.leader;
     }
     if(this.postIdchangeId == this.leaderChangeId){
       this.id = itme.id;
+      this.postId = itme.postId;
+      this.leader = itme.leader;
       this.postList();
     }
   }
@@ -152,15 +149,19 @@ export class ZzbryfzComponent implements OnInit {
     this.userpostFindType.map(res => {
       if(res.label == itme.leaderName){
         this.leader = res['valueName']['id']
+        itme.leader = res['valueName']['id']
       }
     })
     this.leaderChangeId = itme.id;
-    if(!itme['postId'] && itme['postId'] != undefined){
+
+    if(itme.hasOwnProperty('postId')){
       this.postIdchangeId = itme.id;
       this.postId = itme.postId;
     }
     if(this.postIdchangeId == this.leaderChangeId){
       this.id = itme.id;
+      this.postId = itme.postId;
+      this.leader = itme.leader;
       this.postList();
     }
   }

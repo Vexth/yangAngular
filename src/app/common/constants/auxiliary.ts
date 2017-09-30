@@ -22,4 +22,19 @@ export class Auxiliary {
     return List;
   }
 
+  public queryParamsList (obj: any): any[] {
+    let list = [];
+    let objList = {name: '', btn: ''}
+    for (var key in obj) {
+      objList = {name: '', btn: ''}
+      if (obj.hasOwnProperty(key) && obj[key].indexOf('?') > -1) {
+        let element = obj[key].split('?');
+        objList.name = element[0];
+        objList.btn = element[1];
+        list.push(objList)
+      }
+    }
+    return list;
+  }
+
 }

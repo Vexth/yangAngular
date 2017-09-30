@@ -6,6 +6,7 @@ import { Message,ConfirmationService} from 'primeng/primeng';//右上角提示�
 
 import { GetList } from '../../services/getlist';
 import { PostService } from '../../services/post.service';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-lzcx',
@@ -34,8 +35,12 @@ export class LzcxComponent implements OnInit {
   rows:any = 10;//分页
   selected: any = [];//表格选中数据
 
+  btnFn: any;
 
   ngOnInit() {
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams)
+    })
     Auxiliary.prototype.ControlHeight();
     this.GetList.lzcxOpts().catch(res => {
       this.msgs = [];
@@ -56,7 +61,12 @@ export class LzcxComponent implements OnInit {
     };
     this.getTableList();
   }
-  constructor(@Inject(GetList) getList: GetList,@Inject(PostService) postService: PostService,private confirmationService: ConfirmationService) {
+  constructor(
+    @Inject(GetList) getList: GetList,
+    @Inject(PostService) postService: PostService,
+    private _activatedRoute: ActivatedRoute,
+    private confirmationService: ConfirmationService
+  ) {
     this.GetList = getList;this.PostService = postService;
   }
 
@@ -158,5 +168,10 @@ export class LzcxComponent implements OnInit {
           // this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
       }
   });
+  }
+  clickFn(event){
+    if (event == '删除') {
+      this.delete()
+    }
   }
 }

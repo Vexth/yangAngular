@@ -42,9 +42,10 @@
         </div>
 
         <div class="button-content">
-            <button type="button" class="btn btn-success" (click)="tongjiWages()">计算</button>
+            <button *ngFor="let item of btnFn" type="button" class="btn {{item.btn}}" (click)="clickFn(item.name)">{{item.name}}</button>
+            <!-- <button type="button" class="btn btn-success" (click)="tongjiWages()">计算</button>
             <button type="button" class="btn btn-danger" (click)="lockWages()">完结</button>
-            <a type="button" class="btn btn-primary" (click)="tongjiListExcel($event)">导出</a>
+            <a type="button" class="btn btn-primary" (click)="tongjiListExcel($event)">导出</a> -->
         </div>
 
         <div style="_height:100%;min-height:100%;">

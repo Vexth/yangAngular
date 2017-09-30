@@ -6,6 +6,8 @@ import { Message,ConfirmationService} from 'primeng/primeng';//右上角提示�
 import { JdsqsetComponent } from './jdsqSet/jdsqSet.component';
 
 import { GetList } from '../../services/getlist';
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-jdsq',
   templateUrl: './jdsq.component.html',
@@ -23,12 +25,19 @@ export class JdsqComponent implements OnInit {
   selected:any = {};
   msgs: Message[] = [];
   total:any;
+  btnFn: any;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getDept();
     this.getFormData();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
-  constructor(@Inject(GetList) getList: GetList,private confirmationService: ConfirmationService) {
+  constructor(
+    @Inject(GetList) getList: GetList,
+    private _activatedRoute: ActivatedRoute,
+    private confirmationService: ConfirmationService) {
     this.GetList = getList;
   }
   //获取部门
@@ -83,5 +92,11 @@ export class JdsqComponent implements OnInit {
   public jdsqSaveSet():void{
     console.log("刷新");
     this.getFormData();
+  }
+
+  clickFn(event){
+    if (event == '设置') {
+      this.set()
+    } 
   }
 }

@@ -2,9 +2,10 @@
     <app-navigation Showtitle="基础设置" Subtitle="计算设置" Web="工作量管理" Module="基础设置" Page="计算设置"></app-navigation>
     <section class="content" id="content">
         <div class="button-content">
-            <button type="button" class="btn btn-success" (click)="add(username)">新增</button>
+            <!-- <button type="button" class="btn btn-success" (click)="add()">新增</button>
             <button type="button" class="btn btn-primary" (click)="edit()">修改</button>
-            <button type="button" class="btn btn-danger" (click)="dellList()">删除</button>
+            <button type="button" class="btn btn-danger" (click)="dellList()">删除</button> -->
+            <button *ngFor="let item of btnFn" type="button" class="btn {{item.btn}}" (click)="clickFn(item.name)">{{item.name}}</button>
         </div>
         <div style="_height:100%;min-height:100%;">
             <div class="tab">

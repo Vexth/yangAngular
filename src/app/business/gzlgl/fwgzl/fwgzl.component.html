@@ -23,6 +23,15 @@
                         <p-calendar [locale]="zh" dateFormat="yy-dd-mm" [inputStyle]="{'width': '100px','padding': '5px'}" placeholder="结束时间" [(ngModel)]="optsList.etime" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2130"></p-calendar>
                     </div>
                 </div>
+                <div class="col-xs-2">
+                    <label class="control-label">所属事业群：</label>
+                    <div class="controls">
+                        <select class="form-control" [(ngModel)]="optsList.depType" [ngModelOptions]="{standalone: true}" name="depType">
+                            <option value="-1">--请选择--</option>
+                            <option [value]="c.optionId" *ngFor="let c of depList">{{c.optionName}}</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-xs-3">
                     <label class="control-label">计算状态：</label>
                     <div class="controls">

@@ -64,6 +64,7 @@ export class SpgzlComponent implements OnInit,OnDestroy {
   rangeDates: string;
 
   private sub:any;
+  btnFn: any;
 
   constructor(
     @Inject(GetList) getList: GetList,
@@ -106,7 +107,7 @@ export class SpgzlComponent implements OnInit,OnDestroy {
       clear: 'Clear'
     };
     this.sub = this._activatedRoute.queryParams.subscribe(queryParams=>{
-      console.log("queryParams参数:",queryParams);
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
     })
     this.emptyList.statu = +this.statu;
     this.bindpage(0);
@@ -272,17 +273,17 @@ export class SpgzlComponent implements OnInit,OnDestroy {
   // 审核
   review(itme): void {
     let typeId = 1;
-    this.publicFunc(typeId, itme.target.innerHTML);
+    this.publicFunc(typeId, itme);
   }
   // 退回
   retreat(itme): void {
     let typeId = 2;
-    this.publicFunc(typeId, itme.target.innerHTML);
+    this.publicFunc(typeId, itme);
   }
   // 删除
   dellList(itme): void {
     let typeId = 3;
-    this.publicFunc(typeId, itme.target.innerHTML);
+    this.publicFunc(typeId, itme);
   }
 
   // 追加
@@ -331,5 +332,19 @@ export class SpgzlComponent implements OnInit,OnDestroy {
     this.emptyList.etime = '';
     this.statu = '-1';
     this.query();
+  }
+
+  clickFn(event){
+    if (event == '追加') {
+      this.add()
+    } else if (event == '调整') {
+      this.edit()
+    } else if (event == '删除') {
+      this.dellList(event)
+    } else if (event == '审核') {
+      this.review(event)
+    } else if (event == '退回') {
+      this.retreat(event)
+    }
   }
 }

@@ -9,6 +9,8 @@ import { TreeNode, Message, MenuItem, ConfirmationService, SelectItem } from 'pr
 // 获取页面高度
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-xswh',
   templateUrl: './xswh.component.html',
@@ -41,10 +43,13 @@ export class XswhComponent implements OnInit{
   findCourse: any;
   findCourseList: SelectItem[];
 
+  btnFn: any;
+
   constructor(
     @Inject(GetList) getList: GetList, 
     @Inject('title') private titleService, 
     private confirmationService: ConfirmationService,
+    private _activatedRoute: ActivatedRoute,
     @Inject(PostService) postService: PostService
   ) {
     this.GetList = getList;
@@ -68,6 +73,9 @@ export class XswhComponent implements OnInit{
     this.ColToggler(this.username);
     this.GetList.GetListFindType().then(res => this.unitList = this.bindpage(res, 'text')); // 产品类别
     Auxiliary.prototype.ControlHeight();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
 
   // 新增
@@ -201,4 +209,9 @@ export class XswhComponent implements OnInit{
     //设置父节点的双击事件为空
     // newobj.parentNode.setAttribute("ondblclick", "");
   } 
+  clickFn(event){
+    if (event == '新增') {
+      this.add()
+    }
+  }
 }

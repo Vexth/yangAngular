@@ -47,13 +47,12 @@ export class TreeviewComponent implements OnInit {
       this.styleName1 = '';
       this.styleName2 = 'vexth';
       this.xmName = keyName;
-      this.names = JSON.parse(vexth).authList;
+      this.names = JSON.parse(vexth);
       this.check = this.treemodule + this.treeitem;
     }
   }
 
   onSubmit(formValue: any): void {
-    console.log(formValue)
     if(formValue.username == undefined){
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '错误提示', detail: '请填写用户名' });
@@ -80,7 +79,7 @@ export class TreeviewComponent implements OnInit {
             this.names = res.authList;
             this.check = this.treemodule + this.treeitem;
             sessionStorage.setItem("key", this.styleName2);
-            sessionStorage.setItem("vexth", JSON.stringify(res));
+            sessionStorage.setItem("vexth", JSON.stringify(this.names));
           })
         })
       } else {

@@ -13,6 +13,8 @@ import { PostService } from '../../services/post.service';
 
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-cpwh',
   templateUrl: './cpwh.component.html',
@@ -34,10 +36,11 @@ export class CpwhComponent implements OnInit {
   changeOptKind2:any = [];//OptKind2搜索条件单独拎出
 
   public dataList:any;//表格数据data
-
+  btnFn: any;
   constructor(
     private confirmationService: ConfirmationService,
     @Inject(GetList) getList: GetList,
+    private _activatedRoute: ActivatedRoute,
     @Inject(PostService) postService: PostService
   ) {
     this.PostService = postService;
@@ -82,6 +85,9 @@ export class CpwhComponent implements OnInit {
       this.optsList = res;
     });
     this.getAddList();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
 
   getDataList() {
@@ -275,7 +281,8 @@ export class CpwhComponent implements OnInit {
     //为新增元素添加光标离开事件
     newobj.addEventListener('blur', () => {
       //当触发时判断新增元素值是否为空，为空则不修改，并返回原有值 
-      element.target.innerHTML = newobj.value == oldhtml ? selected.data.name : saveNameStr+newobj.value;
+      // element.target.innerHTML = newobj.value == oldhtml ? selected.data.name : saveNameStr+newobj.value;
+      element.target.innerHTML = saveNameStr + '-' + newobj.value;
       selected.docName = newobj.value == oldhtml ? selected.docName : newobj.value;
       console.log(selected.docName);
       if(oldhtml !== newobj.value) {
@@ -304,4 +311,20 @@ export class CpwhComponent implements OnInit {
     //设置父节点的双击事件为空
     // newobj.parentNode.setAttribute("ondblclick", "");
   } 
+
+  clickFn(event){
+    if (event == '新增产品') {
+      this.addcp()
+    } else if (event == '新增稿件') {
+      this.addgj()
+    } else if (event == '新增稿件') {
+      this.addgj()
+    } else if (event == '批量新增稿件') {
+      this.pladd()
+    } else if (event == '删除') {
+      this.delete()
+    } else if (event == '打印二维码') {
+      this.print()
+    } 
+  }
 }

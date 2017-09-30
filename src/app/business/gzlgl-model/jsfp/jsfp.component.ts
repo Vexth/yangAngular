@@ -9,6 +9,8 @@ import { jsfpwarComponent } from './jsfpAdd/jsfpWar.component';
 
 import { GetList } from '../../services/getlist';
 import { PostService } from '../../services/post.service';
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-jsfp',
   templateUrl: './jsfp.component.html',
@@ -20,11 +22,20 @@ export class JsfpComponent implements OnInit {
   msgs: Message[] = [];
   fromDataList:any = [];
   selected:any = [];
+  btnFn: any;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getFromData();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
-  constructor(private confirmationService: ConfirmationService,@Inject(GetList) getList: GetList,@Inject(PostService) postService: PostService) {
+  constructor(
+    private confirmationService: ConfirmationService,
+    @Inject(GetList) getList: GetList,
+    private _activatedRoute: ActivatedRoute,
+    @Inject(PostService) postService: PostService
+  ) {
     this.GetList = getList;this.PostService = postService;
   }
 
@@ -114,5 +125,17 @@ export class JsfpComponent implements OnInit {
       // this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
     }
     });
+  }
+
+  clickFn(event){
+    if (event == '新建') {
+      this.add()
+    } else if (event == '修改') {
+      this.edit()
+    } else if (event == '删除') {
+      this.delete()
+    } else if (event == '授权') {
+      this.warrant()
+    }
   }
 }

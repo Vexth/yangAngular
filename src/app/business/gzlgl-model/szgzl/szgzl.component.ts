@@ -7,6 +7,8 @@ import { szgzlplComponent } from './szgzlPl/szgzlPl.component';
 
 import { PostService } from '../../services/post.service';
 import { GetList } from '../../services/getlist';
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-szgzl',
   templateUrl: './szgzl.component.html',
@@ -34,11 +36,20 @@ export class SzgzlComponent implements OnInit {
   total:any = "";
   selected:any = {};
   indexDeptId:string="";
+  btnFn: any;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getOptsDataList();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
-  constructor(private confirmationService: ConfirmationService,@Inject(PostService) postService: PostService,@Inject(GetList) getList: GetList) {
+  constructor(
+    private confirmationService: ConfirmationService,
+    @Inject(PostService) postService: PostService,
+    private _activatedRoute: ActivatedRoute,
+    @Inject(GetList) getList: GetList
+  ) {
     this.PostService = postService;this.GetList = getList;
   }
   deptChange() {
@@ -244,5 +255,13 @@ export class SzgzlComponent implements OnInit {
     }).then(res=>{
       this.changeOptKind2 = res.optKind2;
     });
+  }
+
+  clickFn(event){
+    if (event == '批量设置') {
+      this.plSet()
+    } else if (event == '保存') {
+      this.save()
+    }
   }
 }

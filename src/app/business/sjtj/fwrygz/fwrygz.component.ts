@@ -13,6 +13,8 @@ import { Auxiliary } from '../../../common/constants/auxiliary';
 
 import { InitIalize } from '../../services/doing';
 
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-fwrygz',
   templateUrl: './fwrygz.component.html',
@@ -48,11 +50,13 @@ export class FwrygzComponent implements OnInit {
   bearDate: string;
 
   maxDate: Date;
+  btnFn: any;
 
   constructor(
     @Inject(GetList) getList: GetList,
     @Inject('title') private titleService,
     private confirmationService: ConfirmationService,
+    private _activatedRoute: ActivatedRoute,
     @Inject(PostService) postService: PostService
   ) {
     this.GetList = getList;
@@ -95,6 +99,9 @@ export class FwrygzComponent implements OnInit {
     this.maxDate = new Date();
     this.maxDate.setFullYear(nextYear);
 
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
     this.bindpage(0);
     Auxiliary.prototype.ControlHeight();
   }
@@ -191,13 +198,25 @@ export class FwrygzComponent implements OnInit {
   }
 
   // 导出
-  tongjiWaiListExcel(event) {
+  tongjiListExcel(){
     if (!this.bearDate) {
       this.msgs = [];
       this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择日期' }];
-      return;
+      return ;
     }
-    let date = this.formatDate(this.bearDate)
-    event.target.href = `http://192.168.230.240:8888/api/wai/tongjiWaiListExcel?name=${this.findUserListId}&bearDate=${date}`
+    // var a = document.createElement('a');
+    let url = `http://192.168.230.240:8888/api/wai/tongjiWaiListExcel?name=${this.findUserListId}&bearDate=${this.formatDate(this.bearDate)}`;
+    window.open(url)
+    // a.href = `http://192.168.230.240:8888/api/wai/tongjiWaiListExcel?name=${this.findUserListId}&bearDate=${this.formatDate(this.bearDate)}`;
+    // a.click();
+  }
+  clickFn(event){
+    if (event == '计算') {
+      this.tongjiWaiWages()
+    } else if (event == '完结') {
+      this.lockWaiWages()
+    } else if (event == '导出') {
+      this.tongjiListExcel();
+    }
   }
 }

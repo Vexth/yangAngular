@@ -14,7 +14,7 @@
 
       <li *ngFor="let name of names" class="treeview" [ngClass]="{'active':treemodule == name.check}" >
         <a href="#">
-          <i class="fa {{ name.iocn }}"></i> <span>{{ name.name }}</span>
+          <i class="fa fa-cogs text-red"></i> <span>{{ name.name }}</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>

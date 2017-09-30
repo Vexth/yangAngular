@@ -20,8 +20,8 @@ import { AutoCompleteModule } from 'primeng/primeng';
 
 @NgModule({ 
   declarations: [
-    AppComponent,
-  ],
+    AppComponent
+],
   imports: [
     BrowserModule,
     FormsModule,

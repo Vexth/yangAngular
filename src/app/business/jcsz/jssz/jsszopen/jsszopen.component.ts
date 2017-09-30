@@ -163,7 +163,6 @@ export class JsszopenComponent implements OnInit {
     List.multiple = +this.multiple;
     List.unit = this.unit;
 
-    console.log(List)
     this.PostService.addUpdateNode(List).then(res => {
       if (res.code == 0) {
         this.change.emit();

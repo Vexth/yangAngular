@@ -68,14 +68,14 @@
           <div class="form-group">
             <label>工作量信息</label>
             <div class="ui-g">
-              <div class="ui-g-4 df">
+              <div class="ui-g-6 df">
                 <span class="lh35">工作量计算方式</span>
                 <span>
                   <input (change)="noChange()" [(ngModel)]="calc" class="radio" type="radio" name="a" value="0"> 自动
                   <input (change)="noChange()" [(ngModel)]="calc" class="radio" type="radio" name="b" value="1"> 手动
                 </span>
               </div>
-              <div class="ui-g-4 df">
+              <div class="ui-g-6 df">
                 <span class="lh35">工作量</span>
                 <span>
                   <input *ngIf="calc != '1'" type="text" [(ngModel)]="checkCalcWorkload" [ngModelOptions]="{standalone: true}" readonly="readonly" />

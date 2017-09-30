@@ -73,6 +73,11 @@ export class mbwhaddComponent implements OnInit {
   public mbwhChange=new EventEmitter<string>();
 
   public emitmbwhAdd(event):void {
+    if(this.postData.name.trim().length === 0||!this.postData.isBaned||!this.postData.departmentId||!this.postData.type||!this.postData.isPagenum) {
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:"带‘*’号为必填项，请填写完整后再提交"}];
+      return;
+    }
     let postWork = [];
     this.nodeList.forEach((x,i) => {
       let onceData = {};

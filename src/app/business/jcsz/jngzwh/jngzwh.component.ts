@@ -12,6 +12,8 @@ import { JngzwhopenComponent } from './jngzwhopen/jngzwhopen.component';
 // 获取页面高度
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-jngzwh',
   templateUrl: './jngzwh.component.html',
@@ -42,10 +44,13 @@ export class JngzwhComponent implements OnInit{
   jobWorkload: number;
   id: number;
 
+  btnFn: any;
+
   constructor(
     @Inject(GetList) getList: GetList, 
     @Inject('title') private titleService, 
     private confirmationService: ConfirmationService,
+    private _activatedRoute: ActivatedRoute,
     @Inject(PostService) postService: PostService
   ) {
     this.GetList = getList;
@@ -75,10 +80,13 @@ export class JngzwhComponent implements OnInit{
   ngOnInit() {
     this.query();
     Auxiliary.prototype.ControlHeight();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
 
   // 新增
-  add(type):void {
+  add():void {
     let flxe = [];
     flxe = [{
       jobName: this.jobName,
@@ -192,15 +200,25 @@ export class JngzwhComponent implements OnInit{
   batchOpen(itme): void {
     // 0 启用
     // 1 禁用
-    this.publicFunc(itme.target.innerHTML, '只有禁用的数据才能被启用！', 0)
+    this.publicFunc(itme, '只有禁用的数据才能被启用！', 0)
   }
   // 禁用
   batchClose(itme): void {
-    this.publicFunc(itme.target.innerHTML, '只有启用的数据才能被禁用！', 1)
+    this.publicFunc(itme, '只有启用的数据才能被禁用！', 1)
   }
 
   // 查询
   query () {
     this.bindpage(1);
+  }
+
+  clickFn(event){
+    if (event == '新增') {
+      this.add()
+    } else if (event == '启用') {
+      this.batchOpen(event)
+    } else if (event == '禁用') {
+      this.batchClose(event)
+    }
   }
 }

@@ -10,6 +10,8 @@ import { jdwhbjComponent } from './jdwhAdd/jdwhBj.component';
 import { JdwhList } from '../../../module/business/getlist';
 import { GetList } from '../../services/getlist';
 
+import {ActivatedRoute} from "@angular/router";
+
 @Component({
   selector: 'app-jdwh',
   templateUrl: './jdwh.component.html',
@@ -26,11 +28,19 @@ export class JdwhComponent implements OnInit {
   pageLinks:any;//
   selected: any = {};//表格选中数据
   msgs: Message[] = [];
+  btnFn: any;
   ngOnInit() {
     Auxiliary.prototype.ControlHeight();
     this.getFormDataList();
+    this._activatedRoute.queryParams.subscribe(queryParams=>{
+      this.btnFn = Auxiliary.prototype.queryParamsList(queryParams);
+    })
   }
-  constructor(private confirmationService: ConfirmationService,@Inject(GetList) getList: GetList) {
+  constructor(
+    private confirmationService: ConfirmationService,
+    private _activatedRoute: ActivatedRoute,
+    @Inject(GetList) getList: GetList
+  ) {
     this.GetList = getList;
   }
 
@@ -109,5 +119,13 @@ export class JdwhComponent implements OnInit {
       return;
     }
     this.jdwhBj.jdwhbjShow(this.selected);
+  }
+
+  clickFn(event){
+    if (event == '新增') {
+      this.add()
+    } else if (event == '编辑') {
+      this.edit()
+    } 
   }
 }
