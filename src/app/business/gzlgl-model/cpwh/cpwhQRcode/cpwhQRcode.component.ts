@@ -23,7 +23,7 @@ export class cpwhqrcodeComponent implements OnInit {
 
   public cpwhQrcodeShow(id,name):void {
     this.childModal.show();
-    this.url = 'http://ches.jtyjy.com/document/'+ id +'/nodes';
+    this.url = 'http://work.jtyjy.com/document/'+ id +'/nodes';
     console.log(this.url);
     this.name = name;
   }

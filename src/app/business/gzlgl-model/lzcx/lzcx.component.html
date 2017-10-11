@@ -125,16 +125,18 @@
                       <p-column field="username" header="人员" [style]="{'text-align':'center','width':'85px'}"></p-column>
                       <p-column field="departmentName" header="稿件所属部门／中心" [style]="{'text-align':'center'}"></p-column>
                       <p-column field="workload" header="工作量(天)" [style]="{'text-align':'center','width':'85px'}"></p-column>
-                      <p-column field="document" header="接收时间" [style]="{'text-align':'center'}">
+                      <!-- <p-column field="document" header="接收时间" [style]="{'text-align':'center'}">
                         <ng-template let-node="rowData" pTemplate="body" >
                           <span>{{node.gmtCreate | date : 'yyyy-MM-dd HH:mm:ss' }}</span>
                         </ng-template>
-                      </p-column>
-                      <p-column field="document" header="结束时间" [style]="{'text-align':'center'}">
+                      </p-column> -->
+                      <!-- <p-column field="document" header="结束时间" [style]="{'text-align':'center'}">
                         <ng-template let-node="rowData" pTemplate="body" >
                           <span>{{node.gmtOver | date : 'yyyy-MM-dd HH:mm:ss' }}</span>
                         </ng-template>
-                      </p-column>
+                      </p-column> -->
+                      <p-column field="gmtCreate" header="接收时间" [style]="{'text-align':'center'}"></p-column>
+                      <p-column field="gmtOver" header="结束时间" [style]="{'text-align':'center'}"></p-column>
                   </p-dataTable>
                   <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
             </div>

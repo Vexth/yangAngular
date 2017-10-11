@@ -393,4 +393,11 @@ export class GetList extends BaseService {
   // 导出：1. 考核工资管理(日期必传值) /api/tongji/tongjiListExcel?name=&level=-1&bearDate=2017-09 
 
   // 导出：2. 发外工资管理(日期必传值) /api/wai/tongjiWaiListExcel?name=&bearDate=2017-09
+
+  // api/ding/ding_signin?token=
+  public dingSignin(data: string) {
+    const url = `${ConstantsList.HOSTUser1}api/ding/ding_signin?token=${data}`;
+    // return fetch(url).then(res => res.json());
+    return this.http.get(url, { withCredentials: true }).toPromise().then(res => res.json())
+  }
 }

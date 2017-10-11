@@ -94,7 +94,9 @@ export class CygzlComponent implements OnInit {
         this.bindpage(0);
         this.GetList.findNodeOfZzb().then(res => {
             this.findNodeOfZzbList = [];
-            this.findNodeOfZzbList = Auxiliary.prototype.publicList(res, 'nodeName');
+            if (res != null){
+                this.findNodeOfZzbList = Auxiliary.prototype.publicList(res, 'nodeName');
+            }
         })
         this.GetList.findUserList().then(res => {
             this.findUserList = [];

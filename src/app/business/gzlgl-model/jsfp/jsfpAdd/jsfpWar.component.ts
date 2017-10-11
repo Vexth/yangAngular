@@ -40,7 +40,7 @@ export class jsfpwarComponent implements OnInit {
       return;
     }).then(res=>{
       res.viewlist.forEach((x,i) => {
-        x['lable'] = x.name;
+        x['lable'] = x.name.split('?')[0];
         x['data'] = x.id;
       });
       this.viewListL = res.viewlist;

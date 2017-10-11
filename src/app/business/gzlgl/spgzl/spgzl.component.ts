@@ -113,7 +113,9 @@ export class SpgzlComponent implements OnInit,OnDestroy {
     this.bindpage(0);
     this.GetList.findNodeOfZzb().then(res => {
       this.findNodeOfZzbList = [];
-      this.findNodeOfZzbList = Auxiliary.prototype.publicList(res, 'nodeName');
+      if (res != null){
+          this.findNodeOfZzbList = Auxiliary.prototype.publicList(res, 'nodeName');
+      }
     })
     this.GetList.findUserList().then(res => {
       this.findUserList = [];

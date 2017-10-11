@@ -14,7 +14,7 @@
 
       <li *ngFor="let name of names" class="treeview" [ngClass]="{'active':treemodule == name.check}" >
         <a href="#">
-          <i class="fa fa-cogs text-red"></i> <span>{{ name.name }}</span>
+          <i class="fa {{ name.icon }} text-red"></i> <span>{{ name.name }}</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
@@ -99,7 +99,7 @@
           <div class="login-wrap">
            <img class="jtyjy-login-bg-v2" style="height: 100%;max-width: 642px;max-height:640px;float: left; " src="../../../assets/img/login/jtyjy_login_v2.jpg"/>
           <div class="login-form">
-            <form name="form" class="form-validation show-form"#formRef="ngForm" (ngSubmit)="onSubmit(formRef.value)">
+            <form name="form" class="form-validation show-form" #formRef="ngForm" (ngSubmit)="onSubmit(formRef.value)">
               <p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>
               <div class="login-title" ng-hide="authError">欢迎登录</div>
               <div class="login-input-group form-group has-feedback">

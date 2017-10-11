@@ -280,7 +280,7 @@ export class KhgzglComponent implements OnInit {
       this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请选择日期' }];
       return ;
     }
-    let url = `http://192.168.230.240:8888/api/tongji/tongjiListExcel?name=${this.findUserListId}&level=${this.collectionId}&bearDate=${this.bearDate}`;
+    let url = `http://192.168.230.240:8000/api/tongji/tongjiListExcel?name=${this.findUserListId}&level=${this.collectionId}&bearDate=${this.bearDate}`;
     window.open(url)
     // var a = document.createElement('a');
     // a.href = `http://192.168.230.240:8888/api/tongji/tongjiListExcel?name=${this.findUserListId}&level=${this.collectionId}&bearDate=${this.bearDate}`;

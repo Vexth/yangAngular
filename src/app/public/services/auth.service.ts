@@ -37,9 +37,14 @@ export class AuthService extends BaseService {
     return this.http.get(url, { withCredentials: true }).toPromise().then(res => res).catch((error: any) => error);
   }
 
-    // 菜单按键权限方法
-    public GetAuthlist() {
-      const url = `${ConstantsList.HOSTUser1}api/userauth/findauthlist`;
-      return this.publicGetServe(url, 'GetAuthlist');
-    }
+  // 菜单按键权限方法
+  public GetAuthlist() {
+    const url = `${ConstantsList.HOSTUser1}api/userauth/findauthlist`;
+    return this.publicGetServe(url, 'GetAuthlist');
+  }
+
+  public GetAuthlist2(id: any) {
+    const url = `${ConstantsList.HOSTUser1}api/userauth/findauthlist2?id=${id}`;
+    return fetch(url).then(res => res.json());
+  }
 }

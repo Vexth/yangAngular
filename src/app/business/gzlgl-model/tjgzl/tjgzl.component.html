@@ -19,7 +19,8 @@
                   </tr>
                 </table>
               </div>
-                  <p-dataTable [value]="formData.dataPage.content" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" selectionMode="single" emptyMessage="暂无数据">
+              <p-dataTable [value]="formData.dataPage.content" [(selection)]="selected" [headerCheckboxToggleAllPages]="true" 
+              selectionMode="single" emptyMessage="暂无数据" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
                     <p-column field="ym" header="页码" [style]="{'text-align':'center'}" [hidden]="ishide==0?false:true"></p-column>
                     <p-column field="gzl" header="工作量" [style]="{'text-align':'center'}" [hidden]="ishide==0?false:true"></p-column>
                     <p-column field="id" header="{{x.name}}" *ngFor="let x of formData.headerList;let i = index;" [style]="{'text-align':'center'}">
@@ -28,7 +29,7 @@
                       </ng-template>
                     </p-column>
                   </p-dataTable>
-                  <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
+                  <!-- <p-paginator rows="{{pageSize}}" totalRecords="{{total}}" [rowsPerPageOptions]="[10,20,30]" (onPageChange)="paginate($event)"></p-paginator> -->
             </div>
           </div>
         </div>

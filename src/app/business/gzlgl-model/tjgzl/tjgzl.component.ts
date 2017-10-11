@@ -27,11 +27,11 @@ export class TjgzlComponent implements OnInit {
   // getFromData() {
 
   // }
-  paginate(event){
-    this.pageSize = event.rows;
-    this.pageNum = event.page + 1;
-    // this.getFromData();
-  }
+  // paginate(event){
+  //   this.pageSize = event.rows;
+  //   this.pageNum = event.page + 1;
+  //   // this.getFromData();
+  // }
   indexArr:any = [];
   public tzgzlCxChange(event):void{
     this.indexArr = [];

@@ -241,7 +241,7 @@ export class CpwhComponent implements OnInit {
       return;
     }
     let hashStr = this.checkList.join('&id=');
-    window.open('http://ches.jtyjy.com/qrcode.html?id='+hashStr+'&');
+    window.open('http://work.jtyjy.com/qrcode.html?id='+hashStr+'&');
   }
 
   //二维码

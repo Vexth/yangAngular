@@ -88,6 +88,10 @@ export class LzcxComponent implements OnInit {
       this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
       return;
     }).then(res => {
+      res.list.forEach(item => {
+        if(item.gmtCreate){item.gmtCreate = this.format(item.gmtCreate, 'yyyy-MM-dd HH:mm:ss');}
+        if(item.gmtOver){item.gmtOver = this.format(item.gmtOver, 'yyyy-MM-dd HH:mm:ss');}
+      });
       this.tableList = res.list;
       this.pageSize = res.pageSize;
       this.pageNum = res.pageNum;
@@ -106,6 +110,26 @@ export class LzcxComponent implements OnInit {
     const month: any = ( Dates.getMonth() + 1 ) < 10 ? '0' + ( Dates.getMonth() + 1 ) : ( Dates.getMonth() + 1 );
     const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
     return year + '-' + month + '-' + day;
+  }
+  format(time, format) {
+    let t = new Date(time);
+    let tf = function(i){return (i < 10 ? '0' : '') + i};
+    return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function(a) {
+      switch(a) {
+        case 'yyyy':
+          return tf(t.getFullYear());
+        case 'MM':
+          return tf(t.getMonth() + 1);
+        case 'mm':
+          return tf(t.getMinutes());
+        case 'dd':
+          return tf(t.getDate());
+        case 'HH':
+          return tf(t.getHours());
+        case 'ss':
+          return tf(t.getSeconds());
+      }
+    })
   }
 
   // ===========================

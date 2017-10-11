@@ -62,11 +62,13 @@ export class JsszopenComponent implements OnInit {
     this.unitList = [{label:'套', value: '套'},{label:'页', value: '页'},{label:'版面', value: '版面'},{label:'期', value: '期'}];
     this.GetList.findNodeOfZzb().then(res => {
       this.findNodeOfZzbList = [];
-      for (let i = 0; i < res.length; i++) {
-        let labelList = {label: '', value: ''};
-        labelList.label = res[i].nodeName;
-        labelList.value = res[i];
-        this.findNodeOfZzbList.push(labelList)
+      if (res != null){
+        for (let i = 0; i < res.length; i++) {
+          let labelList = {label: '', value: ''};
+          labelList.label = res[i].nodeName;
+          labelList.value = res[i];
+          this.findNodeOfZzbList.push(labelList)
+        }
       }
     })
   }

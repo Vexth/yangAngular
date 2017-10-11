@@ -205,7 +205,7 @@ export class FwrygzComponent implements OnInit {
       return ;
     }
     // var a = document.createElement('a');
-    let url = `http://192.168.230.240:8888/api/wai/tongjiWaiListExcel?name=${this.findUserListId}&bearDate=${this.formatDate(this.bearDate)}`;
+    let url = `http://192.168.230.240:8000/api/wai/tongjiWaiListExcel?name=${this.findUserListId}&bearDate=${this.formatDate(this.bearDate)}`;
     window.open(url)
     // a.href = `http://192.168.230.240:8888/api/wai/tongjiWaiListExcel?name=${this.findUserListId}&bearDate=${this.formatDate(this.bearDate)}`;
     // a.click();
