@@ -1,5 +1,4 @@
 <aside class="main-sidebar">
-  <!-- [ngStyle]="{'display':styleName1 === 'vexth' ? 'none' : 'inline-block' }" -->
   <section class="sidebar">
     <!-- <div class="user-panel">
       <div class="pull-left image">
@@ -88,61 +87,3 @@
     </ul>
   </section>
 </aside>
-<!-- 
-  <div class="login-boxCom" [ngStyle]="{'display':styleName1 == 'vexth' ? 'inline-block' : 'none' }">
-    <div class="jty-login-content" style="min-height: 585px;background: #fff;" ng-controller="JtyEHRLoginController" ng-init="app.settings.headerFixed = false;">
-        <div class="jty-login-top">
-            <div class="jty-logo"><img src="../../../assets/img/login/logoV6.png" style="width:40%;"></div>
-        </div>
-     
-         <div class="jty-login-center" style="min-height:400px;display:inline-block">
-     
-          <div class="login-wrap">
-           <img class="jtyjy-login-bg-v2" style="height: 100%;max-width: 642px;max-height:640px;float: left; " src="../../../assets/img/login/jtyjy_login_v2.jpg"/>
-          <div class="login-form">
-            <form name="form" class="form-validation show-form" #formRef="ngForm" (ngSubmit)="onSubmit(formRef.value)">
-              <p-growl [style]="{'top': '60px'}" [(value)]="msgs"></p-growl>
-              <div class="login-title" ng-hide="authError">欢迎登录</div>
-              <div class="login-input-group form-group has-feedback">
-                         
-                <input type="text" name="username" class="form-control" placeholder="用户名" id="username" required [(ngModel)]="username" [ngModel]="username" (ngModelChange)="username = $event" #name="ngModel" #spy>
-              </div>
-              <div class="login-input-group form-group has-feedback">
-                <input type="password" name="password" class="form-control" placeholder="密码" id="password" required [(ngModel)]="password" [ngModel]="password" (ngModelChange)="password = $event" #pass="ngModel">
-              </div>
-              <div class="login-input-group">
-                <input type="text" class="login-code" style="width: 140px" placeholder="请输入验证码"  maxlength="4" ng-model="user.code" required>
-                <div class="login-code-img"><img style="height: 34px" src="{{user.getCodeUrl == null ? 'sys/securityCode' : user.getCodeUrl}}">
-                  <span class="" ng-click="reloadCode();"><img src="../../../assets/img/login/login_sx.png" style="width: 24px;height: 20px;"></span>
-                </div>
-              </div>
-              <button type="submit" class="btn login-button" ng-disabled='form.$invalid'>登&nbsp;录</button>
-            </form>
-          </div>
-        </div>
-      </div>
-     
-         <div class="jty-login-footer" >
-             <div class="footer-content">
-                 <div class="footer-item firstItem">
-                 <a href="">需求帮助</a>
-                 <span>|</span>
-                 </div>
-                 <div class="footer-item">
-                     <a href="">下载APP</a>
-                     <span>|</span>
-                 </div>
-                 <div class="footer-item">
-                     <a href="">环境设置</a>
-                     <span>|</span>
-                 </div>
-                 <div class="footer-item">
-                     <a href="">联系我们</a>
-                 </div>
-             </div>
-             <div class="footer-copyRight">
-                 金太阳教育 Copyright© 1996-2017 Jtyjy.com Corporation,All Right Rese
-             </div>
-         </div>
-     </div>
-    </div> -->
