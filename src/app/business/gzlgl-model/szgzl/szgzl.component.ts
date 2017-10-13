@@ -65,23 +65,24 @@ export class SzgzlComponent implements OnInit {
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择部门"}];
       return;
     }
-    this.GetList.szgzlDataList(this.opts).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.pagelist.content.forEach((x,i) => {
-        this.dataTreat(x.document,x);
-        x["children"] = x.document.children;
-        x["data"] = x.document.data;
-      });
-      console.log(res);
-      this.fromDataList = res;
-      if(!this.total) {
-        this.total = (+res.pagelist.count)*(+res.pagelist.totalPage);
+    this.GetList.szgzlDataList(this.opts).then(res=>{
+      if(!res.code) {
+        res.pagelist.content.forEach((x,i) => {
+          this.dataTreat(x.document,x);
+          x["children"] = x.document.children;
+          x["data"] = x.document.data;
+        });
+        console.log(res);
+        this.fromDataList = res;
+        if(!this.total) {
+          this.total = (+res.pagelist.count)*(+res.pagelist.totalPage);
+        }
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
       }
-     
-    })
+    });
   }
   /**
    * 数据处理
@@ -98,12 +99,14 @@ export class SzgzlComponent implements OnInit {
 
   //获取搜索条件集合
   getOptsDataList() {
-    this.GetList.cpwhadd().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      this.optsDataList = res;
+    this.GetList.cpwhadd().then(res=>{
+      if(!res.code) {
+        this.optsDataList = res;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
 
@@ -248,12 +251,14 @@ export class SzgzlComponent implements OnInit {
   }
   //获取kindId2List
   getkindId2(data) {
-    this.GetList.getKindId2(data).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      this.changeOptKind2 = res.optKind2;
+    this.GetList.getKindId2(data).then(res=>{
+      if(!res.code) {
+        this.changeOptKind2 = res.optKind2;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
 

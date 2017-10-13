@@ -69,12 +69,12 @@ export class CpwhComponent implements OnInit {
   }
   //获取kindId2List
   getkindId2(data) {
-    this.GetList.getKindId2(data).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      this.changeOptKind2 = res.optKind2;
+    this.GetList.getKindId2(data).then(res=>{
+      if(!res.code) {this.changeOptKind2 = res.optKind2;}else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   
@@ -82,7 +82,11 @@ export class CpwhComponent implements OnInit {
     Auxiliary.prototype.ControlHeight();
     this.clearOpts();
     this.GetList.cpwhadd().then(res =>{
-      this.optsList = res;
+      if(!res.code) {this.optsList = res;}else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
     this.getAddList();
     this._activatedRoute.queryParams.subscribe(queryParams=>{
@@ -91,23 +95,25 @@ export class CpwhComponent implements OnInit {
   }
 
   getDataList() {
-    this.GetList.cpwhList(this.opts).catch(res => {
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res => {
-      res.products.content.forEach((x,i) => {
-        this.dataTreat(x.document,x);
-        x["children"] = x.document.children;
-        x["data"] = x.document.data;
-      });
-      if(!this.opts.size) {
-        this.opts.size = res.products.count;
+    this.GetList.cpwhList(this.opts).then(res => {
+      if(!res.code) {
+        res.products.content.forEach((x,i) => {
+          this.dataTreat(x.document,x);
+          x["children"] = x.document.children;
+          x["data"] = x.document.data;
+        });
+        if(!this.opts.size) {
+          this.opts.size = res.products.count;
+        }
+        if(!this.total) {
+          this.total = (+res.products.count)*(+res.products.totalPage);
+        }
+        this.dataList = res.products.content;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
       }
-      if(!this.total) {
-        this.total = (+res.products.count)*(+res.products.totalPage);
-      }
-      this.dataList = res.products.content;
     });
   }
 
@@ -170,7 +176,11 @@ export class CpwhComponent implements OnInit {
 
   getAddList() {
     this.GetList.cpwhadd().then(res => {
-      this.addList = res;
+      if(!res.code) {this.addList = res;}else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
 
@@ -223,7 +233,7 @@ export class CpwhComponent implements OnInit {
           this.msgs = [{severity:'success', summary:'成功提示', detail:"删除成功"}];
           return;
         }).catch(res=>{
-          res = res.json();
+          // res = res.json();
           this.msgs = [];
           this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
           return;
@@ -286,16 +296,17 @@ export class CpwhComponent implements OnInit {
       selected.docName = newobj.value == oldhtml ? selected.docName : newobj.value;
       console.log(selected.docName);
       if(oldhtml !== newobj.value) {
-        this.PostService.cpwhSaveEdit({},selected.documentId,newobj.value).catch(res=>{
-          // this.clearOpts();
-          this.msgs = [];
-          this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-          return;
-        }).then(res=>{
+        this.PostService.cpwhSaveEdit({},selected.documentId,newobj.value).then(res=>{
           // this.clearOpts();
           this.msgs = [];
           this.msgs = [{severity:'success', summary:'成功提示', detail:"稿件名称修改保存成功"}];
-        })
+        }).catch(res=>{
+          // this.clearOpts();
+          // res = res.json();
+          this.msgs = [];
+          this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+          return;
+        });
       }
       //当触发时设置父节点的双击事件为ShowElement
       // element.target.setAttribute("ondblclick", "ShowElement(this);");

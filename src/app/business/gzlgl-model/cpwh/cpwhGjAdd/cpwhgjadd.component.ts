@@ -43,16 +43,17 @@ export class cpwhgjaddComponent implements OnInit {
     }
     postData.nameList.push(this.CPWHgjfl);
     postData.pid = this.pid;
-    this.PostService.cpwhGJAdd(postData).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.cpwhGJAdd(postData).then(res=>{
       this.cpwhAddGJ.emit("cpwhAddGJ");
       this.cpwhGJHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:'新增稿件成功'}];
-    })
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    });
   }
 
   public cpwhGJShow(data):void {

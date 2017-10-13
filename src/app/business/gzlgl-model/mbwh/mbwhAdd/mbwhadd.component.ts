@@ -43,14 +43,16 @@ export class mbwhaddComponent implements OnInit {
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请选择所属部门"}];
       return;
     }
-    this.GetList.mbwhAddNodeList(this.postData.departmentId).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res=>{
-      this.nodeList = res.nodeList;
-      this.isadSearch = 0;
-    })
+    this.GetList.mbwhAddNodeList(this.postData.departmentId).then(res=>{
+      if(!res.code) {
+        this.nodeList = res.nodeList;
+        this.isadSearch = 0;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
+    });
   }
 
   public mbwhaddShow(data):void {
@@ -86,15 +88,16 @@ export class mbwhaddComponent implements OnInit {
       postWork.push(onceData);
     });
     this.postData.workloads = postWork;
-    this.PostService.mbwhAdd(this.postData).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res=>{
+    this.PostService.mbwhAdd(this.postData).then(res=>{
       this.mbwhChange.emit("mbwhChange");
       this.mbwhaddHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"新增工作量模板成功"}];
-    })
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    });
   }
 }

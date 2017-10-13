@@ -34,17 +34,19 @@ export class jsfpwarComponent implements OnInit {
   //获取左侧数据
   getViewList() {
     this.viewListL = [];
-    this.GetList.jsfpWarLeft().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.viewlist.forEach((x,i) => {
-        x['lable'] = x.name.split('?')[0];
-        x['data'] = x.id;
-      });
-      this.viewListL = res.viewlist;
-    })
+    this.GetList.jsfpWarLeft().then(res=>{
+      if(!res.code) {
+        res.viewlist.forEach((x,i) => {
+          x['lable'] = x.name;
+          x['data'] = x.id;
+        });
+        this.viewListL = res.viewlist;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
+    });
   }
 
   public jsfpwarShow(id):void {
@@ -63,32 +65,35 @@ export class jsfpwarComponent implements OnInit {
     this.node = [];
     console.log(this.forRitId);
     console.log(this.selected);
-    this.GetList.jsfpWarRight(this.selected.id,this.forRitId).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.authlist.forEach((x,i) => {
-        let p = {label:"",value:""};
-        p.label = x.name;
-        p.value = x.id;
-        this.nodeList.push(p);
-      });
-      this.node = res.checklist;
-    })
+    this.GetList.jsfpWarRight(this.selected.id,this.forRitId).then(res=>{
+      if(!res.code) {
+        res.authlist.forEach((x,i) => {
+          let p = {label:"",value:""};
+          p.label = x.name.split('?')[0];
+          p.value = x.id;
+          this.nodeList.push(p);
+        });
+        this.node = res.checklist;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
+    });
   }
   save() {
     let postData = {
       authIdList:this.node
     }
-    this.PostService.jsfpWar(postData,this.selected.id,this.forRitId).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.jsfpWar(postData,this.selected.id,this.forRitId).then(res=>{
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"授权保存成功"}];
       this.jsfpwarHide();
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
     });
   }
 }

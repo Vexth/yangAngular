@@ -65,15 +65,16 @@ export class yhgldeptComponent implements OnInit {
 
   public emitYhglDept(event):void {
     // console.log(this.role);
-    this.PostService.yhglDept(this.dept,this.id).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.yhglDept(this.dept,this.id).then(res=>{
       this.saveDept.emit("saveDept");
       this.yhglDeptHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"保存成功"}];
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
     });
   }
 

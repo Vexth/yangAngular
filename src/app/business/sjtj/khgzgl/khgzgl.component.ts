@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { GetList } from '../../services/getlist';
 import { PostService } from '../../services/post.service';
 
-import * as moment from 'moment'
+import * as moment from 'moment';
 
 import 'rxjs/add/operator/toPromise';
 // 导入表格组件
@@ -12,7 +12,7 @@ import { Header, Footer, TreeNode, Message, MenuItem, ConfirmationService } from
 import { Auxiliary } from '../../../common/constants/auxiliary';
 
 import { InitIalize } from '../../services/doing';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute, Data } from '@angular/router';
 
 @Component({
   selector: 'app-khgzgl',
@@ -126,6 +126,7 @@ export class KhgzglComponent implements OnInit {
   }
 
   formatDate(date) {
+    date = new Date(date);
     let y = date.getFullYear();
     let m = date.getMonth() + 1;
     m = m < 10 ? '0' + m : m;

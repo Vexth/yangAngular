@@ -35,15 +35,16 @@ export class jsfpaddComponent implements OnInit {
       this.msgs = [{severity:'error', summary:'错误提示', detail:"请输入新增角色名称"}];
       return;
     }
-    this.PostService.jsfpAdd(this.postName).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.jsfpAdd(this.postName).then(res=>{
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"新增角色成功"}];
       this.follow.emit("follow");
       this.jsfpaddHide();
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
     });
   }
 

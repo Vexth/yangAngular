@@ -36,49 +36,55 @@ export class JdsqsetComponent implements OnInit {
 
   getRoleData() {
     this.roleList = [];
-    this.GetList.getRoleList().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.role_list.forEach((x,i) => {
-        let p = {label:"",value:""};
-        p.label = x.name;
-        p.value = x.id;
-        this.roleList.push(p);
-      });
+    this.GetList.getRoleList().then(res=>{
+      if(!res.code) {
+        res.role_list.forEach((x,i) => {
+          let p = {label:"",value:""};
+          p.label = x.name;
+          p.value = x.id;
+          this.roleList.push(p);
+        });
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   getNodeData() {
     this.nodeList = [];
-    this.GetList.getNodeList().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.nodeList.forEach((x,i) => {
-        if(x.isLocked !== true) {
-          let p = {label:"",value:""};
-          p.label = x.name;
-          p.value = x.id;
-          this.nodeList.push(p);
-        }
-      });
+    this.GetList.getNodeList().then(res=>{
+      if(!res.code) {
+        res.nodeList.forEach((x,i) => {
+          if(x.isLocked !== true) {
+            let p = {label:"",value:""};
+            p.label = x.name;
+            p.value = x.id;
+            this.nodeList.push(p);
+          }
+        });
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   getDeptData() {
     this.deptList = [];
-    this.GetList.getDeptList().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.department_list.forEach((x,i) => {
-        let p = {label:"",value:""};
-        p.label = x.name;
-        p.value = x.id;
-        this.deptList.push(p);
-      });
+    this.GetList.getDeptList().then(res=>{
+      if(!res.code) {
+        res.department_list.forEach((x,i) => {
+          let p = {label:"",value:""};
+          p.label = x.name;
+          p.value = x.id;
+          this.deptList.push(p);
+        });
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   getChack() {
@@ -87,15 +93,17 @@ export class JdsqsetComponent implements OnInit {
       department:this.getDepart.department.id,
       role:this.getDepart.role.id
     }
-    this.GetList.jdsqGetCheck(postList).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.forEach((x,i) => {
-        this.node.push(x.id);
-      });
-    })
+    this.GetList.jdsqGetCheck(postList).then(res=>{
+      if(!res.code) {
+        res.forEach((x,i) => {
+          this.node.push(x.id);
+        });
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
+    });
   }
   getDepart:any = {};
   public jdsqsetShow(data):void {
@@ -134,15 +142,16 @@ export class JdsqsetComponent implements OnInit {
       return;
     }
     postData.nodes = this.node;
-    this.PostService.jdsqSet(postData,this.dept,this.role).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.jdsqSet(postData,this.dept,this.role).then(res=>{
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"流程节点设置成功"}];
       this.jdsqSaveChange.emit();
       this.jdsqsetHide();
-    })
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    });
   }
 }

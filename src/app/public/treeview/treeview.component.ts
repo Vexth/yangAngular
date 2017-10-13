@@ -10,10 +10,10 @@ import { EventNameService } from '../../business/services/communication.service'
   selector: 'app-treeview',
   templateUrl: './treeview.component.html',
   styleUrls: [
-    './treeview.component.css',
-    '../login/login.component.css',
-    '../login/login.css',
-    '../../../assets/plugins/iCheck/square/blue.css'
+    // '../login/login.component.css',
+    // '../login/login.css',
+    // '../../../assets/plugins/iCheck/square/blue.css',
+    './treeview.component.css'
   ]
 })
 export class TreeviewComponent implements OnInit {
@@ -22,20 +22,15 @@ export class TreeviewComponent implements OnInit {
   @Input() treeitem: string = 'V1';
   check: string;
   names: any[];
-  styleName1: string = 'vexth';
-  styleName2: string = '';
 
   username: string;
   password: string;
   msgs: Message[] = [];
-
-  xmName: string;
   ICON: any[];
   constructor(
     @Inject(GetList) getList: GetList,
     private router: Router,
     @Inject('auth') private service,
-    // private _activatedRoute: ActivatedRoute,
     public EventNameService: EventNameService
   ) {
     this.GetList = getList;
@@ -45,13 +40,12 @@ export class TreeviewComponent implements OnInit {
   ngOnInit() {
     var key = sessionStorage.getItem("key");
     var vexth = sessionStorage.getItem("vexth");
-    var keyName = sessionStorage.getItem("keyName");
     if (key !== null) {
-      this.styleName1 = '';
-      this.styleName2 = 'vexth';
-      this.xmName = keyName;
       this.names = JSON.parse(vexth);
       this.check = this.treemodule + this.treeitem;
+    } else {
+      this.router.navigate(['/']);
+      this.onSub()
     }
 
     var addressUrl = location.search.slice(1); //取参数
@@ -61,12 +55,59 @@ export class TreeviewComponent implements OnInit {
       console.log(token)
       this.onDingSignin(token);
     }
-    
-    // this._activatedRoute.queryParams.subscribe(queryParams => {
-    //   console.log(queryParams);
-    // })
   }
 
+  onSub () {
+    this.EventNameService.eventName.subscribe((value) => {
+      if (value !== undefined) {
+        this.service.GetAuthlist().then(res => {
+          for (let i = 0; i < res.authList.length; i++) {
+            switch (res.authList[i].id) {
+              case 1:
+                res.authList[i].icon = this.ICON[0];
+                break;
+              case 13:
+                res.authList[i].icon = this.ICON[1];
+                break;
+              case 14:
+                res.authList[i].icon = this.ICON[2];
+                break;
+              case 15:
+                res.authList[i].icon = this.ICON[3];
+                break;
+            }
+
+          }
+          this.names = res.authList;
+          this.check = this.treemodule + this.treeitem;
+          sessionStorage.setItem("key", 'vexth');
+          sessionStorage.setItem("vexth", JSON.stringify(this.names));
+        })
+      } else {
+        this.msgs = [];
+        this.msgs = [{ severity: 'error', summary: '错误提示', detail: '请重新登入' }]
+      }
+    });
+  }
+
+  onDingSignin(token: string) {
+    this.GetList.dingSignin(token).then(res => {
+      this.EventNameService.eventName.next(res.data.name); // 存放姓名
+      sessionStorage.setItem("name", res.data.name);
+      return res;
+    }).then(res => {
+      console.log(res)
+      if (res.code == 0) {
+        this.router.navigate(['/business/A1']);
+        this.onSub();
+      } else {
+        this.msgs = [];
+        this.msgs.push({ severity: 'error', summary: '错误提示', detail: res.msg });
+      }
+    })
+  }
+
+  /*
   onDingSignin(token: string) {
     this.GetList.dingSignin(token).then(res => {
       if (res.code == 0) {
@@ -111,7 +152,9 @@ export class TreeviewComponent implements OnInit {
       }
     })
   }
+  */
 
+  /*
   onSubmit(formValue: any): void {
     if (formValue.username == undefined) {
       this.msgs = [];
@@ -167,4 +210,5 @@ export class TreeviewComponent implements OnInit {
       }
     });
   }
+  */
 }

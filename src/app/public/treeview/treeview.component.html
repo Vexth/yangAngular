@@ -1,4 +1,5 @@
-<aside class="main-sidebar" [ngStyle]="{'display':styleName1 === 'vexth' ? 'none' : 'inline-block' }">
+<aside class="main-sidebar">
+  <!-- [ngStyle]="{'display':styleName1 === 'vexth' ? 'none' : 'inline-block' }" -->
   <section class="sidebar">
     <!-- <div class="user-panel">
       <div class="pull-left image">
@@ -10,10 +11,10 @@
       </div></div> -->
     <ul class="sidebar-menu">
 
-      <li [ngClass]="{'active':check == 'A1'}"><a routerLink="/business/A1"><i class="fa fa-circle-o text-red"></i> <span>欢迎页面</span></a></li>
+      <li [ngClass]="{'active':check == 'A1'}"><a class="a" routerLink="/business/A1"><i class="fa fa-circle-o text-red"></i> <span>欢迎页面</span></a></li>
 
       <li *ngFor="let name of names" class="treeview" [ngClass]="{'active':treemodule == name.check}" >
-        <a href="#">
+        <a class="a" href="#">
           <i class="fa {{ name.icon }} text-red"></i> <span>{{ name.name }}</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
@@ -87,7 +88,7 @@
     </ul>
   </section>
 </aside>
-
+<!-- 
   <div class="login-boxCom" [ngStyle]="{'display':styleName1 == 'vexth' ? 'inline-block' : 'none' }">
     <div class="jty-login-content" style="min-height: 585px;background: #fff;" ng-controller="JtyEHRLoginController" ng-init="app.settings.headerFixed = false;">
         <div class="jty-login-top">
@@ -109,12 +110,12 @@
               <div class="login-input-group form-group has-feedback">
                 <input type="password" name="password" class="form-control" placeholder="密码" id="password" required [(ngModel)]="password" [ngModel]="password" (ngModelChange)="password = $event" #pass="ngModel">
               </div>
-              <!-- <div class="login-input-group">
+              <div class="login-input-group">
                 <input type="text" class="login-code" style="width: 140px" placeholder="请输入验证码"  maxlength="4" ng-model="user.code" required>
                 <div class="login-code-img"><img style="height: 34px" src="{{user.getCodeUrl == null ? 'sys/securityCode' : user.getCodeUrl}}">
                   <span class="" ng-click="reloadCode();"><img src="../../../assets/img/login/login_sx.png" style="width: 24px;height: 20px;"></span>
                 </div>
-              </div> -->
+              </div>
               <button type="submit" class="btn login-button" ng-disabled='form.$invalid'>登&nbsp;录</button>
             </form>
           </div>
@@ -144,4 +145,4 @@
              </div>
          </div>
      </div>
-    </div>
+    </div> -->

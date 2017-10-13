@@ -69,6 +69,8 @@ export class CygzlComponent implements OnInit {
                     if(res.check_statu == 0){
                         res.check_calc_workload = '--';
                     }
+                    res['stime'] = this.formatDate(res['stime']);
+                    res['etime'] = this.formatDate(res['etime']);
                 })
                 this.dataList = res.checkList;
                 this.rows = res.pageSize;
@@ -109,6 +111,7 @@ export class CygzlComponent implements OnInit {
         Auxiliary.prototype.ControlHeight();
     }
     formatDate(date) {
+        date = new Date(date);
         let y = date.getFullYear();
         let m = date.getMonth() + 1;
         m = m < 10 ? '0' + m : m;

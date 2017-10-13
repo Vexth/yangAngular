@@ -42,12 +42,14 @@ export class LzcxComponent implements OnInit {
       this.btnFn = Auxiliary.prototype.queryParamsList(queryParams)
     })
     Auxiliary.prototype.ControlHeight();
-    this.GetList.lzcxOpts().catch(res => {
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res => {
-      this.optsList = res;
+    this.GetList.lzcxOpts().then(res => {
+      if(!res.code) {
+        this.optsList = res;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
     this.zh = {
       firstDayOfWeek: 0,
@@ -83,19 +85,21 @@ export class LzcxComponent implements OnInit {
     optsData.endDate = this.endDate?this.getFormetDate(this.endDate):"";
     optsData.pageNum = this.pageNum?this.pageNum:"";
     optsData.pageSize = this.pageSize?this.pageSize:"";
-    this.GetList.lzcxDataList(optsData).catch(res => {
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res => {
-      res.list.forEach(item => {
-        if(item.gmtCreate){item.gmtCreate = this.format(item.gmtCreate, 'yyyy-MM-dd HH:mm:ss');}
-        if(item.gmtOver){item.gmtOver = this.format(item.gmtOver, 'yyyy-MM-dd HH:mm:ss');}
-      });
-      this.tableList = res.list;
-      this.pageSize = res.pageSize;
-      this.pageNum = res.pageNum;
-      this.total = res.total;
+    this.GetList.lzcxDataList(optsData).then(res => {
+      if(!res.code) {
+        res.list.forEach(item => {
+          if(item.gmtCreate){item.gmtCreate = this.format(item.gmtCreate, 'yyyy-MM-dd HH:mm:ss');}
+          if(item.gmtOver){item.gmtOver = this.format(item.gmtOver, 'yyyy-MM-dd HH:mm:ss');}
+        });
+        this.tableList = res.list;
+        this.pageSize = res.pageSize;
+        this.pageNum = res.pageNum;
+        this.total = res.total;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   paginate(event) {

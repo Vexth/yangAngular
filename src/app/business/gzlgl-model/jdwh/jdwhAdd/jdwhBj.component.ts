@@ -82,7 +82,7 @@ export class jdwhbjComponent implements OnInit {
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"修改流程节点成功"}];
     }).catch(res => {
-      res = res.json();
+      // res = res.json();
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       return;

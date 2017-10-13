@@ -54,10 +54,10 @@
                     <p-column field="workName" header="稿件名称" [style]="{'width':'400px'}"></p-column>
                     <p-column field="nodeName" header="流程节点" [style]="{'text-align':'center'}"></p-column>
                     <p-column field="userName" header="姓名"[style]="{'text-align':'center'}"></p-column>
-                    <p-column field="document" header="完成时间"[style]="{'text-align':'center'}">
-                        <ng-template let-node="rowData" pTemplate="body" >
+                    <p-column field="gmt_create" header="完成时间"[style]="{'text-align':'center'}">
+                        <!-- <ng-template let-node="rowData" pTemplate="body" >
                             <span>{{node.gmt_create | date : 'yyyy-MM-dd' }}</span>
-                        </ng-template>
+                        </ng-template> -->
                     </p-column>
                     <p-column field="count" header="数量"[style]="{'text-align':'center'}"></p-column>
                     <p-column field="price" header="单价"[style]="{'text-align':'center'}"></p-column>

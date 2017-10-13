@@ -25,9 +25,9 @@ export class TopComponent implements OnInit {
   onClick_logout() {
     sessionStorage.removeItem('key');
     sessionStorage.removeItem('vexth');
-    sessionStorage.removeItem("keyName");
-    history.go(0);
-    // this.router.navigate(['/']);
+    sessionStorage.removeItem("name");
+    // history.go(0);
+    this.router.navigate(['/']);
   }
 
 }

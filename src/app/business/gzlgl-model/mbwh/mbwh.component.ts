@@ -52,23 +52,25 @@ export class MbwhComponent implements OnInit {
   
   //获取页面数据
   getFormData() {
-    this.GetList.mbwhDataList(this.optsData).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res=>{
-      res.list.forEach((x,i) => {
-        x["isBanedName"] = x.isBaned == true ? "锁定": "未锁定";
-        x["isPagenumName"] = x.isPagenum == true ? "是" : "否";
-      });
-      this.optsData.pageSize = res.pageSize;
-      this.optsData.pageNum = res.pageNum;
-      // this.total = res.totalCount;
-      if(!this.total) {
-        this.total = (+res.pageSize)*(+res.totalPages);
+    this.GetList.mbwhDataList(this.optsData).then(res=>{
+      if(!res.code) {
+        res.list.forEach((x,i) => {
+          x["isBanedName"] = x.isBaned == true ? "锁定": "未锁定";
+          x["isPagenumName"] = x.isPagenum == true ? "是" : "否";
+        });
+        this.optsData.pageSize = res.pageSize;
+        this.optsData.pageNum = res.pageNum;
+        // this.total = res.totalCount;
+        if(!this.total) {
+          this.total = (+res.pageSize)*(+res.totalPages);
+        }
+        this.formDataList = res.list;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
       }
-      this.formDataList = res.list;
-    })
+    });
   }
   paginate(event){
     this.optsData.pageSize = event.rows;
@@ -77,12 +79,14 @@ export class MbwhComponent implements OnInit {
   }
   //获取新增时的下拉框数据
   getChildOptionData() {
-    this.GetList.mbwhAddDataList().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res=>{
-      this.createoption = res;
+    this.GetList.mbwhAddDataList().then(res=>{
+      if(!res.code) {
+        this.createoption = res;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
 
@@ -113,14 +117,15 @@ export class MbwhComponent implements OnInit {
       header: '你确定删除吗？',
       icon: 'fa fa-question-circle',
       accept: () => {
-        this.PostService.mbwhDelete(deleteArr).catch(res=>{
+        this.PostService.mbwhDelete(deleteArr).then(res=>{
+          this.clearOpts();
+          this.msgs = [{severity:'success', summary:'成功提示', detail:'删除成功'}];
+        }).catch(res=>{
+          // res = res.json();
           this.msgs = [];
           this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
           return;
-        }).then(res=>{
-          this.clearOpts();
-          this.msgs = [{severity:'success', summary:'成功提示', detail:'删除成功'}];
-        })
+        });
       },
       reject: () => {
           // this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];

@@ -31,14 +31,16 @@ export class szgzlplComponent implements OnInit {
 
   }
   //获取列表
-  getList() {
-    this.GetList.szgzlSetPL(this.data).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      this.nodeList = res.nodeList;
-      this.selectList = res.templateList;
+  getListsz() {
+    this.GetList.szgzlSetPL(this.data).then(res=>{
+      if(!res.code) {
+        this.nodeList = res.nodeList;
+        this.selectList = res.templateList;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     }); 
   }
 
@@ -46,7 +48,7 @@ export class szgzlplComponent implements OnInit {
     this.childModal.show();
     this.data = data;
     this.checkArr = checkList;
-    this.getList();
+    this.getListsz();
   }
 
   public szgzlplHide():void {
@@ -60,13 +62,15 @@ export class szgzlplComponent implements OnInit {
     if(!this.modelId) {
       return;
     }else{
-      this.GetList.szgzlSetModel(this.modelId).catch(res=>{
-        this.msgs = [];
-        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-        return;
-      }).then(res=>{
-        this.nodeList = res.nodeList;
-      })
+      this.GetList.szgzlSetModel(this.modelId).then(res=>{
+        if(!res.code) {
+          this.nodeList = res.nodeList;
+        }else{
+          this.msgs = [];
+          this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+          return;
+        }
+      });
     }
   }
 
@@ -82,16 +86,17 @@ export class szgzlplComponent implements OnInit {
     let postData = {
       docIdList:this.checkArr,templateId:this.modelId
     }
-    this.PostService.szgzlPlSetSave(postData).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.szgzlPlSetSave(postData).then(res=>{
       this.saveChangeModel.emit("saveChangeModel");
       this.szgzlplHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"工作量批量保存成功"}];
-    })
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    });
   }
 
 

@@ -130,6 +130,7 @@ export class SpgzlopenComponent implements OnInit {
   }
 
   formatDate(date) {
+    date = new Date(date);
     let y = date.getFullYear();
     let m = date.getMonth() + 1;
     m = m < 10 ? '0' + m : m;

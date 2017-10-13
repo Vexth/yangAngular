@@ -7,14 +7,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './services/auth.service';
 import { PublicRoutingModule } from './public.routing.module';
 
-// import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
 import { TopComponent } from './top/top.component';
 import { TreeviewComponent } from './treeview/treeview.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { PagingComponent } from './paging/paging.component';
 
-import { BusinessComponent } from '../business/business.component';
+// import { BusinessComponent } from '../business/business.component';
 import { GrowlModule } from 'primeng/primeng';
 
 @NgModule({
@@ -26,13 +26,13 @@ import { GrowlModule } from 'primeng/primeng';
     NgbModule
   ],
   declarations: [
-    // LoginComponent,
+    LoginComponent,
     TopComponent,
     TreeviewComponent,
     FooterComponent,
     NavigationComponent,
     PagingComponent,
-    BusinessComponent
+    // BusinessComponent
   ],
   exports: [
     TopComponent,

@@ -34,18 +34,20 @@ export class yhgljsComponent implements OnInit {
   //获取角色列表
   getRoleList() {
     this.roleList = [];
-    this.GetList.getRoleList().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.role_list.forEach((x,i) => {
-        let p = {label:"",value:""};
-        p.label = x.name;
-        p.value = x.id;
-        this.roleList.push(p);
-      });
-    })
+    this.GetList.getRoleList().then(res=>{
+      if(!res.code) {
+        res.role_list.forEach((x,i) => {
+          let p = {label:"",value:""};
+          p.label = x.name;
+          p.value = x.id;
+          this.roleList.push(p);
+        });
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
+    });
   }
 
   public yhglJSShow(data):void {
@@ -65,15 +67,16 @@ export class yhgljsComponent implements OnInit {
 
   public emitYhglRole(event):void {
     console.log(this.role);
-    this.PostService.yhglJS(this.role,this.id).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.yhglJS(this.role,this.id).then(res=>{
       this.saveJS.emit("saveJS");
       this.yhglJSHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"保存成功"}];
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
     });
   }
    

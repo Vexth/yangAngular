@@ -39,7 +39,7 @@ export class GetList extends BaseService {
         return PB;
       } else {
         console.error('服务端返回的 http status 错误 : ', status);
-        return null;
+        return res.json();
       }
     }).catch((error: any) => { this.handleError(fn, error); });
   }

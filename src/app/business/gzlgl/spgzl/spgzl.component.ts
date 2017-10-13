@@ -82,6 +82,10 @@ export class SpgzlComponent implements OnInit,OnDestroy {
     this.GetList.workloadChecklist(this.emptyList).then(res => {
       this.dataListCode = [];
       if (res.checkList != undefined) {
+        res.checkList.map(res => {
+          res['stime'] = this.formatDate(res['stime']);
+          res['etime'] = this.formatDate(res['etime']);
+        })
         this.dataList = res.checkList;
         this.rows = res.pageSize;
         this.pageLinks = res.totalCount;
@@ -137,6 +141,7 @@ export class SpgzlComponent implements OnInit,OnDestroy {
   }
 
   formatDate (date) {  
+    date = new Date(date);
     let y = date.getFullYear();  
     let m = date.getMonth() + 1;  
     m = m < 10 ? '0' + m : m;  

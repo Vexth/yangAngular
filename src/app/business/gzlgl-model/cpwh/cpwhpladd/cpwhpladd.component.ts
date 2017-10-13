@@ -46,16 +46,17 @@ export class cpwhpladdComponent implements OnInit {
       postData.nameList.push(k+this.typeName);
     }
     postData.pid = this.data.data.documentId;
-    this.PostService.cpwhGJAdd(postData).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.cpwhGJAdd(postData).then(res=>{
       this.cpwhAddPL.emit("cpwhAddPL");
       this.cpwhgjaddHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:'新增稿件成功'}];
-    })
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    });
   }
 
   public cpwhgjaddShow(data):void {

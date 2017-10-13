@@ -125,14 +125,16 @@ export class cpwhcpaddComponent implements OnInit {
   }
   //获取kindId2List
   getkindId2(data) {
-    this.GetList.getKindId2(data).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.optKind2.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
-      res.optKind2.unshift({label:"--请选择--",optionName:"--请选择--",value:""});
-      this.changeOptKind2 = res.optKind2;
+    this.GetList.getKindId2(data).then(res=>{
+      if(!res.code) {
+        res.optKind2.forEach(item => {item['label']=item.optionName;item['value']=item.optionId;});
+        res.optKind2.unshift({label:"--请选择--",optionName:"--请选择--",value:""});
+        this.changeOptKind2 = res.optKind2;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
 
@@ -155,15 +157,16 @@ export class cpwhcpaddComponent implements OnInit {
       pushData = Object.assign(temporaryData,this.post);
       postData.productList.push(temporaryData);
     }
-    this.PostService.cpwhAdd(postData).catch(res => {
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res => {
+    this.PostService.cpwhAdd(postData).then(res => {
       this.cpwhAdd.emit("cpwhAdd");
       this.cpwhcpaddHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:'新增产品成功'}];
+    }).catch(res => {
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
     });
   }
 }

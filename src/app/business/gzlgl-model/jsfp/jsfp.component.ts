@@ -41,12 +41,14 @@ export class JsfpComponent implements OnInit {
 
   //获取页面表格数据
   getFromData() {
-    this.GetList.jsfpDataList().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res=>{
-      this.fromDataList = res.role_list;
+    this.GetList.jsfpDataList().then(res=>{
+      if(!res.code) {
+        this.fromDataList = res.role_list;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
+        return;
+      }
     });
   }
 
@@ -110,15 +112,16 @@ export class JsfpComponent implements OnInit {
     header: '你确定删除吗？',
     icon: 'fa fa-question-circle',
     accept: () => {
-      this.PostService.jsfpDelete(deleteArr).catch(res=>{
-        this.msgs = [];
-        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-        return;
-      }).then(res=>{
+      this.PostService.jsfpDelete(deleteArr).then(res=>{
         this.getFromData();
         this.selected = [];
         this.msgs = [];
         this.msgs = [{severity:'success', summary:'成功提示', detail:'删除成功'}];
+      }).catch(res=>{
+        // res = res.json();
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
       });
     },
     reject: () => {

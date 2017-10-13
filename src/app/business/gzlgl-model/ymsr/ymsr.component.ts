@@ -54,35 +54,38 @@ export class YmsrComponent implements OnInit {
 
   //获取部门
   getDeptList() {
-    this.GetList.lzcxOpts().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      this.optsDataList = res;
+    this.GetList.lzcxOpts().then(res=>{
+      if(!res.code) {
+        this.optsDataList = res;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   //获取表格数据
   getFormData() {
-    this.GetList.ymsrDataList(this.optsData).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      res.pagelist.content.forEach(( x,i ) => {
-        this.dataTreat(x.document,x.departName);
-        x["children"] = x.document.children;
-        x["data"] = x.document.data;
-      })
-      
-      this.formDataList = res.pagelist.content;
-      // this.optsData.size = res.pagelist.count?res.pagelist.count:10;
-      this.optsData.size = 10;
-      this.optsData.page = res.pagelist.page;
-      let indexTotal = (+res.pagelist.totalPage)*(+res.pagelist.count);
-      if(indexTotal>0) {this.total = indexTotal;}else{this.total = 10;}
-      // this.total = (+res.pagelist.totalPage)*(+res.pagelist.count);
-      console.log(this.formDataList);
+    this.GetList.ymsrDataList(this.optsData).then(res=>{
+      if(!res.code) {
+        res.pagelist.content.forEach(( x,i ) => {
+          this.dataTreat(x.document,x.departName);
+          x["children"] = x.document.children;
+          x["data"] = x.document.data;
+        })
+        this.formDataList = res.pagelist.content;
+        // this.optsData.size = res.pagelist.count?res.pagelist.count:10;
+        this.optsData.size = 10;
+        this.optsData.page = res.pagelist.page;
+        let indexTotal = (+res.pagelist.totalPage)*(+res.pagelist.count);
+        if(indexTotal>0) {this.total = indexTotal;}else{this.total = 10;}
+        // this.total = (+res.pagelist.totalPage)*(+res.pagelist.count);
+        // console.log(this.formDataList);
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   paginate(event) {
@@ -136,14 +139,15 @@ export class YmsrComponent implements OnInit {
     let pageList = {
       pageList:this.updataList
     }
-    this.PostService.ymsrSet(pageList).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.ymsrSet(pageList).then(res=>{
       this.clearOpts();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"保存成功"}];
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
     });
   }
   // 双击修改
@@ -213,12 +217,14 @@ export class YmsrComponent implements OnInit {
   }
   //获取kindId2List
   getkindId2(data) {
-    this.GetList.getKindId2(data).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      this.changeOptKind2 = res.optKind2;
+    this.GetList.getKindId2(data).then(res=>{
+      if(!res.code) {
+        this.changeOptKind2 = res.optKind2;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
 

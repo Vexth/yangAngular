@@ -42,27 +42,29 @@ export class JdsqComponent implements OnInit {
   }
   //获取部门
   getDept() {
-    this.GetList.getDeptList().catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-
-      this.deptList = res.department_list;
+    this.GetList.getDeptList().then(res=>{
+      if(!res.code) {
+        this.deptList = res.department_list;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   //获取页面表格数据
   getFormData() {
-    this.GetList.jdsqDataList(this.optsList).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      this.optsList.pageNum = res.pageNum;
-      this.optsList.pageSize = res.pageSize;
-      this.total = res.total;
-      this.formDataList = res.list;
-      console.log(res);
+    this.GetList.jdsqDataList(this.optsList).then(res=>{
+      if(!res.code) {
+        this.optsList.pageNum = res.pageNum;
+        this.optsList.pageSize = res.pageSize;
+        this.total = res.total;
+        this.formDataList = res.list;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
   paginate(event) {

@@ -35,16 +35,17 @@ export class mbwhchangeComponent implements OnInit {
   }
 
   deptchange() {
-    this.GetList.mbwhEditModel(this.dataId).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res=>{
-      if(+res.isBaned===1){res.isBaned="true";}else{res.isBaned="false";}
-      if(+res.isPagenum===1){res.isPagenum="true";}else{res.isPagenum="false";}
-      this.postData = res;
-      console.log(this.postData);
-    })
+    this.GetList.mbwhEditModel(this.dataId).then(res=>{
+      if(!res.code) {
+        if(+res.isBaned===1){res.isBaned="true";}else{res.isBaned="false";}
+        if(+res.isPagenum===1){res.isPagenum="true";}else{res.isPagenum="false";}
+        this.postData = res;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
+    });
   }
 
   public mbwhchangeShow(data,selected):void {
@@ -73,15 +74,16 @@ export class mbwhchangeComponent implements OnInit {
       return;
     }
     this.postData.workloads = this.postData.nodeworkloads;
-    this.PostService.mbwhEdit(this.postData,this.dataId).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res}];
-      return;
-    }).then(res=>{
+    this.PostService.mbwhEdit(this.postData,this.dataId).then(res=>{
       this.mbwhEdit.emit("mbwhEdit");
       this.mbwhchangeHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"修改工作量模板成功"}];
-    })
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    });
   }
 }

@@ -56,26 +56,27 @@ export class JdwhComponent implements OnInit {
     optsData.name = this.name?this.name:"";
     optsData.isLocked = this.isLocked?this.isLocked:"";
 
-    this.GetList.jdwhDataList(optsData).catch(res => {
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res => {
-      if(res.nodeList) {
-        for(let i = 0 ; i < res.nodeList.length; i++) {
-          res.nodeList[i]['number'] = "LC"+res.nodeList[i].id;
-          if(res.nodeList[i].isLocked == false) {
-            res.nodeList[i]['isLockedName'] = '已启用';
-          }else{
-            res.nodeList[i]['isLockedName'] = '已禁用';
+    this.GetList.jdwhDataList(optsData).then(res => {
+      if(!res.code) {
+        if(res.nodeList) {
+          for(let i = 0 ; i < res.nodeList.length; i++) {
+            res.nodeList[i]['number'] = "LC"+res.nodeList[i].id;
+            if(res.nodeList[i].isLocked == false) {
+              res.nodeList[i]['isLockedName'] = '已启用';
+            }else{
+              res.nodeList[i]['isLockedName'] = '已禁用';
+            }
           }
         }
+        this.P = res;
+        this.pageSize = res.pageSize;
+        this.pageNum = res.pageNum;
+        this.total = res.totalCount;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
       }
-      this.P = res;
-      this.pageSize = res.pageSize;
-      this.pageNum = res.pageNum;
-      this.total = res.totalCount;
-      console.log(res);
     });
   }
   paginate(event){

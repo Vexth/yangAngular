@@ -56,7 +56,13 @@ export class tjgzlcxComponent implements OnInit {
 
   optsList:any = []//搜索集合
   ngOnInit() {
-    this.GetList.tjgzlOptsList().then(res => this.optsList = res);
+    this.GetList.tjgzlOptsList().then(res => {
+      if(!res.code) {this.optsList = res;}else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
+    });
     this.zh = {
       firstDayOfWeek: 0,
       dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
@@ -85,13 +91,14 @@ export class tjgzlcxComponent implements OnInit {
     if(this.dateFrom) {this.P.dateFrom = this.getFormetDate(this.dateFrom);}else{this.P.dateFrom = "";}
     if(this.dateTo) {this.P.dateTo = this.getFormetDate(this.dateTo);}else{this.P.dateTo = "";}
     console.log(this.P);
-    this.PostService.tjgzl(this.P,"page=1&size=9999").catch(res=> {
+    this.PostService.tjgzl(this.P,"page=1&size=9999").then(res=>{
+      this.tjgzlCxHide();
+      this.tzgzlCx.emit(res);
+    }).catch(res=> {
+      // res = res.json();
       this.msgs = [];
       this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
       return;
-    }).then(res=>{
-      this.tjgzlCxHide();
-      this.tzgzlCx.emit(res);
     });
   }
   clearOpts() {
@@ -253,12 +260,14 @@ export class tjgzlcxComponent implements OnInit {
   }
   //获取kindId2List
   getkindId2(data) {
-    this.GetList.getKindId2(data).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
-      this.changeOptKind2 = res.optKind2;
+    this.GetList.getKindId2(data).then(res=>{
+      if(!res.code) {
+        this.changeOptKind2 = res.optKind2;
+      }else{
+        this.msgs = [];
+        this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+        return;
+      }
     });
   }
 }

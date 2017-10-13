@@ -38,16 +38,17 @@ export class jsfpeditComponent implements OnInit {
     }
     // console.log(this.postData);
     // this.jsfpEditV2.emit("jsfpEditV2");
-    this.PostService.jsfpEdit(this.postData.name,this.postData.id).catch(res=>{
-      this.msgs = [];
-      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
-      return;
-    }).then(res=>{
+    this.PostService.jsfpEdit(this.postData.name,this.postData.id).then(res=>{
       this.jsfpEditV2.emit("jsfpEditV2");
       this.jsfpeditHide();
       this.msgs = [];
       this.msgs = [{severity:'success', summary:'成功提示', detail:"修改角色成功"}];
-    })
+    }).catch(res=>{
+      // res = res.json();
+      this.msgs = [];
+      this.msgs = [{severity:'error', summary:'错误提示', detail:res.msg}];
+      return;
+    });
   }
 
   public jsfpeditShow(data):void {
